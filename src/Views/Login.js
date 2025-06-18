@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { Navigate } from "react-router-dom";
+import { api } from "../utils/apis";
 import { styled } from '@mui/material/styles';
 import {
   TextField,
@@ -65,8 +66,8 @@ const Login = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login, token, setKeep, keep, } = useContext(AuthContext);
-  const { t, changeLocale, locale, authedApi } = useContext(GlobalContext);
+  const { login, token, setKeep, keep, logout } = useContext(AuthContext);
+  const { t, changeLocale, locale, openSnackbar } = useContext(GlobalContext);
 
   if (token) {
     return <Navigate to="/" />
@@ -79,9 +80,27 @@ const Login = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    // const { token } = await authedApi.postAuthLogin({ data: { account, password } });
-
-    login("token");
+    try {
+      const apiInstance = api(logout);
+      const response = await apiInstance.auth.postAuthLogin({ 
+        data: { 
+          username: account, 
+          password 
+        } 
+      });
+      
+      
+      const { token, expireAt } = response;
+      
+      // 將 token 存放到 AuthContext 中
+      login(token);
+    } catch (error) {
+      console.error('登入失敗:', error);
+      openSnackbar({
+        severity: 'error',
+        message: error.response?.data?.message || error.message || t('login-failed')
+      });
+    }
   }
 
   return (

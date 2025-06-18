@@ -36,6 +36,7 @@
     "layout": "Layout",
     "license": "License",
     "login": "Login",
+    "login-failed": "Login Failed",
     "logout": "Logout",
     "name": "Name",
     "navigation": "Navigation",
@@ -76,5 +77,7 @@
     "_temporary": "Temporary",
     "_usage": "Usage",
     "_user": "User",
-    "_violation": "Violation"
+    "_violation": "Violation",
+    "region": "Region",
+    "facilityManagement": "Facility Management"
 }

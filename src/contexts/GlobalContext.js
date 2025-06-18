@@ -151,7 +151,7 @@ function GlobalProvider({ children, ...rest }) {
   React.useEffect(() => {
     if (token) {
       // api.defaults.headers.common['Authorization'] = token; // Incorrect: api is a function
-      axiosInstance.defaults.headers.common['Authorization'] = token; // Correct: use the imported axios instance
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Correct: use the imported axios instance
     }
   }, [token])
 

@@ -21,7 +21,7 @@ import Tracking from "../Views/Log/Tracking";
 import Usage from "../Views/Log/Usage";
 import Violation from "../Views/Log/Violation";
 
-
+import Region from "../Views/Facility/Region";
 
 import {
   ManageAccount,
@@ -33,8 +33,39 @@ import {
   Tools
 } from "../images/icons";
 
+import DomainIcon from '@mui/icons-material/Domain';
+
 
 const routes = [
+  {
+    path: "/facility",
+    name: "facilityManagement",
+    icon: DomainIcon,
+    sider: true,
+    children: [
+      {
+        path: "/region",
+        name: "region"
+      },
+      // {
+      //   path: "/parking-facility",
+      //   name: "_parking-facility",
+      //   component: ParkingFacility,
+      //   children: [
+      //     {
+      //       path: "/parking-facility-gate",
+      //       name: "_parking-facility-gate",
+      //       component: ParkingFacilityGate,
+      //     }
+      //   ]
+      // }
+    ]
+  },
+  {
+    path: "/region",
+    name: "region",
+    component: Region,
+  },
   {
     path: "/user",
     name: "_user",

@@ -7,8 +7,7 @@ function AuthProvider(props) {
   const [keep, setKeep] = useState(localStorage.getItem('keep') === "1");
 
   const login = async (jwtToken) => {
-
-    instance.defaults.headers.common['Authorization'] = jwtToken;
+    instance.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
 
     setToken(jwtToken);
 
@@ -32,6 +31,7 @@ function AuthProvider(props) {
     token,
     login,
     logout,
+    keep,
     setKeep
   };
 
