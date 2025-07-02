@@ -72,7 +72,7 @@ function GlobalProvider({ children, ...rest }) {
   const dialogStyle = themeMode === "dark" ? dark_palette.paper : lighten_palette.paper;
 
   // Provide the t function based on the current locale
-  const t = React.useCallback((key, arg) => i18n(locale)(key, arg), [locale]);
+  const t = React.useCallback((key, arg, options) => i18n(locale)(key, arg, options), [locale]);
 
 
   const changeTheme = (themeName) => {
