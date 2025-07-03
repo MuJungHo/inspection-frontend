@@ -23,11 +23,9 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   height: 40,
   minWidth: 60,
   paddingLeft: theme.spacing(1),
-  '& > *:not(:first-child)': {
-    marginLeft: theme.spacing(2.5),
-  },
   '& svg': {
     // fill: theme.grey.medium
+    marginRight: theme.spacing(2.5),
   },
 }));
 

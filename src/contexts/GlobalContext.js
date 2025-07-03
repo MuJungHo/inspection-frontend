@@ -204,12 +204,13 @@ function GlobalProvider({ children, ...rest }) {
               // {...dialog}
               // title=""
               // warning=""
+              fullWidth={dialog.fullWidth}
               maxWidth={dialog.maxWidth}
               onClose={() => setDialog({ ...dialog, open: false })}
               open={dialog.open}
             >
               {dialog.title && <DialogTitle
-                disableTypography
+                // disableTypography
                 style={{
                   backgroundColor: dialogStyle.background,
                   color: dialogStyle.color

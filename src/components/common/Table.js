@@ -66,6 +66,7 @@ function EnhancedTableHead(props) {
             sortDirection={sort === column.key ? order : false}
           >
             <TableSortLabel
+              disabled={!column.sortable}
               // disabled={!filterable} // filterable might not be the right prop to disable sort
               active={sort === column.key}
               direction={sort === column.key ? order : 'asc'}
@@ -282,7 +283,7 @@ export default ({
 
   const handleChangeRowsPerPage = (event) => {
     onRowsPerPageChange(parseInt(event.target.value, 10));
-    onPageChange(0);
+    // onPageChange(0);
   };
 
   return (

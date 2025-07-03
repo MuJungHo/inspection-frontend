@@ -37,7 +37,8 @@ export const api = (logout = () => {}) => {
     // 設備相關
     edgeServer: wrapApiModule(apiModules.edgeServerApi, logout),
     camera: wrapApiModule(apiModules.cameraApi, logout),
-    failoverGroup: wrapApiModule(apiModules.failoverGroupApi, logout)
+    failoverGroup: wrapApiModule(apiModules.failoverGroupApi, logout),
+    failoverGroupMember: wrapApiModule(apiModules.failoverGroupMemberApi, logout),
   };
 };
 
@@ -101,7 +102,13 @@ export const compatibleApi = (logout = () => {}) => {
     getFailoverGroupById: modules.failoverGroup.getFailoverGroupById,
     postCreateFailoverGroup: modules.failoverGroup.postCreateFailoverGroup,
     patchUpdateFailoverGroup: modules.failoverGroup.patchUpdateFailoverGroup,
-    deleteFailoverGroup: modules.failoverGroup.deleteFailoverGroup
+    deleteFailoverGroup: modules.failoverGroup.deleteFailoverGroup,
+
+    getFailoverGroupMembers: modules.failoverGroupMember.getFailoverGroupMembers,
+    getFailoverGroupMembersById: modules.failoverGroupMember.getFailoverGroupMembersById,
+    postCreateFailoverGroupMember: modules.failoverGroupMember.postCreateFailoverGroupMember,
+    patchUpdateFailoverGroup: modules.failoverGroupMember.patchUpdateFailoverGroupMember,
+    deleteFailoverGroupMember: modules.failoverGroupMember.deleteFailoverGroupMember
   };
 };
 
