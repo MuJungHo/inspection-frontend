@@ -1,0 +1,154 @@
+name: 部署到測試環境
+
+# 觸發條件：只有 staging 分支的 push 和 pull request 會觸發
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches:
+      - staging
+
+jobs:
+  build-and-deploy:
+    name: 建構和部署到測試環境
+    runs-on: [ubuntu-latest]
+    container: node:20.15.1-alpine
+    
+    env:
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+    
+    steps:
+      # 檢出程式碼
+      - name: 檢出程式碼
+        uses: actions/checkout@v4
+        
+      # 驗證 Node.js 版本
+      - name: 驗證 Node.js 和 npm 版本
+        run: |
+          echo "Node.js 版本: $(node --version)"
+          echo "npm 版本: $(npm --version)"
+          
+      # 安裝相依套件
+      - name: 安裝相依套件
+        run: npm ci
+        
+      # 執行 lint 檢查
+      - name: 執行 ESLint 檢查
+        run: npm run lint
+        
+      # 建構專案
+      - name: 建構專案
+        run: npm run build
+        
+      # 檢查建構結果
+      - name: 檢查建構結果
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "錯誤：dist 目錄不存在"
+            exit 1
+          fi
+          
+          if [ ! "$(ls -A dist)" ]; then
+            echo "錯誤：dist 目錄為空"
+            exit 1
+          fi
+          
+          echo "建構成功，dist 目錄內容："
+          ls -la dist/
+          
+      # 備份現有檔案（如果存在）
+      - name: 備份現有檔案
+        run: |
+          BACKUP_DIR="${DEPLOY_PATH}_backup_$(date +%Y%m%d_%H%M%S)"
+          if [ -d "$DEPLOY_PATH" ] && [ "$(ls -A $DEPLOY_PATH)" ]; then
+            echo "備份現有檔案到 $BACKUP_DIR"
+            cp -r "$DEPLOY_PATH" "$BACKUP_DIR"
+            echo "備份完成"
+            
+            # 清理舊備份，只保留最新的3個
+            echo "清理舊備份檔案..."
+            BACKUP_BASE_DIR=$(dirname "$DEPLOY_PATH")
+            BACKUP_PATTERN="$(basename "$DEPLOY_PATH")_backup_*"
+            
+            # 找到所有備份目錄並按時間排序，刪除超過3個的舊備份
+            ls -dt "$BACKUP_BASE_DIR"/$BACKUP_PATTERN 2>/dev/null | tail -n +4 | while read old_backup; do
+              if [ -d "$old_backup" ]; then
+                echo "刪除舊備份: $old_backup"
+                rm -rf "$old_backup"
+              fi
+            done
+            
+            echo "備份清理完成，目前保留的備份："
+            ls -dt "$BACKUP_BASE_DIR"/$BACKUP_PATTERN 2>/dev/null | head -3
+          else
+            echo "目標目錄不存在或為空，跳過備份"
+          fi
+          
+      # 建立目標目錄（如果不存在）
+      - name: 建立目標目錄
+        run: |
+          mkdir -p "$DEPLOY_PATH"
+          echo "目標目錄已準備就緒: $DEPLOY_PATH"
+          
+      # 清理目標目錄
+      - name: 清理目標目錄
+        run: |
+          if [ -d "$DEPLOY_PATH" ]; then
+            rm -rf "$DEPLOY_PATH"/*
+            echo "目標目錄已清理"
+          fi
+          
+      # 部署檔案到測試環境
+      - name: 部署檔案到測試環境
+        run: |
+          echo "開始部署檔案..."
+          cp -r dist/* "$DEPLOY_PATH"/
+          echo "部署完成"
+          
+      # 驗證部署結果
+      - name: 驗證部署結果
+        run: |
+          echo "驗證部署結果..."
+          if [ ! -d "$DEPLOY_PATH" ]; then
+            echo "錯誤：目標目錄不存在"
+            exit 1
+          fi
+          
+          if [ ! "$(ls -A $DEPLOY_PATH)" ]; then
+            echo "錯誤：目標目錄為空"
+            exit 1
+          fi
+          
+          echo "部署驗證成功，目標目錄內容："
+          ls -la "$DEPLOY_PATH"/
+          
+          # 檢查重要檔案是否存在
+          if [ -f "$DEPLOY_PATH/index.html" ]; then
+            echo "✓ index.html 檔案存在"
+          else
+            echo "⚠ 警告：index.html 檔案不存在"
+          fi
+          
+      # 設定檔案權限
+      - name: 設定檔案權限
+        run: |
+          echo "設定檔案權限..."
+          find "$DEPLOY_PATH" -type f -exec chmod 644 {} \;
+          find "$DEPLOY_PATH" -type d -exec chmod 755 {} \;
+          echo "權限設定完成"
+          
+      # 顯示部署摘要
+      - name: 顯示部署摘要
+        run: |
+          echo "===================="
+          echo "部署摘要"
+          echo "===================="
+          echo "專案名稱: sepms-frontend"
+          echo "分支: ${{ github.ref_name }}"
+          echo "提交: ${{ github.sha }}"
+          echo "部署時間: $(date)"
+          echo "目標目錄: $DEPLOY_PATH"
+          echo "檔案數量: $(find "$DEPLOY_PATH" -type f | wc -l)"
+          echo "總大小: $(du -sh "$DEPLOY_PATH" | cut -f1)"
+          echo "===================="
