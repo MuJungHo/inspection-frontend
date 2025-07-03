@@ -107,7 +107,7 @@ export const compatibleApi = (logout = () => {}) => {
     getFailoverGroupMembers: modules.failoverGroupMember.getFailoverGroupMembers,
     getFailoverGroupMembersById: modules.failoverGroupMember.getFailoverGroupMembersById,
     postCreateFailoverGroupMember: modules.failoverGroupMember.postCreateFailoverGroupMember,
-    patchUpdateFailoverGroup: modules.failoverGroupMember.patchUpdateFailoverGroupMember,
+    patchUpdateFailoverGroupMember: modules.failoverGroupMember.patchUpdateFailoverGroupMember,
     deleteFailoverGroupMember: modules.failoverGroupMember.deleteFailoverGroupMember
   };
 };
