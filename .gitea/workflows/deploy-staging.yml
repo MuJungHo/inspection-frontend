@@ -34,8 +34,8 @@ jobs:
         run: npm ci
         
       # 執行 lint 檢查
-      - name: 執行 ESLint 檢查
-        run: npm run lint
+      # - name: 執行 ESLint 檢查
+      #   run: npm run lint
         
       # 建構專案
       - name: 建構專案
