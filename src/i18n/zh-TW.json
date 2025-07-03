@@ -79,5 +79,38 @@
     "_user": "用戶管理",
     "_violation": "違規紀錄",
     "region": "地區",
-    "facilityManagement": "設施管理"
+    "factory": "廠區",
+    "parking-facility": "停車場",
+    "gate": "哨口",
+    "gate-lane": "車道",
+    "facilityManagement": "設施管理",
+    "type": "類型",
+    "notice": {
+        "input": "請輸入 {{thing}}",
+        "select": "請選擇 {{thing}}",
+        "required": "{{thing}} 為必填項",
+        "invalid": "{{thing}} 格式不正確",
+        "duplicate": "{{thing}} 已存在"
+    },
+    "unauthorized": "未授權的操作",
+    "unknown-error": "未知錯誤",
+    "enabled": "啟用",
+    "vehicle": {
+        "type": "車輛類型",
+        "car": "汽車",
+        "motorcycle": "機車"
+    },
+    "lane": {
+        "reversible": "調撥車道",
+        "reversible-enabled": "啟用調撥",
+        "direction": "車道方向",
+        "reversible-activated": "正在調撥中",
+        "reversible-deactivated": "調撥車道已停用"
+    },
+    "direction": {
+        "in": "入口",
+        "out": "出口"
+    },
+    "yes": "是",
+    "no": "否"
 }

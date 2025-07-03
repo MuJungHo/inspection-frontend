@@ -79,5 +79,38 @@
     "_user": "User",
     "_violation": "Violation",
     "region": "Region",
-    "facilityManagement": "Facility Management"
+    "factory": "Factory",
+    "parking-facility": "Parking Facility",
+    "gate": "Gate",
+    "gate-lane": "Lane",
+    "facilityManagement": "Facility Management",
+    "type": "Type",
+    "notice": {
+        "input": "Please enter {{thing}}",
+        "select": "Please select {{thing}}",
+        "required": "{{thing}} is required",
+        "invalid": "{{thing}} is invalid",
+        "duplicate": "{{thing}} already exists"
+    },
+    "unauthorized": "Unauthorized operation",
+    "unknown-error": "Unknown error",
+    "enabled": "Enabled",
+    "vehicle": {
+        "type": "Vehicle Type",
+        "car": "Car",
+        "motorcycle": "Motorcycle"
+    },
+    "lane": {
+        "reversible": "Reversible Lane",
+        "reversible-enabled": "Enable Reversible",
+        "direction": "Lane Direction",
+        "reversible-activated": "Reversible Lane Activated",
+        "reversible-deactivated": "Reversible Lane Deactivated"
+    },
+    "direction": {
+        "in": "Entrance",
+        "out": "Exit"
+    },
+    "yes": "Yes",
+    "no": "No"
 }

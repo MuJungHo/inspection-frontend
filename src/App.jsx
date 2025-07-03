@@ -1,10 +1,12 @@
 import React, { useEffect, useContext } from "react";
 import AppRouter from './routers/AppRouter'
-import { AuthProvider } from "./contexts/AuthContext";
+import { AuthProvider, AuthContext } from "./contexts/AuthContext";
 import { GlobalProvider } from "./contexts/GlobalContext";
 import refreshTokenWorkerImport from './worker/refreshTokenWorker';
 
-const App = () => {
+// 建立一個內部元件來處理 token 邏輯
+const AppContent = () => {
+  const { token } = useContext(AuthContext);
 
   useEffect(() => {
     if (localStorage.getItem("keep") == 1) {
@@ -36,15 +38,21 @@ const App = () => {
         refreshTokenWorker.terminate();
       };
     }
-  }, []);
+  }, [token]); // 加入 token 作為相依項
 
   return (
-    <AuthProvider >
-      <GlobalProvider>
-        <AppRouter />
-      </GlobalProvider>
-    </AuthProvider>
-  )
+    <GlobalProvider>
+      <AppRouter />
+    </GlobalProvider>
+  );
 };
 
-export default App
+const App = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+};
+
+export default App;

@@ -22,6 +22,10 @@ import Usage from "../Views/Log/Usage";
 import Violation from "../Views/Log/Violation";
 
 import Region from "../Views/Facility/Region";
+import Factory from "../Views/Facility/Factory";
+import ParkingFacility from '../Views/Facility/ParkingFacility';
+import Gate from '../Views/Facility/Gate';
+import GateLane from '../Views/Facility/GateLane';
 
 import {
   ManageAccount,
@@ -43,10 +47,26 @@ const routes = [
     icon: DomainIcon,
     sider: true,
     children: [
+      // {
+      //   path: "/region",
+      //   name: "region"
+      // },
       {
-        path: "/region",
-        name: "region"
+        path: "/factory",
+        name: "factory",
       },
+      {
+        path: "/parking-facility",
+        name: "parking-facility",
+      },
+      {
+        path: "/gate",
+        name: "gate"
+      },
+      {
+        path: "/gate-lane",
+        name: "gate-lane",
+      }
       // {
       //   path: "/parking-facility",
       //   name: "_parking-facility",
@@ -65,6 +85,26 @@ const routes = [
     path: "/region",
     name: "region",
     component: Region,
+  },
+  {
+    path: "/factory",
+    name: "factory",
+    component: Factory,
+  },
+  {
+    path: "/parking-facility",
+    name: "parking-facility",
+    component: ParkingFacility,
+  },
+  {
+    path: "/gate",
+    name: "gate",
+    component: Gate,
+  },
+  {
+    path: "/gate-lane",
+    name: "gate-lane",
+    component: GateLane,
   },
   {
     path: "/user",
