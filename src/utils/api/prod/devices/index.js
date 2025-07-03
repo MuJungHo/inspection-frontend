@@ -2,3 +2,4 @@
 export { edgeServerApi } from './edgeServer';
 export { cameraApi } from './camera';
 export { failoverGroupApi } from './failoverGroup';
+export { failoverGroupMemberApi } from './failoverGroupMember';

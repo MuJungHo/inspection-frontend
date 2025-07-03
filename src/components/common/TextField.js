@@ -6,7 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 const StyledTextField = styled(MuiTextField)(({ theme }) => ({
   "& .MuiOutlinedInput-notchedOutline": {
-    borderColor: 'rgba(190, 190, 190, 0.4)'
+    borderColor: 'rgba(0, 0, 0, 0.23)'
   },
   "& .MuiInput-underline:before": {
     borderColor: theme.palette.layout.color,
@@ -14,6 +14,9 @@ const StyledTextField = styled(MuiTextField)(({ theme }) => ({
   "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
     borderColor: theme.palette.primary.main,
     transition: 'border-color ease-in-out 0.3s'
+  },
+  "& .MuiInputLabel-root": {
+    top: 5
   },
   "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
     borderColor: theme.palette.primary.main,
@@ -50,6 +53,13 @@ const CustomTextField = (props) => (
   <StyledTextField
     size={props.size || "small"}
     {...props}
+    inputProps={{
+      style: {
+        height: 53,
+        padding: '0 14px',
+      },
+      ...props.inputProps,
+    }}
     InputProps={{
       ...props.InputProps,
       startAdornment: props.InputProps?.startAdornment

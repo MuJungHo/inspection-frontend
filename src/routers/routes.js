@@ -1,16 +1,5 @@
-import Layout from '../Views/Layout';
-import Input from '../Views/Input';
-import Feedback from '../Views/Feedback';
-import Navigation from '../Views/Navigation';
-
 import User from "../Views/User";
-import Finder from "../Views/Finder";
 import Setting from "../Views/Setting";
-import Device from "../Views/Device";
-
-import Temporary from '../Views/License/Temporary';
-import Blacklist from '../Views/License/Blacklist';
-import Restricted from '../Views/License/Restricted';
 
 import Flexible from "../Views/Log/Flexible";
 import Overstay from "../Views/Log/Overstay";
@@ -27,14 +16,18 @@ import ParkingFacility from '../Views/Facility/ParkingFacility';
 import Gate from '../Views/Facility/Gate';
 import GateLane from '../Views/Facility/GateLane';
 
+import EdgeServer from "../Views/Device/EdgeServer";
+import Camera from "../Views/Device/Camera";
+import FailoverGroup from "../Views/Device/FailoverGroup";
+
 import {
   ManageAccount,
-  IdCard,
+  // IdCard,
   DataTable,
-  TravelExplore,
+  // TravelExplore,
   Settings,
   Detector,
-  Tools
+  // Tools
 } from "../images/icons";
 
 import DomainIcon from '@mui/icons-material/Domain';
@@ -115,97 +108,39 @@ const routes = [
     exact: true
   },
   {
-    path: "/component",
-    name: "_component",
-    sider: true,
-    icon: Tools,
-    children: [
-      {
-        path: "/layout",
-        name: "_layout",
-      },
-      {
-        path: "/input",
-        name: "_input",
-      },
-      {
-        path: "/feedback",
-        name: "_feedback",
-      },
-      {
-        path: "/navigation",
-        name: "_navigation",
-      },
-    ]
-  },
-  {
-    path: "/layout",
-    name: "_layout",
-    component: Layout,
-  },
-  {
-    path: "/input",
-    name: "_input",
-    component: Input,
-  },
-  {
-    path: "/feedback",
-    name: "_feedback",
-    component: Feedback,
-  },
-  {
-    path: "/navigation",
-    name: "_navigation",
-    component: Navigation,
-  },
-  {
-    path: "/finder",
-    name: "_finder",
-    component: Finder,
-    icon: TravelExplore,
-    sider: true,
-  },
-  {
     path: "/device",
     name: "_device",
-    component: Device,
-    icon: Detector,
-    sider: true
-  },
-  {
-    path: "/license",
-    name: "_license",
     sider: true,
-    icon: IdCard,
+    icon: Detector,
     children: [
       {
-        path: "/temporary",
-        name: "_temporary",
+        path: "/edge-server",
+        name: "_edge-server",
       },
       {
-        path: "/blacklist",
-        name: "_blacklist",
+        path: "/camera",
+        name: "_camera",
       },
       {
-        path: "/restricted",
-        name: "_restricted",
+        path: "/failover-group",
+        name: "_failover-group",
       },
     ]
   },
   {
-    path: "/temporary",
-    name: "_temporary",
-    component: Temporary,
+    path: "/edge-server",
+    name: "_edge-server",
+    component: EdgeServer,
   },
   {
-    path: "/blacklist",
-    name: "_blacklist",
-    component: Blacklist,
+    path: "/camera",
+    name: "_camera",
+    component: Camera,
   },
   {
-    path: "/restricted",
-    name: "_restricted",
-    component: Restricted,
+    path: "/failover-group",
+    name: "_failover-group",
+    component: FailoverGroup,
   },
   {
     path: "/report",
