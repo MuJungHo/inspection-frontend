@@ -35,33 +35,28 @@ jobs:
           echo "作業系統: $(cat /etc/os-release | grep PRETTY_NAME)"
           
       # 快取 npm 全域快取
-      # - name: 快取 npm 全域快取
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ~/.npm
-      #     key: debian-${{ runner.os }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
-      #     restore-keys: |
-      #       debian-${{ runner.os }}-npm-cache-
-            
-      # 快取 node_modules
-      # - name: 快取 node_modules
-      #   uses: actions/cache@v3
-      #   id: cache-dependencies
-      #   with:
-      #     path: node_modules
-      #     key: debian-${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-      #     restore-keys: |
-      #       debian-${{ runner.os }}-node-modules-
-            
-      # 安裝相依套件（簡化版）
+      - name: 快取 npm 全域快取
+        uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: ~/.npm
+          key: npm-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-cache-${{ runner.os }}-
+
+      # 安裝相依套件（根據快取命中決定）
       - name: 安裝相依套件
-        if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: |
-          echo "快取未命中，執行 npm 安裝..."
-          
-          npm i --prefer-offline --no-audit --no-fund
-          
-          echo "安裝完成，node_modules 大小: $(du -sh node_modules | cut -f1)"
+          if [ "${{ steps.npm-cache.outputs.cache-hit }}" = "true" ]; then
+            echo "✓ 使用快取的 npm 快取，加速下載"
+          else
+            echo "✗ 快取未命中，執行 npm ci 建立 node_modules..."
+          fi
+          npm ci --prefer-offline --no-audit --no-fund
+
+      # 確認 node_modules 大小（選用）
+      - name: 顯示 node_modules 大小
+        run: du -sh node_modules | cut -f1
           
       # 顯示快取狀態
       # - name: 顯示快取狀態
