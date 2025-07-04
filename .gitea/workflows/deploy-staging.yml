@@ -5,15 +5,18 @@ on:
   push:
     branches:
       - staging
-  pull_request:
-    branches:
-      - staging
+  # pull_request:
+  #   branches:
+  #     - staging
 
 jobs:
   build-and-deploy:
     name: 建構和部署到測試環境
     runs-on: [ubuntu-latest]
-    container: node:20.15.1-alpine
+    container: 
+      image: node:20.15.1-alpine
+      volumes:
+        - ${{ secrets.DEPLOY_PATH }}:${{ secrets.DEPLOY_PATH }}
     
     env:
       DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
