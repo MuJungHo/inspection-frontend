@@ -14,7 +14,7 @@ jobs:
     name: 建構和部署到測試環境
     runs-on: [ubuntu-latest]
     container: 
-      image: node:20.15.1-slim  # 修改為 slim 版本
+      image: node:20.15.1
       volumes:
         - ${{ secrets.HOST_DEPLOY_PATH }}:${{ secrets.DEPLOY_PATH }}
         - ${{ secrets.HOST_NODE_MODULES }}:${{ secrets.NODE_MODULES }}
