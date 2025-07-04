@@ -17,23 +17,25 @@ jobs:
       image: node:20.15.1
       volumes:
         - /home/delta/sepms/www:/home/delta/sepms/www
-        - /home/delta/sepms/node_modules:/workspace/SEPMS/sepms-frontend/node_modules
-    
+
     env:
       DEPLOY_PATH: /home/delta/sepms/www
-    
+
     steps:
       # 檢出程式碼
       - name: 檢出程式碼
         uses: actions/checkout@v4
         
-      # 驗證 Node.js 版本
-      - name: 驗證 Node.js 和 npm 版本
-        run: |
-          echo "Node.js 版本: $(node --version)"
-          echo "npm 版本: $(npm --version)"
-          echo "作業系統: $(cat /etc/os-release | grep PRETTY_NAME)"
-          
+      # 快取 node_modules
+      - name: 快取 node_modules
+        uses: actions/cache@v3
+        id: node-modules-cache
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            node-modules-${{ runner.os }}-
+        
       # 快取 npm 全域快取
       - name: 快取 npm 全域快取
         uses: actions/cache@v3
@@ -44,16 +46,17 @@ jobs:
           restore-keys: |
             npm-cache-${{ runner.os }}-
 
-      # 安裝相依套件（根據快取命中決定）
+      # 安裝相依套件
       - name: 安裝相依套件
         run: |
-          if [ "${{ steps.npm-cache.outputs.cache-hit }}" = "true" ]; then
-            echo "✓ 使用快取的 npm 快取，加速下載"
+          if [ "${{ steps.node-modules-cache.outputs.cache-hit }}" = "true" ]; then
+            echo "✓ 使用快取的 node_modules"
           else
-            echo "✗ 快取未命中，執行 npm ci 建立 node_modules..."
+            echo "✗ 快取未命中，執行 npm ci..."
+            npm ci --prefer-offline --no-audit --no-fund
+            npm install @rollup/rollup-linux-x64-gnu
           fi
-          npm ci --prefer-offline --no-audit --no-fund & npm install @rollup/rollup-linux-x64-gnu
-
+          
       # 確認 node_modules 大小（選用）
       - name: 顯示 node_modules 大小
         run: du -sh node_modules | cut -f1
