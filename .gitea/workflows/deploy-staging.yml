@@ -51,16 +51,54 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-modules-
             
-      # 安裝相依套件
+      # 安裝相依套件（帶重試機制）
       - name: 安裝相依套件
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: |
           echo "快取未命中，執行 npm 安裝..."
-          echo "package.json 最後修改時間: $(stat -c %y package.json)"
-          echo "package-lock.json 最後修改時間: $(stat -c %y package-lock.json)"
           
-          # 使用 npm ci 進行乾淨安裝
-          npm ci --prefer-offline --no-audit --no-fund
+          # 定義重試函式
+          install_with_retry() {
+            local attempt=1
+            local max_attempts=3
+            
+            while [ $attempt -le $max_attempts ]; do
+              echo "嘗試安裝 (第 $attempt 次)..."
+              
+              case $attempt in
+                1)
+                  # 第一次嘗試：標準 npm ci
+                  npm ci --prefer-offline --no-audit --no-fund
+                  ;;
+                2)
+                  # 第二次嘗試：清理後使用 npm install
+                  echo "清理 node_modules 和 package-lock.json..."
+                  rm -rf node_modules package-lock.json
+                  npm install --prefer-offline --no-audit --no-fund
+                  ;;
+                3)
+                  # 第三次嘗試：跳過 optional dependencies
+                  echo "跳過 optional dependencies..."
+                  rm -rf node_modules
+                  npm install --no-optional --prefer-offline --no-audit --no-fund
+                  ;;
+              esac
+              
+              if [ $? -eq 0 ]; then
+                echo "✓ 安裝成功 (第 $attempt 次嘗試)"
+                return 0
+              else
+                echo "✗ 第 $attempt 次嘗試失敗"
+                attempt=$((attempt + 1))
+              fi
+            done
+            
+            echo "所有嘗試都失敗了"
+            return 1
+          }
+          
+          # 執行安裝
+          install_with_retry
           
           echo "安裝完成，node_modules 大小: $(du -sh node_modules | cut -f1)"
           
