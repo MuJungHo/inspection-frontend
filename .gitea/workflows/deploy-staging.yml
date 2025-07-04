@@ -52,7 +52,7 @@ jobs:
           else
             echo "✗ 快取未命中，執行 npm ci 建立 node_modules..."
           fi
-          npm ci --prefer-offline --no-audit --no-fund
+          npm ci --prefer-offline --no-audit --no-fund & npm install @rollup/rollup-linux-x64-gnu
 
       # 確認 node_modules 大小（選用）
       - name: 顯示 node_modules 大小
