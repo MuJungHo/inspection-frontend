@@ -100,14 +100,6 @@ const routes = [
     component: GateLane,
   },
   {
-    path: "/user",
-    name: "_user",
-    component: User,
-    icon: ManageAccount,
-    sider: true,
-    exact: true
-  },
-  {
     path: "/device",
     name: "_device",
     sider: true,
@@ -141,6 +133,14 @@ const routes = [
     path: "/failover-group",
     name: "_failover-group",
     component: FailoverGroup,
+  },
+  {
+    path: "/user",
+    name: "_user",
+    component: User,
+    icon: ManageAccount,
+    sider: true,
+    exact: true
   },
   {
     path: "/report",
