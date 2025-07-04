@@ -42,159 +42,25 @@ jobs:
           restore-keys: |
             debian-${{ runner.os }}-npm-cache-
             
-      # 快取 node_modules（強化版）
+      # 快取 node_modules
       - name: 快取 node_modules
         uses: actions/cache@v3
         id: cache-dependencies
         with:
           path: node_modules
-          key: debian-slim-${{ runner.os }}-node-modules-${{ hashFiles('**/package.json', '**/package-lock.json') }}-rollup-fix-v1
+          key: debian-${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            debian-slim-${{ runner.os }}-node-modules-rollup-fix-v1-
+            debian-${{ runner.os }}-node-modules-
             
-      # 預處理環境設定
-      - name: 預處理環境設定
-        if: steps.cache-dependencies.outputs.cache-hit != 'true'
-        run: |
-          echo "設定環境以解決 rollup native dependencies 問題..."
-          
-          # 安裝必要的系統套件
-          apt-get update && apt-get install -y python3 make g++ || true
-          
-          # 設定 npm 環境變數
-          npm config set target_platform linux
-          npm config set target_arch x64
-          npm config set target_libc glibc
-          npm config set rebuild false
-          npm config set build-from-source false
-          
-          echo "環境設定完成"
-          
-      # 安裝相依套件（強化版）
+      # 安裝相依套件（簡化版）
       - name: 安裝相依套件
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: |
-          echo "快取未命中，執行強化版 npm 安裝..."
+          echo "快取未命中，執行 npm 安裝..."
           
-          # 定義安裝函式
-          install_dependencies() {
-            local method=$1
-            echo "使用方法 $method 安裝相依套件..."
-            
-            case $method in
-              1)
-                # 方法1：標準 npm ci
-                npm ci --prefer-offline --no-audit --no-fund
-                ;;
-              2)
-                # 方法2：清理後重新生成 lock 檔案
-                rm -rf node_modules package-lock.json
-                npm install --prefer-offline --no-audit --no-fund
-                ;;
-              3)
-                # 方法3：強制重建並忽略 optional dependencies
-                rm -rf node_modules package-lock.json
-                npm install --no-optional --prefer-offline --no-audit --no-fund
-                ;;
-              4)
-                # 方法4：完全重置並使用 --force
-                rm -rf node_modules package-lock.json ~/.npm
-                npm cache clean --force
-                npm install --force --prefer-offline --no-audit --no-fund
-                ;;
-            esac
-          }
-          
-          # 逐一嘗試不同安裝方法
-          for attempt in 1 2 3 4; do
-            echo "=== 嘗試安裝方法 $attempt ==="
-            
-            if install_dependencies $attempt; then
-              echo "✓ 方法 $attempt 安裝成功"
-              break
-            else
-              echo "✗ 方法 $attempt 失敗，繼續嘗試下一個方法..."
-              
-              if [ $attempt -eq 4 ]; then
-                echo "所有安裝方法都失敗了"
-                exit 1
-              fi
-            fi
-          done
+          npm i --prefer-offline --no-audit --no-fund
           
           echo "安裝完成，node_modules 大小: $(du -sh node_modules | cut -f1)"
-          
-      # 驗證並修復 rollup
-      - name: 驗證並修復 rollup
-        run: |
-          echo "驗證 rollup 安裝狀態..."
-          
-          # 檢查 rollup 是否正確安裝
-          if [ -d "node_modules/rollup" ]; then
-            echo "✓ rollup 核心套件已安裝"
-          else
-            echo "✗ rollup 核心套件缺失"
-            exit 1
-          fi
-          
-          # 檢查 native binaries
-          echo "檢查 @rollup native binaries..."
-          if [ -d "node_modules/@rollup" ]; then
-            echo "✓ @rollup 目錄存在"
-            ls -la node_modules/@rollup/
-          else
-            echo "⚠ @rollup 目錄不存在，嘗試手動安裝..."
-            npm install @rollup/rollup-linux-x64-gnu --prefer-offline || true
-          fi
-          
-          # 測試 rollup 功能
-          echo "測試 rollup 執行..."
-          if npx rollup --version; then
-            echo "✓ rollup 可以正常執行"
-          else
-            echo "⚠ rollup 執行測試失敗，但可能仍可建構"
-          fi
-          
-          # 測試 npm scripts
-          echo "檢查 package.json scripts..."
-          if npm run build --dry-run 2>/dev/null; then
-            echo "✓ build script 語法正確"
-          else
-            echo "⚠ build script 檢查失敗"
-          fi
-          
-      # 顯示詳細的快取和安裝狀態
-      - name: 顯示安裝狀態
-        run: |
-          if [ "${{ steps.cache-dependencies.outputs.cache-hit }}" = "true" ]; then
-            echo "✓ 使用快取的 node_modules"
-            echo "快取節省的時間約 2-5 分鐘"
-            
-            # 即使使用快取也要驗證 rollup
-            echo "驗證快取的 rollup..."
-            if [ -d "node_modules/@rollup" ]; then
-              echo "✓ 快取的 rollup native binaries 完整"
-            else
-              echo "⚠ 快取的 rollup native binaries 缺失，需要重新安裝"
-              npm install @rollup/rollup-linux-x64-gnu --prefer-offline || true
-            fi
-          else
-            echo "✓ 重新安裝相依套件並建立快取"
-          fi
-          
-          echo "最終 node_modules 狀態："
-          echo "- 大小: $(du -sh node_modules | cut -f1)"
-          echo "- 套件數量: $(ls node_modules | wc -l)"
-          echo "- rollup 版本: $(npx rollup --version 2>/dev/null || echo '無法獲取')"
-          
-          echo "重要套件檢查："
-          for pkg in "rollup" "vite" "@rollup/rollup-linux-x64-gnu"; do
-            if [ -d "node_modules/$pkg" ] || [ -d "node_modules/@rollup" ]; then
-              echo "✓ $pkg"
-            else
-              echo "✗ $pkg (缺失)"
-            fi
-          done
           
       # 顯示快取狀態
       - name: 顯示快取狀態
