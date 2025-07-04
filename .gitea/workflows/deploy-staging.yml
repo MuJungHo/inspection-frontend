@@ -16,7 +16,7 @@ jobs:
     container: 
       image: node:20.15.1-alpine
       volumes:
-        - ${{ secrets.DEPLOY_PATH }}:${{ secrets.DEPLOY_PATH }}
+        - ${{ secrets.HOST_DEPLOY_PATH }}:${{ secrets.DEPLOY_PATH }}
     
     env:
       DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
@@ -32,10 +32,51 @@ jobs:
           echo "Node.js 版本: $(node --version)"
           echo "npm 版本: $(npm --version)"
           
+      # 快取 npm 全域快取
+      - name: 快取 npm 全域快取
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-cache-
+            
+      # 快取 node_modules
+      - name: 快取 node_modules
+        uses: actions/cache@v3
+        id: cache-dependencies
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+            
       # 安裝相依套件
       - name: 安裝相依套件
-        run: npm i
-        
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: |
+          echo "快取未命中，執行 npm 安裝..."
+          echo "package.json 最後修改時間: $(stat -c %y package.json)"
+          echo "package-lock.json 最後修改時間: $(stat -c %y package-lock.json)"
+          
+          # 使用 npm ci 進行乾淨安裝
+          npm ci --prefer-offline --no-audit --no-fund
+          
+          echo "安裝完成，node_modules 大小: $(du -sh node_modules | cut -f1)"
+          
+      # 顯示快取狀態
+      - name: 顯示快取狀態
+        run: |
+          if [ "${{ steps.cache-dependencies.outputs.cache-hit }}" = "true" ]; then
+            echo "✓ 使用快取的 node_modules"
+            echo "快取節省的時間約 2-5 分鐘"
+          else
+            echo "✓ 重新安裝相依套件並建立快取"
+          fi
+          
+          echo "目前 node_modules 內容："
+          ls -la node_modules | head -10
+          
       # 執行 lint 檢查
       # - name: 執行 ESLint 檢查
       #   run: npm run lint
