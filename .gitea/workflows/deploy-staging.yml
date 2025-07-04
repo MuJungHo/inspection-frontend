@@ -14,7 +14,7 @@ jobs:
     name: 建構和部署到測試環境
     runs-on: [ubuntu-latest]
     container: 
-      image: node:20.15.1-alpine
+      image: node:20.15.1-slim  # 修改為 slim 版本
       volumes:
         - ${{ secrets.HOST_DEPLOY_PATH }}:${{ secrets.DEPLOY_PATH }}
     
@@ -31,15 +31,16 @@ jobs:
         run: |
           echo "Node.js 版本: $(node --version)"
           echo "npm 版本: $(npm --version)"
+          echo "作業系統: $(cat /etc/os-release | grep PRETTY_NAME)"
           
       # 快取 npm 全域快取
       - name: 快取 npm 全域快取
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
+          key: debian-${{ runner.os }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-npm-cache-
+            debian-${{ runner.os }}-npm-cache-
             
       # 快取 node_modules
       - name: 快取 node_modules
@@ -47,58 +48,17 @@ jobs:
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          key: debian-${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-modules-
+            debian-${{ runner.os }}-node-modules-
             
-      # 安裝相依套件（帶重試機制）
+      # 安裝相依套件（簡化版）
       - name: 安裝相依套件
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: |
           echo "快取未命中，執行 npm 安裝..."
           
-          # 定義重試函式
-          install_with_retry() {
-            local attempt=1
-            local max_attempts=3
-            
-            while [ $attempt -le $max_attempts ]; do
-              echo "嘗試安裝 (第 $attempt 次)..."
-              
-              case $attempt in
-                1)
-                  # 第一次嘗試：標準 npm ci
-                  npm ci --prefer-offline --no-audit --no-fund
-                  ;;
-                2)
-                  # 第二次嘗試：清理後使用 npm install
-                  echo "清理 node_modules 和 package-lock.json..."
-                  rm -rf node_modules package-lock.json
-                  npm install --prefer-offline --no-audit --no-fund
-                  ;;
-                3)
-                  # 第三次嘗試：跳過 optional dependencies
-                  echo "跳過 optional dependencies..."
-                  rm -rf node_modules
-                  npm install --no-optional --prefer-offline --no-audit --no-fund
-                  ;;
-              esac
-              
-              if [ $? -eq 0 ]; then
-                echo "✓ 安裝成功 (第 $attempt 次嘗試)"
-                return 0
-              else
-                echo "✗ 第 $attempt 次嘗試失敗"
-                attempt=$((attempt + 1))
-              fi
-            done
-            
-            echo "所有嘗試都失敗了"
-            return 1
-          }
-          
-          # 執行安裝
-          install_with_retry
+          npm ci --prefer-offline --no-audit --no-fund
           
           echo "安裝完成，node_modules 大小: $(du -sh node_modules | cut -f1)"
           
