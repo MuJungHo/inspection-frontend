@@ -14,6 +14,8 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import MuiToolbar from '@mui/material/Toolbar'; // Renamed to avoid conflict
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 // import FormControlLabel from '@mui/material/FormControlLabel';
 // import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete'; // Changed from @material-ui/icons
@@ -113,8 +115,8 @@ const EnhancedTableToolbar = (props) => {
     toolbarFilters,
     numSelected,
     title, toolbarActions, onKeywordSearch, filterable,
-    onSearchClick, onClearClick
-
+    onSearchClick, onClearClick,
+    prevPages
   } = props;
   const [keyword, setKeyword] = React.useState("")
   const onKeywordChange = (e) => {
@@ -138,9 +140,22 @@ const EnhancedTableToolbar = (props) => {
         ) : (
           <>
             <ToolbarTitle>
-              <Typography variant="h6" id="tableTitle" component="div">
-                {title}
-              </Typography>
+              <Breadcrumbs aria-label="breadcrumb">
+                {
+                  prevPages.map(prevPage => <Link
+                    underline="hover"
+                    variant="h6"
+                    // color="inherit"
+                    key={prevPage.name}
+                    href={prevPage.path}
+                  >
+                    {prevPage.name}
+                  </Link>)
+                }
+                <Typography variant="h6" component="div">
+                  {title}
+                </Typography>
+              </Breadcrumbs>
             </ToolbarTitle>
             {
               filterable && <TextField
@@ -225,6 +240,7 @@ export default ({
   columns = [],
   rowActions = [],
   toolbarActions = [],
+  prevPages = [],
   sort = "",
   order = "asc",
   title = "",
@@ -291,10 +307,11 @@ export default ({
       <EnhancedTableToolbar
         numSelected={selected.length}
         title={title}
+        filterable={filterable}
         toolbarFilters={toolbarFilters}
         toolbarActions={toolbarActions}
+        prevPages={prevPages}
         onKeywordSearch={onKeywordSearch}
-        filterable={filterable}
         onSearchClick={onSearchClick}
         onClearClick={onClearClick}
       />
