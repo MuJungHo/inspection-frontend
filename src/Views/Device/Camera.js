@@ -96,15 +96,26 @@ const Camera = () => {
       StreamUrl: state.streamUrl,
       IsActive: state.isActive
     };
+    try {
+      const { success } = await authedApi.camera.postCreateCamera({ data: { ...camera } });
 
-    const { success } = await authedApi.camera.postCreateCamera({ data: { ...camera } });
-
-    if (success) {
-      getCameras();
-      closeDialog();
+      if (success) {
+        getCameras();
+        closeDialog();
+        openSnackbar({
+          severity: "success",
+          message: t("success-thing", { thing: t("add") })
+        });
+      } else {
+        openSnackbar({
+          severity: "error",
+          message: t("failed-thing", { thing: t("add") })
+        });
+      }
+    } catch (error) {
       openSnackbar({
-        severity: "success",
-        message: t("success-thing", { thing: t("add") })
+        severity: "error",
+        message: t("failed-thing", { thing: t("add") })
       });
     }
   }
