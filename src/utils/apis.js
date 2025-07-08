@@ -30,6 +30,10 @@ export const api = (logout = () => {}) => {
   return {
     auth: wrapApiModule(apiModules.authApi, logout),
     users: wrapApiModule(apiModules.usersApi, logout),
+    authorization: wrapApiModule(apiModules.authorizationApi, logout),
+    role: wrapApiModule(apiModules.roleApi, logout),
+    roleAttribute: wrapApiModule(apiModules.roleAttributeApi, logout),
+    userAttribute: wrapApiModule(apiModules.userAttributeApi, logout),
     regions: wrapApiModule(apiModules.regionsApi, logout),
     parkingFacilities: wrapApiModule(apiModules.parkingFacilitiesApi, logout),
     parkingFacilityGates: wrapApiModule(apiModules.parkingFacilityGatesApi, logout),
@@ -41,6 +45,8 @@ export const api = (logout = () => {}) => {
     failoverGroup: wrapApiModule(apiModules.failoverGroupApi, logout),
     failoverGroupMember: wrapApiModule(apiModules.failoverGroupMemberApi, logout),
     failoverEvent: wrapApiModule(apiModules.failoverEventApi, logout),
+    plc: wrapApiModule(apiModules.plcApi, logout),
+    plcPoint: wrapApiModule(apiModules.plcPointApi, logout),
   };
 };
 
@@ -52,11 +58,44 @@ export const compatibleApi = (logout = () => {}) => {
     // Auth (更新 API 路徑)
     postAuthLogin: modules.auth.postAuthLogin,
     
-    // Users (保持原有命名)
-    getUserList: modules.users.getUserList,
-    postCreateUser: modules.users.postCreateUser,
+    // Users (新版 API + 保持舊版相容性)
+    getUsers: modules.users.getUsers,
+    getUserById: modules.users.getUserById,
+    postAddUser: modules.users.postAddUser,
     putUpdateUser: modules.users.putUpdateUser,
     deleteUser: modules.users.deleteUser,
+    getUserList: modules.users.getUserList, // 向後相容
+    postCreateUser: modules.users.postCreateUser, // 向後相容
+    
+    // Authorization
+    getAuthorizations: modules.authorization.getAuthorizations,
+    getAuthorizationNames: modules.authorization.getAuthorizationNames,
+    getAuthorizationsByName: modules.authorization.getAuthorizationsByName,
+    getAuthorizationById: modules.authorization.getAuthorizationById,
+    postAddAuthorization: modules.authorization.postAddAuthorization,
+    putUpdateAuthorization: modules.authorization.putUpdateAuthorization,
+    deleteAuthorization: modules.authorization.deleteAuthorization,
+    
+    // Role
+    getRoles: modules.role.getRoles,
+    getRoleById: modules.role.getRoleById,
+    postAddRole: modules.role.postAddRole,
+    putUpdateRole: modules.role.putUpdateRole,
+    deleteRole: modules.role.deleteRole,
+    
+    // Role Attribute
+    getRoleAttributes: modules.roleAttribute.getRoleAttributes,
+    getRoleAttributeById: modules.roleAttribute.getRoleAttributeById,
+    postAddRoleAttribute: modules.roleAttribute.postAddRoleAttribute,
+    putUpdateRoleAttribute: modules.roleAttribute.putUpdateRoleAttribute,
+    deleteRoleAttribute: modules.roleAttribute.deleteRoleAttribute,
+    
+    // User Attribute
+    getUserAttributes: modules.userAttribute.getUserAttributes,
+    getUserAttributeById: modules.userAttribute.getUserAttributeById,
+    postAddUserAttribute: modules.userAttribute.postAddUserAttribute,
+    putUpdateUserAttribute: modules.userAttribute.putUpdateUserAttribute,
+    deleteUserAttribute: modules.userAttribute.deleteUserAttribute,
     
     // Regions
     getRegions: modules.regions.getRegions,
@@ -114,6 +153,22 @@ export const compatibleApi = (logout = () => {}) => {
     deleteFailoverGroupMember: modules.failoverGroupMember.deleteFailoverGroupMember,
 
     getFailoverEventsByGroupId: modules.failoverEvent.getFailoverEventsByGroupId,
+    
+    // PLC
+    getPLCs: modules.plc.getPLCs,
+    getPLCById: modules.plc.getPLCById,
+    getPLCByGateId: modules.plc.getPLCByGateId,
+    postCreatePLC: modules.plc.postCreatePLC,
+    patchUpdatePLC: modules.plc.patchUpdatePLC,
+    deletePLC: modules.plc.deletePLC,
+    
+    // PLC Point
+    getPLCPoints: modules.plcPoint.getPLCPoints,
+    getPLCPointById: modules.plcPoint.getPLCPointById,
+    getPLCPointByPLCId: modules.plcPoint.getPLCPointByPLCId,
+    postCreatePLCPoint: modules.plcPoint.postCreatePLCPoint,
+    patchUpdatePLCPoint: modules.plcPoint.patchUpdatePLCPoint,
+    deletePLCPoint: modules.plcPoint.deletePLCPoint,
   };
 };
 

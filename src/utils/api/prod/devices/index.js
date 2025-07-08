@@ -4,3 +4,5 @@ export { cameraApi } from './camera';
 export { failoverGroupApi } from './failoverGroup';
 export { failoverEventApi } from './failoverEvent';
 export { failoverGroupMemberApi } from './failoverGroupMember';
+export { plcApi } from './plc';
+export { plcPointApi } from './plcPoint';
