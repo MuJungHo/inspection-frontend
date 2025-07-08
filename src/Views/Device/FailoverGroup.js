@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { Paper, Table } from "../../components/common";
 import { Add } from "../../images/icons";
 import {
   BorderColorSharp,
   Delete,
-  LowPriority
+  LowPriority,
+  Event
 } from '@mui/icons-material';
 import FailoverGroupSection from "../../components/device/FailoverGroupSection";
 import Priority from "../../components/device/Priority";
@@ -22,6 +24,7 @@ const FailoverGroup = () => {
   const [filter, setFilter] = React.useState(initFilter);
 
   const [failoverGroupList, setFailoverGroupList] = React.useState([]);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     getFailoverGroups()
@@ -142,6 +145,7 @@ const FailoverGroup = () => {
         rowActions={[
           { name: t('edit'), onClick: (e, row) => openEditFailoverGroupDialog(row), icon: <BorderColorSharp /> },
           { name: t('member'), onClick: (e, row) => openEditPriorityDialog(row), icon: <LowPriority /> },
+          { name: t('event'), onClick: (e, row) => navigate(`/failover/event/${row.failoverGroupId}`), icon: <Event /> },
           { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense

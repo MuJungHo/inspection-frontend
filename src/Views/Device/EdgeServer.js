@@ -1,12 +1,15 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { Paper, Table } from "../../components/common";
 import { Add } from "../../images/icons";
 import {
   BorderColorSharp,
   Delete,
+  History
 } from '@mui/icons-material';
 import EdgeServerSection from "../../components/device/EdgeServerSection";
+
 
 const initFilter = {
   amount: 5,
@@ -18,8 +21,8 @@ const EdgeServer = () => {
   const { t, authedApi, openDialog, closeDialog, openSnackbar, openWarningDialog, } = useContext(GlobalContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
-
   const [edgeServerList, setEdgeServerList] = React.useState([]);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     getEdgeServers()
@@ -138,6 +141,7 @@ const EdgeServer = () => {
         ]}
         rowActions={[
           { name: t('edit'), onClick: (e, row) => openEditEdgeServerDialog(row), icon: <BorderColorSharp /> },
+          { name: t('history'), onClick: (e, row) => navigate(`/edge-server/history/${row.edgeServerId}`), icon: <History /> },
           { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense

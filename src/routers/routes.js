@@ -17,8 +17,10 @@ import Gate from '../Views/Facility/Gate';
 import GateLane from '../Views/Facility/GateLane';
 
 import EdgeServer from "../Views/Device/EdgeServer";
-import Camera from "../Views/Device/Camera";
+import EdgeServerHistory from "../Views/Device/EdgeServerHistory";
 import FailoverGroup from "../Views/Device/FailoverGroup";
+import FailoverEvent from "../Views/Device/FailoverEvent";
+import Camera from "../Views/Device/Camera";
 
 import {
   ManageAccount,
@@ -125,6 +127,11 @@ const routes = [
     component: EdgeServer,
   },
   {
+    path: "/edge-server/history/:edgeServerId",
+    name: "_edge-server-history",
+    component: EdgeServerHistory,
+  },
+  {
     path: "/camera",
     name: "_camera",
     component: Camera,
@@ -141,6 +148,11 @@ const routes = [
     icon: ManageAccount,
     sider: true,
     exact: true
+  },
+  {
+    path: "/failover/event/:failoverGroupId",
+    name: "_failover-event",
+    component: FailoverEvent,
   },
   {
     path: "/report",

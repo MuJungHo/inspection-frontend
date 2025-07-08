@@ -25,5 +25,9 @@ export const edgeServerApi = {
   // 刪除 EdgeServer
   deleteEdgeServer: async ({ id }) => {
     return await instance.delete(`/v1/EdgeServer/${id}`);
-  }
+  },
+  // 取得 EdgeServer History 清單
+  getEdgeServerHistories: async ({ id }) => {
+    return await instance.get(`/v1/EdgeServer/history/${id}`);
+  },
 };

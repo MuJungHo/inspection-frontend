@@ -34,11 +34,13 @@ export const api = (logout = () => {}) => {
     parkingFacilities: wrapApiModule(apiModules.parkingFacilitiesApi, logout),
     parkingFacilityGates: wrapApiModule(apiModules.parkingFacilityGatesApi, logout),
     parkingFacilityGateLanes: wrapApiModule(apiModules.parkingFacilityGateLanesApi, logout),
+    
     // 設備相關
     edgeServer: wrapApiModule(apiModules.edgeServerApi, logout),
     camera: wrapApiModule(apiModules.cameraApi, logout),
     failoverGroup: wrapApiModule(apiModules.failoverGroupApi, logout),
     failoverGroupMember: wrapApiModule(apiModules.failoverGroupMemberApi, logout),
+    failoverEvent: wrapApiModule(apiModules.failoverEventApi, logout),
   };
 };
 
@@ -87,6 +89,7 @@ export const compatibleApi = (logout = () => {}) => {
     
     // Devices
     getEdgeServers: modules.edgeServer.getEdgeServers,
+    getEdgeServerHistories: modules.edgeServer.getEdgeServerHistories,
     getEdgeServerById: modules.edgeServer.getEdgeServerById,
     postCreateEdgeServer: modules.edgeServer.postCreateEdgeServer,
     patchUpdateEdgeServer: modules.edgeServer.patchUpdateEdgeServer,
@@ -108,7 +111,9 @@ export const compatibleApi = (logout = () => {}) => {
     getFailoverGroupMembersById: modules.failoverGroupMember.getFailoverGroupMembersById,
     postCreateFailoverGroupMember: modules.failoverGroupMember.postCreateFailoverGroupMember,
     patchUpdateFailoverGroupMember: modules.failoverGroupMember.patchUpdateFailoverGroupMember,
-    deleteFailoverGroupMember: modules.failoverGroupMember.deleteFailoverGroupMember
+    deleteFailoverGroupMember: modules.failoverGroupMember.deleteFailoverGroupMember,
+
+    getFailoverEventsByGroupId: modules.failoverEvent.getFailoverEventsByGroupId,
   };
 };
 

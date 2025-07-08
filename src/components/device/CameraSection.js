@@ -172,10 +172,10 @@ const CameraSection = ({
           </Select>
         </FormControl>
         <FormControl>
-          <InputLabel>{t("parking-facility-gate")}</InputLabel>
+          <InputLabel>{t("gate")}</InputLabel>
           <Select
             value={state.parkingFacilityGateId}
-            label={t("parking-facility-gate")}
+            label={t("gate")}
             onChange={e => setState({
               ...state,
               parkingFacilityGateId: e.target.value
@@ -191,10 +191,10 @@ const CameraSection = ({
           </Select>
         </FormControl>
         <FormControl>
-          <InputLabel>{t("parking-facility-gate-lane")}</InputLabel>
+          <InputLabel>{t("gate-lane")}</InputLabel>
           <Select
             value={state.parkingFacilityGateLaneId}
-            label={t("parking-facility-gate-lane")}
+            label={t("gate-lane")}
             onChange={e => setState({
               ...state,
               parkingFacilityGateLaneId: e.target.value

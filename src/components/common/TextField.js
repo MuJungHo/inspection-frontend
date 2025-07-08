@@ -15,8 +15,11 @@ const StyledTextField = styled(MuiTextField)(({ theme }) => ({
     borderColor: theme.palette.primary.main,
     transition: 'border-color ease-in-out 0.3s'
   },
+  "& .MuiInputLabel-root.MuiInputLabel-shrink": {
+    top: 3,
+  },
   "& .MuiInputLabel-root": {
-    top: 5
+    top: 7,
   },
   "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
     borderColor: theme.palette.primary.main,
@@ -28,8 +31,7 @@ const StyledTextField = styled(MuiTextField)(({ theme }) => ({
     opacity: 1,
   },
   '& .MuiFormLabel-root': {
-    fontSize: '1.2rem',
-    color: theme.palette.layout.color
+    color: 'rgba(0, 0, 0, 0.6)'
   },
   '& span': {
     // color: theme.palette.error.main // Consider if this is still needed or handled by MUI default error styles
@@ -45,7 +47,7 @@ const StyledTextField = styled(MuiTextField)(({ theme }) => ({
     // Styles for SVG icons within the TextField, if any general styling is needed
   },
   '& .MuiInputLabel-formControl': {
-    color: theme.palette.layout.color
+    // color: theme.palette.layout.color
   }
 }));
 
