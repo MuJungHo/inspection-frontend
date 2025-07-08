@@ -78,6 +78,19 @@ jobs:
       # - name: 執行 ESLint 檢查
       #   run: npm run lint
         
+      # 更新 package.json 中的 git_short_sha
+      - name: 更新 Git 短版 Hash
+        run: |
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          echo "短版 Git Hash: $SHORT_SHA"
+          
+          # 使用 sed 更新 package.json 中的 git_short_sha
+          sed -i "s/\"git_short_sha\": \".*\"/\"git_short_sha\": \"$SHORT_SHA\"/" package.json
+          
+          # 驗證更新結果
+          echo "更新後的 git_short_sha："
+          grep "git_short_sha" package.json
+          
       # 建構專案
       - name: 建構專案
         run: npm run build

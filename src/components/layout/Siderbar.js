@@ -21,7 +21,7 @@ import {
 } from '@mui/icons-material'; // Changed from @material-ui/icons
 
 import routes from '../../routers/routes';
-import { version } from "../../../package.json";
+import { version, git_short_sha } from "../../../package.json";
 import { Button } from "../common";
 
 const drawerWidth = 240;
@@ -230,7 +230,7 @@ const Siderbar = ({ open, setOpen }) => {
             duration: theme.transitions.duration.leavingScreen,
           }),
         }}>
-        {open && <span style={{ color: '#fff' }}>v{version}</span>} {/* Use theme color */}
+        {open && <span style={{ color: '#fff' }}>v{version}({git_short_sha})</span>} {/* Use theme color */}
         <Button
           size="small"
           color="inherit"
