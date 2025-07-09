@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 import {
@@ -33,7 +33,7 @@ const ParkingFacility = () => {
   const [loading, setLoading] = React.useState(false);
 
   // 載入全部 region 資料供選擇使用
-  const getAllRegions = useCallback(async () => {
+  const getAllRegions = async () => {
     try {
       let { data, total } = await authedApi.regions.getRegions({
         // 不使用分頁限制，載入全部 region 資料
@@ -53,9 +53,9 @@ const ParkingFacility = () => {
     } catch (error) {
       console.error('載入 region 資料時發生錯誤:', error);
     }
-  }, [authedApi.regions]);
+  };
 
-  const getParkingFacilityList = useCallback(async () => {
+  const getParkingFacilityList = async () => {
     try {
       setLoading(true);
       let { data, total } = await authedApi.parkingFacilities.getParkingFacilities({
@@ -78,20 +78,24 @@ const ParkingFacility = () => {
     } finally {
       setLoading(false);
     }
-  }, [filter, authedApi.parkingFacilities, t, openSnackbar])
+  };
 
   React.useEffect(() => {
     // 預先載入全部 region 資料
     getAllRegions();
     // 載入 ParkingFacility 清單
     getParkingFacilityList();
-  }, [getAllRegions, getParkingFacilityList])
+  }, [])
+
+  React.useEffect(() => {
+    getParkingFacilityList();
+  }, [filter]);
 
   // 取得 region 名稱的輔助函式
-  const getRegionName = useCallback((regionId) => {
+  const getRegionName = (regionId) => {
     const region = allRegions.find(r => r.id === regionId);
     return region ? region.name : regionId;
-  }, [allRegions]);
+  };
 
   const openEditParkingFacilityDialog = (data) => {
     openDialog({

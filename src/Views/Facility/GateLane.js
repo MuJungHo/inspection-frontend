@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 import {
@@ -38,7 +38,7 @@ const GateLane = () => {
   const [loading, setLoading] = React.useState(false);
 
   // 載入全部 region 資料供選擇使用
-  const getAllRegions = useCallback(async () => {
+  const getAllRegions = async () => {
     try {
       let { data, total } = await authedApi.regions.getRegions({
         // 不使用分頁限制，載入全部 region 資料
@@ -58,9 +58,9 @@ const GateLane = () => {
     } catch (error) {
       console.error('載入 region 資料時發生錯誤:', error);
     }
-  }, [authedApi.regions]);
+  };
 
-  const getAllParkingFacilities = useCallback(async () => {
+  const getAllParkingFacilities = async () => {
     try {
       let { data, total } = await authedApi.parkingFacilities.getParkingFacilities({
         // 不使用分頁限制，載入全部 parking facility 資料
@@ -77,10 +77,10 @@ const GateLane = () => {
     } catch (error) {
       console.error('載入 parking facility 資料時發生錯誤:', error);
     }
-  }, [authedApi.parkingFacilities]);
+  };
 
   // 新增：載入全部 gate 資料供選擇使用
-  const getAllParkingFacilityGates = useCallback(async () => {
+  const getAllParkingFacilityGates = async () => {
     try {
       let { data, total } = await authedApi.parkingFacilityGates.getParkingFacilityGates({
         // 不使用分頁限制，載入全部 gate 資料
@@ -97,10 +97,10 @@ const GateLane = () => {
     } catch (error) {
       console.error('載入 parking facility gate 資料時發生錯誤:', error);
     }
-  }, [authedApi.parkingFacilityGates]);
+  };
 
   // 載入 GateLane 清單資料（分頁顯示用）
-  const getGateLaneList = useCallback(async () => {
+  const getGateLaneList = async () => {
     try {
       setLoading(true);
       let { data, total } = await authedApi.parkingFacilityGateLanes.getParkingFacilityGateLanes({
@@ -123,7 +123,7 @@ const GateLane = () => {
     } finally {
       setLoading(false);
     }
-  }, [filter, authedApi.parkingFacilityGateLanes, t, openSnackbar]);
+  };
 
   // 頁面載入時執行
   React.useEffect(() => {
@@ -135,13 +135,17 @@ const GateLane = () => {
     getAllParkingFacilityGates();
     // 載入 GateLane 清單
     getGateLaneList();
-  }, [getAllRegions, getAllParkingFacilities, getAllParkingFacilityGates, getGateLaneList]);
+  }, []);
+
+  React.useEffect(() => {
+    getGateLaneList();
+  }, [filter]);
 
   // 取得 region 名稱的輔助函式
-  const getRegionName = useCallback((regionId) => {
+  const getRegionName = (regionId) => {
     const region = allRegions.find(r => r.id === regionId);
     return region ? region.name : regionId;
-  }, [allRegions]);
+  };
 
   const openEditGateLaneDialog = (data) => {
     openDialog({

@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 import {
@@ -32,11 +32,14 @@ const Gate = () => {
   // 預先載入的 region 資料
   const [allRegions, setAllRegions] = React.useState([]);
   const [allParkingFacilities, setAllParkingFacilities] = React.useState([]);
-  
+
+  const stableRegions = React.useMemo(() => allRegions, [allRegions]);
+  const stableParkingFacilities = React.useMemo(() => allParkingFacilities, [allParkingFacilities]);
+
   const [loading, setLoading] = React.useState(false);
 
   // 載入全部 region 資料供選擇使用
-  const getAllRegions = useCallback(async () => {
+  const getAllRegions = async () => {
     try {
       let { data, total } = await authedApi.regions.getRegions({
         // 不使用分頁限制，載入全部 region 資料
@@ -52,13 +55,13 @@ const Gate = () => {
 
       const _allRegions = data.map(a => ({ ...a, _id: a.regionId }));
       setAllRegions(_allRegions);
-      
+
     } catch (error) {
       console.error('載入 region 資料時發生錯誤:', error);
     }
-  }, [authedApi.regions]);
+  };
 
-  const getAllParkingFacilities = useCallback(async () => {
+  const getAllParkingFacilities = async () => {
     try {
       let { data, total } = await authedApi.parkingFacilities.getParkingFacilities({
         // 不使用分頁限制，載入全部 parking facility 資料
@@ -75,10 +78,10 @@ const Gate = () => {
     } catch (error) {
       console.error('載入 parking facility 資料時發生錯誤:', error);
     }
-  }, [authedApi.parkingFacilities]);
+  };
 
   // 載入 Gate 清單資料（分頁顯示用）
-  const getGateList = useCallback(async () => {
+  const getGateList = async () => {
     try {
       setLoading(true);
       let { data, total } = await authedApi.parkingFacilityGates.getParkingFacilityGates({
@@ -109,7 +112,7 @@ const Gate = () => {
     } finally {
       setLoading(false);
     }
-  }, [filter, authedApi.parkingFacilityGates, t, openSnackbar]);
+  };
 
   // 頁面載入時執行
   React.useEffect(() => {
@@ -119,27 +122,23 @@ const Gate = () => {
     getAllParkingFacilities();
     // 載入 Gate 清單
     getGateList();
-  }, [getAllRegions, getAllParkingFacilities, getGateList]);
+  }, []);
 
-  // 取得 region 名稱的輔助函式
-  const getRegionName = useCallback((regionId) => {
-    const region = allRegions.find(r => r.id === regionId);
-    return region ? region.name : regionId;
-  }, [allRegions]);
+  React.useEffect(() => {
+    getGateList();
+  }, [filter]);
 
   const openEditGateDialog = (data) => {
-    // TODO: 建立 GateDialog 元件
     openDialog({
-      title: t("edit-thing", { thing: t("gate") }),
-      section: <GateDialog onConfirm={handleEditGate} data={data} allRegions={allRegions} allParkingFacilities={allParkingFacilities} />
+      title: t("edit-thing", { thing: t("gate1") }),
+      section: <GateDialog onConfirm={handleEditGate} data={data} allRegions={stableRegions} allParkingFacilities={stableParkingFacilities}/>
     });
   }
 
   const openAddGateDialog = () => {
-    // TODO: 建立 GateDialog 元件
     openDialog({
       title: t("add-thing", { thing: t("gate") }),
-      section: <GateDialog onConfirm={handleAddGate} allRegions={allRegions} allParkingFacilities={allParkingFacilities} />
+      section: <GateDialog onConfirm={handleAddGate} allRegions={stableRegions} allParkingFacilities={stableParkingFacilities}/>
     });
   }
 
@@ -232,19 +231,21 @@ const Gate = () => {
         rows={gateList}
         columns={[
           // { key: 'id', label: t('gateId') },
-          { key: 'factory', label: t('factory'),
+          {
+            key: 'factory', label: t('factory'),
             render: (row) => {
-              const parkingFacility = allParkingFacilities.find(f => f._id === row);
+              const parkingFacility = stableParkingFacilities.find(f => f._id === row);
               if (!parkingFacility) return row;
               // 根據 parkingFacilityId 找到對應的 region 資料
-              const data = allRegions.find(r => r.regionId === parkingFacility.regionId);
+              const data = stableRegions.find(r => r.regionId === parkingFacility.regionId);
               return data ? data.name : row;
-            } },
+            }
+          },
           {
             key: 'parkingFacilityId',
             label: t('parking-facility'),
             render: (row) => {
-              const data = allParkingFacilities.find(r => r.parkingFacilityId === row);
+              const data = stableParkingFacilities.find(r => r.parkingFacilityId === row);
               return data ? data.name : row;
             }
           },
