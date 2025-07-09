@@ -133,5 +133,6 @@
         "out": "Exit"
     },
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "error-thing": "{{thing}} Error"
 }
