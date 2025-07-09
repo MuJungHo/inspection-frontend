@@ -21,6 +21,8 @@ import EdgeServerHistory from "../Views/Device/EdgeServerHistory";
 import FailoverGroup from "../Views/Device/FailoverGroup";
 import FailoverEvent from "../Views/Device/FailoverEvent";
 import Camera from "../Views/Device/Camera";
+import PLC from "../Views/Device/PLC";
+import PLCPoint from "../Views/Device/PLCPoint";
 
 import {
   ManageAccount,
@@ -119,6 +121,10 @@ const routes = [
         path: "/failover-group",
         name: "_failover-group",
       },
+      {
+        path: "/plc",
+        name: "_plc",
+      },
     ]
   },
   {
@@ -135,6 +141,16 @@ const routes = [
     path: "/camera",
     name: "_camera",
     component: Camera,
+  },
+  {
+    path: "/plc",
+    name: "_plc",
+    component: PLC,
+  },
+  {
+    path: "/plc-point/:plcId",
+    name: "_plc-point",
+    component: PLCPoint,
   },
   {
     path: "/failover-group",

@@ -54,8 +54,13 @@
     "navigation": "Navigation",
     "password": "Password",
     "port": "Port",
+    "plc": "PLC",
+    "protocol": "Protocol",
+    "point": "Point",
+    "plc-point": "PLC Point",
     "priority": "Priority",
     "reject": "Reject",
+    "retry-count": "Retry Count",
     "require": "Require",
     "role": "Role",
     "rolename": "Role Name",
@@ -70,6 +75,7 @@
     "thing-amount": "{{thing}} amount",
     "thing-list": "{{thing}} List",
     "thing-management": "{{thing}} Management",
+    "timeout": "Timeout",
     "upload": "Upload",
     "user": "User",
     "username": "Username",
@@ -91,6 +97,7 @@
     "_navigation": "Navigation",
     "_overstay": "Overstay",
     "_override": "Override",
+    "_plc": "PLC",
     "_restricted": "Restricted",
     "_report": "Report",
     "_setting": "Setting",
@@ -133,5 +140,6 @@
         "out": "Exit"
     },
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "error-thing": "{{thing}} Error"
 }

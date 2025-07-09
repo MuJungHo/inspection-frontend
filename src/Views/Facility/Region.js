@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 import {
@@ -28,7 +28,7 @@ const Region = () => {
 
   const [regionList, setRegionList] = React.useState([]);
 
-  const getRegionList = useCallback(async () => {
+  const getRegionList = async () => {
     let { data, total } = await authedApi.regions.getRegions({
       amount: filter.amount,
       skip: filter.skip,
@@ -40,11 +40,11 @@ const Region = () => {
     const _rows = data.map(a => ({ ...a, _id: a.id }))
     setRegionList(_rows)
     setTotal(total)
-  }, [filter])
+  };
 
   React.useEffect(() => {
     getRegionList()
-  }, [getRegionList])
+  }, [filter])
 
   const openEditUserDialog = (data) => {
     openDialog({

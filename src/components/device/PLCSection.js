@@ -22,6 +22,7 @@ import {
   DialogActions,
 } from "../common";
 
+
 const useStyles = makeStyles({
   content: {
     display: 'flex',
@@ -38,22 +39,20 @@ const useStyles = makeStyles({
   },
 });
 
-const EdgeServerSection = ({
-  edgeServer = {
+const CameraSection = ({
+  plc = {
     parkingFacilityGateId: "",
     name: "",
-    // "Description": "tes3",
     host: "",
     port: "",
-    lastStatus: "",
-    isEnabled: true,
-    serialNumber: ""
+    protocol: "",
+    note: ""
   },
   onConfirm = () => { },
 }) => {
-  const classes = useStyles();
   // console.log(edgeServer)
-  const [state, setState] = React.useState(edgeServer);
+  const classes = useStyles();
+  const [state, setState] = React.useState(plc);
   const { closeDialog, t, authedApi } = useContext(GlobalContext);
 
   const [parkingFacilityGateList, setParkingFacilityGateList] = React.useState([]);
@@ -75,7 +74,8 @@ const EdgeServerSection = ({
     <>
       <DialogContent
         dividers
-        className={classes.content}>
+        className={classes.content}
+      >
         <TextField
           label={t("name")}
           type="text"
@@ -94,18 +94,19 @@ const EdgeServerSection = ({
           value={state.port}
           onChange={e => setState({ ...state, port: Number(e.target.value) })}
         />
-        <TextField
-          label={t("description")}
-          type="text"
-          value={state.description}
-          onChange={e => setState({ ...state, description: e.target.value })}
-        />
-        <TextField
-          label={t("serial-number")}
-          type="text"
-          value={state.serialNumber}
-          onChange={e => setState({ ...state, serialNumber: e.target.value })}
-        />
+        <FormControl>
+          <InputLabel>{t("protocol")}</InputLabel>
+          <Select
+            value={state.protocol}
+            label={t("protocol")}
+            onChange={e => setState({
+              ...state,
+              protocol: e.target.value
+            })}
+          >
+            <MenuItem value="Mobus"> Mobus </MenuItem>
+          </Select>
+        </FormControl>
         <FormControl>
           <InputLabel>{t("gate")}</InputLabel>
           <Select
@@ -125,16 +126,6 @@ const EdgeServerSection = ({
             }
           </Select>
         </FormControl>
-        <FormControlLabel
-          value="end"
-          control={<Checkbox
-            checked={state.isEnabled}
-            color="default"
-            onChange={e => setState({ ...state, isEnabled: e.target.checked })} />}
-          label={t("enable")}
-          labelPlacement="end"
-        />
-
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>
@@ -147,4 +138,4 @@ const EdgeServerSection = ({
     </>)
 }
 
-export default EdgeServerSection
+export default CameraSection
