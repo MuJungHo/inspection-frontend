@@ -46,8 +46,8 @@ export default ({ actions = [], row = {} }) => {
   };
 
   const filteredActions = actions.filter(action =>
-    typeof action.showMenuItem === "function"
-      ? action.showMenuItem(row)
+    typeof action.condition === "function"
+      ? action.condition(row)
       : true
   );
 
