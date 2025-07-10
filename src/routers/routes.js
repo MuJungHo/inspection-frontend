@@ -1,4 +1,3 @@
-import User from "../Views/User";
 import Setting from "../Views/Setting";
 
 import Flexible from "../Views/Log/Flexible";
@@ -23,6 +22,10 @@ import FailoverEvent from "../Views/Device/FailoverEvent";
 import Camera from "../Views/Device/Camera";
 import PLC from "../Views/Device/PLC";
 import PLCPoint from "../Views/Device/PLCPoint";
+
+import User from "../Views/User/User";
+import Role from "../Views/User/Role";
+import Authorization from "../Views/User/Authorization";
 
 import {
   ManageAccount,
@@ -158,12 +161,40 @@ const routes = [
     component: FailoverGroup,
   },
   {
+    path: "/_user",
+    name: "__user",
+    icon: ManageAccount,
+    sider: true,
+    exact: true,
+    children: [
+      {
+        path: "/authorization",
+        name: "_authorization",
+      },
+      {
+        path: "/role",
+        name: "_role",
+      },
+      {
+        path: "/user",
+        name: "_user",
+      }
+    ]
+  },
+  {
+    path: "/authorization",
+    name: "_authorization",
+    component: Authorization,
+  },
+  {
+    path: "/role",
+    name: "_role",
+    component: Role,
+  },
+  {
     path: "/user",
     name: "_user",
     component: User,
-    icon: ManageAccount,
-    sider: true,
-    exact: true
   },
   {
     path: "/failover/event/:failoverGroupId",

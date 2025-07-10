@@ -41,31 +41,30 @@ const useStyles = makeStyles({
   },
 });
 
-const UserSection = ({
-  user = {
-    username: "",
-    roleName: "",
-    roleIds: [],
-    isEnabled: true,
-    password: ""
+const AuthorizationSection = ({
+  authorization = {
+    name: "",
+    description: "",
+    scope: "",
+    isEnabled: true
   },
   onConfirm = () => { },
 }) => {
   const classes = useStyles();
-  const [state, setState] = React.useState(user);
+  const [state, setState] = React.useState(authorization);
   const { closeDialog, t, authedApi } = useContext(GlobalContext);
-  const [RoleList, setRoleList] = React.useState([]);
+  const [AuthorizationNameList, setAuthorizationNameList] = React.useState([]);
 
   React.useEffect(() => {
-    getRoles();
+    getAuthorizationNames();
   }, [])
 
-  const getRoles = async () => {
-    const { data } = await authedApi.role.getRoles();
+  const getAuthorizationNames = async () => {
+    const { data } = await authedApi.authorization.getAuthorizationNames();
 
-    const _rows = data.map(a => ({ ...a, _id: a.roleId }));
+    const _rows = data.map(a => ({ _id: a, name: a }));
 
-    setRoleList(_rows);
+    setAuthorizationNameList(_rows);
 
   }
 
@@ -76,43 +75,47 @@ const UserSection = ({
         dividers
         className={classes.content}
       >
-        <TextField
-          label={t("username")}
-          type="text"
-          value={state.username}
-          onChange={e => setState({ ...state, username: e.target.value })}
-        />
-        <TextField
-          label={t("displayName")}
-          type="text"
-          value={state.displayName}
-          onChange={e => setState({ ...state, displayName: e.target.value })}
-        />
-        <TextField
-          label={t("password")}
-          type="password"
-          value={state.password}
-          onChange={e => setState({ ...state, password: e.target.value })}
-        />
         <FormControl>
-          <InputLabel>{t("role")}</InputLabel>
+          <InputLabel>{t("name")}</InputLabel>
           <Select
-            value={state.roleIds}
-            label={t("role")}
-            multiple
+            value={state.name}
+            label={t("name")}
             onChange={e => setState({
               ...state,
-              roleIds: e.target.value
+              name: e.target.value
             })}
           >
             {
-              RoleList
+              AuthorizationNameList
                 .map(data => <MenuItem
-                  key={data._id}
-                  value={data._id}>
-                  {data.roleName}
+                  key={data.name}
+                  value={data.name}>
+                  {data.name}
                 </MenuItem>)
             }
+          </Select>
+        </FormControl>
+        <TextField
+          label={t("description")}
+          type="text"
+          value={state.description}
+          onChange={e => setState({ ...state, description: e.target.value })}
+        />
+        <FormControl>
+          <InputLabel>{t("scope")}</InputLabel>
+          <Select
+            value={state.scope}
+            label={t("scope")}
+            onChange={e => setState({
+              ...state,
+              scope: e.target.value
+            })}
+          >
+            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="Create">Create</MenuItem>
+            <MenuItem value="Read">Read</MenuItem>
+            <MenuItem value="Update">Update</MenuItem>
+            <MenuItem value="Delete">Delete</MenuItem>
           </Select>
         </FormControl>
         <div>
@@ -138,4 +141,4 @@ const UserSection = ({
     </>)
 }
 
-export default UserSection
+export default AuthorizationSection

@@ -1,6 +1,6 @@
 // 統一匯出所有生產環境 API 模組
 export { authApi } from './auth';
-export { usersApi } from './users';
+export { userApi } from './user';
 export { authorizationApi } from './authorization';
 export { roleApi } from './role';
 export { roleAttributeApi } from './roleAttribute';
