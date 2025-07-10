@@ -23,25 +23,35 @@ const AppRouter = () => {
           }
         />
         {/* Add a default route for authenticated users */}
-        <Route 
+        <Route
           path="/"
           element={
             <PrivateRoute>
-              <Navigate to="/user" replace /> 
+              <Navigate to="/user" replace />
             </PrivateRoute>
           }
         />
-        {routes.map(route => (
-          <Route
-            key={route.path}
-            path={route.path}
-            element={
-              <PrivateRoute>
-                {route.component && <route.component />}
-              </PrivateRoute>
-            }
-          />
-        ))}
+        {routes.map(route =>
+          Array.isArray(route.children)
+            ? route.children.map(child => <Route
+              key={child.path}
+              path={child.path}
+              element={
+                <PrivateRoute>
+                  {child.component && <child.component />}
+                </PrivateRoute>
+              }
+            />)
+            : <Route
+              key={route.path}
+              path={route.path}
+              element={
+                <PrivateRoute>
+                  {route.component && <route.component />}
+                </PrivateRoute>
+              }
+            />
+        )}
       </Routes>
     </HashRouter>
   );
