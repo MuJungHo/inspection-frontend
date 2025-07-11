@@ -10,7 +10,8 @@ import {
   CheckCircle,
   Cancel
 } from '@mui/icons-material';
-import AuthorizationSection from "../../components/user/AuthorizationSection";
+import AuthorizationSection from "../../components/User/AuthorizationSection";
+
 
 const initFilter = {
   amount: 5,

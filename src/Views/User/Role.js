@@ -11,7 +11,8 @@ import {
   CheckCircle,
   Cancel
 } from '@mui/icons-material';
-import RoleSection from "../../components/user/RoleSection";
+import RoleSection from "../../components/User/RoleSection";
+
 
 const initFilter = {
   amount: 5,
