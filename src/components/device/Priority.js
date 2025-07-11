@@ -1,5 +1,7 @@
 import React, { useContext, useRef } from "react";
+import { makeStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -19,25 +21,26 @@ import {
   DialogActions,
 } from "../common";
 
-const cardStyle = {
-  borderRadius: 5,
-  padding: '0.5rem 1rem',
-  margin: 10,
-  backgroundColor: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between'
-};
+const useStyles = makeStyles((theme) => ({
+  card: {
+    borderRadius: 5,
+    padding: '0.5rem 1rem',
+    margin: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  box: {
+    width: '100%',
+    height: 380,
+    overflow: 'auto',
+  }
 
-const boxStyle = {
-  width: '100%',
-  height: 360,
-  overflow: 'auto',
-  backgroundColor: 'rgba(0, 0, 0, 0.12)'
-};
+}));
 
 const Card = ({ id, text, index, moveCard, onDelete, onDidDrop }) => {
-  const ref = useRef(null)
+  const ref = useRef(null);
+  const classes = useStyles();
   const [{ handlerId }, drop] = useDrop({
     accept: 'card',
     collect(monitor) {
@@ -101,12 +104,20 @@ const Card = ({ id, text, index, moveCard, onDelete, onDidDrop }) => {
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref))
   return (
-    <div ref={ref} style={{ ...cardStyle, cursor: 'move', opacity }} data-handler-id={handlerId}>
+    <Box
+      className={classes.card}
+      sx={(theme) => ({
+        backgroundColor: theme.palette.paper.background,
+        color: theme.palette.paper.color,
+      })}
+      ref={ref}
+      style={{ cursor: 'move', opacity }}
+      data-handler-id={handlerId}>
       {text}
       <IconButton onClick={onDelete}>
         <RemoveIcon />
       </IconButton>
-    </div>
+    </Box>
   )
 }
 
@@ -114,8 +125,8 @@ const Priority = ({
   failoverGroup = {
   },
 }) => {
+  const classes = useStyles();
   const { t, authedApi, closeDialog, openSnackbar, } = useContext(GlobalContext);
-
   const [edgeServerList, setEdgeServerList] = React.useState([]);
   const [failoverGroupMemberList, setFailoverGroupMemberList] = React.useState([]);
   const isExisted = (edgeServer) => !!failoverGroupMemberList.find(failoverGroupMember => failoverGroupMember.edgeServerId === edgeServer.edgeServerId)
@@ -245,25 +256,38 @@ const Priority = ({
             <LowPriorityIcon sx={{ mr: 1 }} />{t("priority")}
           </Grid>
           <Grid size={6}>
-            <div style={boxStyle}>
+            <Box
+              sx={(theme) => ({
+                backgroundColor: theme.palette.container.background
+              })}
+              className={classes.box}>
               {
                 edgeServerList
                   .map((edgeServer) =>
-                    <div
+                    <Box
+                      sx={(theme) => ({
+                        backgroundColor: theme.palette.paper.background,
+                        color: theme.palette.paper.color,
+                      })}
+                      className={classes.card}
                       key={edgeServer.edgeServerId}
-                      style={{ ...cardStyle, cursor: isExisted(edgeServer) ? 'not-allowed' : 'pointer' }}>
+                      style={{ cursor: isExisted(edgeServer) ? 'not-allowed' : 'default' }}>
                       {edgeServer.name}
                       <IconButton
                         disabled={isExisted(edgeServer)}
                         onClick={() => handleAddFailoverGroupMember(edgeServer)}>
                         <AddIcon />
                       </IconButton>
-                    </div>)
+                    </Box>)
               }
-            </div>
+            </Box>
           </Grid>
           <Grid size={6}>
-            <div style={boxStyle}>
+            <Box
+              sx={(theme) => ({
+                backgroundColor: theme.palette.container.background
+              })}
+              className={classes.box}>
               {
                 failoverGroupMemberList
                   .map((card, index) =>
@@ -277,7 +301,7 @@ const Priority = ({
                       onDidDrop={handleOnDidDrop}
                     />)
               }
-            </div>
+            </Box>
           </Grid>
         </Grid>
       </DialogContent>
