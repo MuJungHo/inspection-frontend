@@ -10,7 +10,8 @@ import {
   CheckCircle,
   Cancel
 } from '@mui/icons-material';
-import UserSection from "../../components/user/UserSection";
+import UserSection from "../../components/User/UserSection";
+
 
 const initFilter = {
   amount: 5,
