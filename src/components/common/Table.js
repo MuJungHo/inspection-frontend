@@ -358,7 +358,7 @@ export default ({
                     const value = row[column.key];
                     return (
                       <MuiTableCell key={column.key} align="left">
-                        {column.render ? column.render(value, row) : value}
+                        {column.render ? column.render(value, row) : (value || "--")}
                       </MuiTableCell>
                     );
                   })}

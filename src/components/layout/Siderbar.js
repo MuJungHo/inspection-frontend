@@ -99,7 +99,7 @@ const CloseMutiLevel = ({ route }) => {
     setAnchorEl(null);
   };
 
-  const isActive = children.some(child => location.pathname === child.path); // Active if any child is active
+  const isActive = children.some(route => location.pathname === route.path); // Active if any child is active
   const NodeComponent = isActive ? ListItemActiveStyled : ListItemStyled;
 
 
@@ -119,12 +119,17 @@ const CloseMutiLevel = ({ route }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {children
-          .map((child, key) => (
-            <NavLink key={key} to={child.path} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <MenuItem onClick={handleClose}>{t(child.name)}</MenuItem>{/* Use t() for child names */}
-            </NavLink>
-          ))}
+        {
+          children
+            .filter(route => route.siderbar !== false)
+            .map((route, key) => (
+              <NavLink key={key} to={route.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <MenuItem onClick={handleClose}>
+                  {t(`siderbar.${route.name}`)}
+                </MenuItem>{/* Use t() for child names */}
+              </NavLink>
+            ))
+        }
       </Menu>
     </div>
   );
@@ -135,13 +140,13 @@ const OpenMultiLevel = ({ route }) => {
   const location = useLocation();
   const { children } = route;
   const { t } = useContext(GlobalContext);
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(route.children.findIndex(child => child.path === location.pathname) > -1);
+  // const theme = useTheme();
+  const [open, setOpen] = React.useState(route.children.findIndex(route => route.path === location.pathname) > -1);
 
   const handleClick = () => {
     setOpen((prev) => !prev);
   };
-
+  // console.log(children)
   return (
     <React.Fragment>
       <ListItemStyled button="true" onClick={handleClick}>
@@ -151,7 +156,7 @@ const OpenMultiLevel = ({ route }) => {
             ml: 1,
             "span": { fontSize: '16px' }
           }}
-          primary={t(route.name)}
+          primary={t(`siderbar.${route.name}`)}
         />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemStyled>
@@ -159,15 +164,16 @@ const OpenMultiLevel = ({ route }) => {
         <List component="div" disablePadding>
           {
             children
-              .map((child, key) => {
-                const isActive = location.pathname === child.path;
+              .filter(route => route.siderbar !== false)
+              .map((route, key) => {
+                const isActive = location.pathname === route.path;
                 const NodeComponent = isActive ? ListItemActiveStyled : ListItemStyled;
                 return (
-                  <NavLink key={key} to={child.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <NavLink key={key} to={route.path} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <NodeComponent button="true">
                       <FiberManualRecord sx={{ width: 10, mr: 1.25, fontSize: '0.6rem', ml: 2 }} />
                       <ListItemText
-                        primary={t(child.name)}
+                        primary={t(`siderbar.${route.name}`)}
                       />
                     </NodeComponent>
                   </NavLink>
@@ -201,7 +207,6 @@ const SingleLevel = ({ route, open }) => {
 };
 const Siderbar = ({ open, setOpen }) => {
   const theme = useTheme();
-
   return (
     <StyledDrawer variant="permanent" open={open}>
       <List sx={{ height: 'calc(100vh - 175px)', overflow: 'auto', paddingTop: 0 }}> {/* Removed style, added paddingTop 0 */}
@@ -210,9 +215,9 @@ const Siderbar = ({ open, setOpen }) => {
             .map(route => Array.isArray(route.children)
               ?
               open
-                ? <OpenMultiLevel key={route.path} route={route} />
-                : <CloseMutiLevel key={route.path} route={route} />
-              : route.sider && <SingleLevel key={route.path} route={route} open={open} />)
+                ? <OpenMultiLevel key={route.name} route={route} />
+                : <CloseMutiLevel key={route.name} route={route} />
+              : <SingleLevel key={route.name} route={route} open={open} />)
         }
       </List>
       {/* <div style={{ flex: 1 }}></div> */}

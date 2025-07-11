@@ -1,15 +1,3 @@
-import User from "../Views/User";
-import Setting from "../Views/Setting";
-
-import Flexible from "../Views/Log/Flexible";
-import Overstay from "../Views/Log/Overstay";
-import Override from "../Views/Log/Override";
-import SpecialUse from "../Views/Log/SpecialUse";
-import LogTemporary from "../Views/Log/Temporary";
-import Tracking from "../Views/Log/Tracking";
-import Usage from "../Views/Log/Usage";
-import Violation from "../Views/Log/Violation";
-
 import Region from "../Views/Facility/Region";
 import Factory from "../Views/Facility/Factory";
 import ParkingFacility from '../Views/Facility/ParkingFacility';
@@ -24,12 +12,16 @@ import Camera from "../Views/Device/Camera";
 import PLC from "../Views/Device/PLC";
 import PLCPoint from "../Views/Device/PLCPoint";
 
+import User from "../Views/User/User";
+import Role from "../Views/User/Role";
+import Authorization from "../Views/User/Authorization";
+
 import {
   ManageAccount,
   // IdCard,
-  DataTable,
+  // DataTable,
   // TravelExplore,
-  Settings,
+  // Settings,
   Detector,
   // Tools
 } from "../images/icons";
@@ -39,219 +31,100 @@ import DomainIcon from '@mui/icons-material/Domain';
 
 const routes = [
   {
-    path: "/facility",
-    name: "facilityManagement",
+    name: "facility",
     icon: DomainIcon,
-    sider: true,
     children: [
-      // {
-      //   path: "/region",
-      //   name: "region"
-      // },
+      {
+        path: "/region",
+        name: "region",
+        component: Region,
+      },
       {
         path: "/factory",
         name: "factory",
+        component: Factory,
       },
       {
         path: "/parking-facility",
         name: "parking-facility",
+        component: ParkingFacility,
       },
       {
         path: "/gate",
-        name: "gate"
+        name: "gate",
+        component: Gate,
       },
       {
         path: "/gate-lane",
         name: "gate-lane",
-      }
-      // {
-      //   path: "/parking-facility",
-      //   name: "_parking-facility",
-      //   component: ParkingFacility,
-      //   children: [
-      //     {
-      //       path: "/parking-facility-gate",
-      //       name: "_parking-facility-gate",
-      //       component: ParkingFacilityGate,
-      //     }
-      //   ]
-      // }
+        component: GateLane,
+      },
     ]
   },
   {
-    path: "/region",
-    name: "region",
-    component: Region,
-  },
-  {
-    path: "/factory",
-    name: "factory",
-    component: Factory,
-  },
-  {
-    path: "/parking-facility",
-    name: "parking-facility",
-    component: ParkingFacility,
-  },
-  {
-    path: "/gate",
-    name: "gate",
-    component: Gate,
-  },
-  {
-    path: "/gate-lane",
-    name: "gate-lane",
-    component: GateLane,
-  },
-  {
-    path: "/device",
-    name: "_device",
-    sider: true,
+    name: "device",
     icon: Detector,
     children: [
       {
         path: "/edge-server",
-        name: "_edge-server",
+        name: "edge-server",
+        component: EdgeServer,
+      },
+      {
+        path: "/edge-server/history/:edgeServerId",
+        name: "edge-server-history",
+        component: EdgeServerHistory,
+        siderbar: false // 不顯示在 siderbar
       },
       {
         path: "/camera",
-        name: "_camera",
-      },
-      {
-        path: "/failover-group",
-        name: "_failover-group",
+        name: "camera",
+        component: Camera,
       },
       {
         path: "/plc",
-        name: "_plc",
+        name: "plc",
+        component: PLC,
+      },
+      {
+        path: "/plc-point/:plcId",
+        name: "plc-point",
+        component: PLCPoint,
+        siderbar: false // 不顯示在 siderbar
+      },
+      {
+        path: "/failover-group",
+        name: "failover-group",
+        component: FailoverGroup,
+      },
+      {
+        path: "/failover/event/:failoverGroupId",
+        name: "failover-event",
+        component: FailoverEvent,
+        siderbar: false // 不顯示在 siderbar
       },
     ]
   },
   {
-    path: "/edge-server",
-    name: "_edge-server",
-    component: EdgeServer,
-  },
-  {
-    path: "/edge-server/history/:edgeServerId",
-    name: "_edge-server-history",
-    component: EdgeServerHistory,
-  },
-  {
-    path: "/camera",
-    name: "_camera",
-    component: Camera,
-  },
-  {
-    path: "/plc",
-    name: "_plc",
-    component: PLC,
-  },
-  {
-    path: "/plc-point/:plcId",
-    name: "_plc-point",
-    component: PLCPoint,
-  },
-  {
-    path: "/failover-group",
-    name: "_failover-group",
-    component: FailoverGroup,
-  },
-  {
-    path: "/user",
-    name: "_user",
-    component: User,
+    name: "user",
     icon: ManageAccount,
-    sider: true,
-    exact: true
-  },
-  {
-    path: "/failover/event/:failoverGroupId",
-    name: "_failover-event",
-    component: FailoverEvent,
-  },
-  {
-    path: "/report",
-    name: "_report",
-    sider: true,
-    icon: DataTable,
     children: [
       {
-        path: "/flexible",
-        name: "_flexible",
+        path: "/authorization",
+        name: "authorization",
+        component: Authorization,
       },
       {
-        path: "/overstay",
-        name: "_overstay",
+        path: "/role",
+        name: "role",
+        component: Role,
       },
       {
-        path: "/override",
-        name: "_override",
-      },
-      {
-        path: "/specialuse",
-        name: "_specialuse",
-      },
-      {
-        path: "/log-temporary",
-        name: "_log-temporary",
-      },
-      {
-        path: "/usage",
-        name: "_usage",
-      },
-      {
-        path: "/violation",
-        name: "_violation",
+        path: "/user",
+        name: "user",
+        component: User,
       },
     ]
-  },
-  {
-    path: "/flexible",
-    name: "_flexible",
-    component: Flexible,
-  },
-  {
-    path: "/overstay",
-    name: "_overstay",
-    component: Overstay,
-  },
-  {
-    path: "/override",
-    name: "_override",
-    component: Override,
-  },
-  {
-    path: "/specialuse",
-    name: "_specialuse",
-    component: SpecialUse,
-  },
-  {
-    path: "/log-temporary",
-    name: "_log-temporary",
-    component: LogTemporary,
-  },
-  {
-    path: "/tracking",
-    name: "_tracking",
-    component: Tracking,
-  },
-  {
-    path: "/usage",
-    name: "_usage",
-    component: Usage,
-  },
-  {
-    path: "/violation",
-    name: "_violation",
-    component: Violation,
-  },
-  {
-    path: "/setting",
-    name: "_setting",
-    component: Setting,
-    icon: Settings,
-    sider: true
   },
 ]
 

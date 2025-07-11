@@ -29,7 +29,7 @@ const wrapApiModule = (apiModule, logout) => {
 export const api = (logout = () => {}) => {
   return {
     auth: wrapApiModule(apiModules.authApi, logout),
-    users: wrapApiModule(apiModules.usersApi, logout),
+    user: wrapApiModule(apiModules.userApi, logout),
     authorization: wrapApiModule(apiModules.authorizationApi, logout),
     role: wrapApiModule(apiModules.roleApi, logout),
     roleAttribute: wrapApiModule(apiModules.roleAttributeApi, logout),
@@ -59,13 +59,13 @@ export const compatibleApi = (logout = () => {}) => {
     postAuthLogin: modules.auth.postAuthLogin,
     
     // Users (新版 API + 保持舊版相容性)
-    getUsers: modules.users.getUsers,
-    getUserById: modules.users.getUserById,
-    postAddUser: modules.users.postAddUser,
-    putUpdateUser: modules.users.putUpdateUser,
-    deleteUser: modules.users.deleteUser,
-    getUserList: modules.users.getUserList, // 向後相容
-    postCreateUser: modules.users.postCreateUser, // 向後相容
+    getUsers: modules.user.getUsers,
+    getUserById: modules.user.getUserById,
+    postAddUser: modules.user.postAddUser,
+    putUpdateUser: modules.user.putUpdateUser,
+    deleteUser: modules.user.deleteUser,
+    getUserList: modules.user.getUserList, // 向後相容
+    postCreateUser: modules.user.postCreateUser, // 向後相容
     
     // Authorization
     getAuthorizations: modules.authorization.getAuthorizations,

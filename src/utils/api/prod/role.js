@@ -4,26 +4,26 @@ import { instance } from '../axios';
 export const roleApi = {
   // 取得角色清單
   getRoles: async (params = {}) => {
-    return await instance.get('/v1/role', { params });
+    return await instance.get('/v1/user/role', { params });
   },
   
   // 根據 ID 取得角色
   getRoleById: async ({ id }) => {
-    return await instance.get(`/v1/role/${id}`);
+    return await instance.get(`/v1/user/role/${id}`);
   },
   
   // 新增角色
-  postAddRole: async ({ data }) => {
-    return await instance.post('/v1/role', data);
+  postCreateRole: async ({ data }) => {
+    return await instance.post('/v1/user/role', data);
   },
   
   // 更新角色
   putUpdateRole: async ({ id, data }) => {
-    return await instance.put(`/v1/role/${id}`, data);
+    return await instance.put(`/v1/user/role/${id}`, data);
   },
   
   // 刪除角色
   deleteRole: async ({ id }) => {
-    return await instance.delete(`/v1/role/${id}`);
+    return await instance.delete(`/v1/user/role/${id}`);
   }
 };
