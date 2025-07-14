@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 import { instance } from "../utils/apis";
-import { accountAccessPages, accountAccessActions } from "../utils/constant";
+import { accountAccessRoutes, accountAccessActions } from "../utils/constant";
 const AuthContext = createContext();
 
 function AuthProvider(props) {
@@ -28,7 +28,7 @@ function AuthProvider(props) {
     localStorage.clear()
   };
 
-  const canAccessPage = (roleName) => accountAccessPages.includes(roleName);
+  const canAccessRoute = (routeName) => accountAccessRoutes.includes(routeName);
 
   const canAccessAction = (roleName, action) => accountAccessActions[roleName]?.includes(action) || false;
 
@@ -38,7 +38,7 @@ function AuthProvider(props) {
     logout,
     keep,
     setKeep,
-    canAccessPage,
+    canAccessRoute,
     canAccessAction
   };
 

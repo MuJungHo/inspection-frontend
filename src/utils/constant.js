@@ -8,7 +8,7 @@ export const dummyUserList = {
   ], count: 5
 }
 
-export const accountAccessPages = [
+export const accountAccessRoutes = [
   "facility",
   "device",
   "user-management",

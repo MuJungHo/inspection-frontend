@@ -74,7 +74,7 @@ const routes = [
         path: "/edge-server/history/:edgeServerId",
         name: "edge-server-history",
         component: EdgeServerHistory,
-        siderbar: false // 不顯示在 siderbar
+        sidebar: false // 不顯示在 sidebar
       },
       {
         path: "/camera",
@@ -90,7 +90,7 @@ const routes = [
         path: "/plc-point/:plcId",
         name: "plc-point",
         component: PLCPoint,
-        siderbar: false // 不顯示在 siderbar
+        sidebar: false // 不顯示在 sidebar
       },
       {
         path: "/failover-group",
@@ -101,7 +101,7 @@ const routes = [
         path: "/failover/event/:failoverGroupId",
         name: "failover-event",
         component: FailoverEvent,
-        siderbar: false // 不顯示在 siderbar
+        sidebar: false // 不顯示在 sidebar
       },
     ]
   },
