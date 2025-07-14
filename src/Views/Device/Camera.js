@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import { Paper, Table } from "../../components/common";
 import { Add } from "../../images/icons";
 import {
@@ -16,10 +17,11 @@ const initFilter = {
 
 const Camera = () => {
   const { t, authedApi, openDialog, closeDialog, openSnackbar, openWarningDialog, } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
-
   const [cameraList, setCameraList] = React.useState([]);
+  const actionCondition = (action) => (row) => canAccessAction("camera", action);
 
   React.useEffect(() => {
     getCameras()
@@ -141,6 +143,7 @@ const Camera = () => {
     })
   }
 
+
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
@@ -164,11 +167,11 @@ const Camera = () => {
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddCameraDialog, icon: <Add /> },
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddCameraDialog, icon: <Add /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditCameraDialog(row), icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditCameraDialog(row), icon: <BorderColorSharp /> },
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />

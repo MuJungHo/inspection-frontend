@@ -75,6 +75,7 @@
         "authorization": "授權",
         "role": "角色",
         "user": "使用者",
+        "user-management": "使用者管理",
         "device": "設備管理",
         "edge-server": "哨口主機",
         "camera": "攝影機",

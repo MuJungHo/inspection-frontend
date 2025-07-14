@@ -75,6 +75,7 @@
         "authorization": "Authorization",
         "role": "Role",
         "user": "User",
+        "user-management": "User Management",
         "device": "Device",
         "edge-server": "Edge Server",
         "camera": "Camera",

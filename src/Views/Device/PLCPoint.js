@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import { Paper, Table } from "../../components/common";
 import { Add } from "../../images/icons";
 import {
@@ -17,8 +18,10 @@ const initFilter = {
 
 const PLCPoint = () => {
   const { t, authedApi, openDialog, closeDialog, openSnackbar, openWarningDialog, } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
+  const actionCondition = (action) => (row) => canAccessAction("plc-point", action);
 
   const { plcId } = useParams();
   const [PLCPointList, setPLCPointList] = React.useState([]);
@@ -164,11 +167,11 @@ const PLCPoint = () => {
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddPLCPointDialog, icon: <Add /> },
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddPLCPointDialog, icon: <Add /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditPLCPointDialog(row), icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditPLCPointDialog(row), icon: <BorderColorSharp /> },
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />

@@ -93,6 +93,7 @@ function EnhancedTableHead(props) {
 
 // sx prop can be used for these styles directly on Toolbar or define a styled component
 const StyledToolbar = styled(MuiToolbar)(({ theme, numSelected }) => ({
+  whiteSpace: 'nowrap'
   // paddingLeft: 16,
   // paddingRight: 16,
   // ...(numSelected > 0 && {

@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 import {
   Table,
@@ -14,8 +15,8 @@ import { Upload, Add } from "../../images/icons"
 import RegionDialog from "../../components/Facility/RegionDialog";
 
 const initFilter = {
-//   order: "asc",
-//   sort: "name",
+  //   order: "asc",
+  //   sort: "name",
   type: "fab",
   keyword: "",
   amount: 5,
@@ -24,10 +25,13 @@ const initFilter = {
 
 const Factory = () => {
   const { t, openDialog, closeDialog, openSnackbar, openWarningDialog, authedApi } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
+
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
 
   const [regionList, setRegionList] = React.useState([]);
+  const actionCondition = (action) => (row) => canAccessAction("factory", action);
 
   const getRegionList = async () => {
     let { data, total } = await authedApi.regions.getRegions({
@@ -133,8 +137,8 @@ const Factory = () => {
         title={t("factory")}
         rows={regionList}
         columns={[
-        //   { key: 'regionId', label: t('regionId') },
-        //   { key: 'type', label: t('type') },
+          //   { key: 'regionId', label: t('regionId') },
+          //   { key: 'type', label: t('type') },
           { key: 'name', label: t('name') },
         ]}
         checkable={false}
@@ -151,12 +155,12 @@ const Factory = () => {
         // onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddUserDialog, icon: <Add /> },
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddUserDialog, icon: <Add /> },
           // { name: t('upload'), onClick: openImportUserDialog, icon: <Upload /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp /> },
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />

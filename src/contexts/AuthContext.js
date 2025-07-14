@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import { instance } from "../utils/apis";
+import { accountAccessPages, accountAccessActions } from "../utils/constant";
 const AuthContext = createContext();
 
 function AuthProvider(props) {
@@ -27,12 +28,18 @@ function AuthProvider(props) {
     localStorage.clear()
   };
 
+  const canAccessPage = (roleName) => accountAccessPages.includes(roleName);
+
+  const canAccessAction = (roleName, action) => accountAccessActions[roleName]?.includes(action) || false;
+
   const value = {
     token,
     login,
     logout,
     keep,
-    setKeep
+    setKeep,
+    canAccessPage,
+    canAccessAction
   };
 
   return <AuthContext.Provider value={value} {...props} />;

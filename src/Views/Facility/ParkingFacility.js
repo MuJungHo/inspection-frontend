@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 import {
   Table,
@@ -23,10 +24,12 @@ const initFilter = {
 
 const ParkingFacility = () => {
   const { t, openDialog, closeDialog, openSnackbar, openWarningDialog, authedApi } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
 
   const [parkingFacilityList, setParkingFacilityList] = React.useState([]);
+  const actionCondition = (action) => (row) => canAccessAction("parking-facility", action);
 
   // 預先載入的 region 資料
   const [allRegions, setAllRegions] = React.useState([]);
@@ -227,12 +230,12 @@ const ParkingFacility = () => {
         // onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddParkingFacilityDialog, icon: <Add /> },
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddParkingFacilityDialog, icon: <Add /> },
           // { name: t('upload'), onClick: openImportUserDialog, icon: <Upload /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditParkingFacilityDialog(row), icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditParkingFacilityDialog(row), icon: <BorderColorSharp /> },
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />

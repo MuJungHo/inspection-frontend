@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 import {
   Table,
@@ -23,6 +24,7 @@ const initFilter = {
 
 const Gate = () => {
   const { t, openDialog, closeDialog, openSnackbar, openWarningDialog, authedApi } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
 
@@ -37,6 +39,7 @@ const Gate = () => {
   const stableParkingFacilities = React.useMemo(() => allParkingFacilities, [allParkingFacilities]);
 
   const [loading, setLoading] = React.useState(false);
+  const actionCondition = (action) => (row) => canAccessAction("gate", action);
 
   // 載入全部 region 資料供選擇使用
   const getAllRegions = async () => {
@@ -131,14 +134,14 @@ const Gate = () => {
   const openEditGateDialog = (data) => {
     openDialog({
       title: t("edit-thing", { thing: t("gate1") }),
-      section: <GateDialog onConfirm={handleEditGate} data={data} allRegions={stableRegions} allParkingFacilities={stableParkingFacilities}/>
+      section: <GateDialog onConfirm={handleEditGate} data={data} allRegions={stableRegions} allParkingFacilities={stableParkingFacilities} />
     });
   }
 
   const openAddGateDialog = () => {
     openDialog({
       title: t("add-thing", { thing: t("gate") }),
-      section: <GateDialog onConfirm={handleAddGate} allRegions={stableRegions} allParkingFacilities={stableParkingFacilities}/>
+      section: <GateDialog onConfirm={handleAddGate} allRegions={stableRegions} allParkingFacilities={stableParkingFacilities} />
     });
   }
 
@@ -267,12 +270,12 @@ const Gate = () => {
         // onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddGateDialog, icon: <Add /> },
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddGateDialog, icon: <Add /> },
           // { name: t('upload'), onClick: openImportGateDialog, icon: <Upload /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditGateDialog(row), icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditGateDialog(row), icon: <BorderColorSharp /> },
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />

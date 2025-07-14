@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import { Paper, Table } from "../../components/common";
 import { Add } from "../../images/icons";
 import {
@@ -19,10 +20,12 @@ const initFilter = {
 
 const EdgeServer = () => {
   const { t, authedApi, openDialog, closeDialog, openSnackbar, openWarningDialog, } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
   const [edgeServerList, setEdgeServerList] = React.useState([]);
   const navigate = useNavigate();
+  const actionCondition = (action) => (row) => canAccessAction("edge-server", action);
 
   React.useEffect(() => {
     getEdgeServers()
@@ -112,6 +115,7 @@ const EdgeServer = () => {
       onConfirm: () => handleDeleteEdgeServers(edgeServer)
     })
   }
+
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
@@ -137,12 +141,12 @@ const EdgeServer = () => {
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddEdgeServerDialog, icon: <Add /> },
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddEdgeServerDialog, icon: <Add /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditEdgeServerDialog(row), icon: <BorderColorSharp /> },
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditEdgeServerDialog(row), icon: <BorderColorSharp /> },
           { name: t('history'), onClick: (e, row) => navigate(`/edge-server/history/${row.edgeServerId}`), icon: <History /> },
-          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />

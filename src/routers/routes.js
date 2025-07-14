@@ -106,7 +106,7 @@ const routes = [
     ]
   },
   {
-    name: "user",
+    name: "user-management",
     icon: ManageAccount,
     children: [
       {
