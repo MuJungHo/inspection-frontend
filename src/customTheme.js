@@ -47,7 +47,8 @@ export const lighten_palette = {
     breadcrumbs: { background: '#fff', color: 'rgba(0, 0, 0, 0.54)', },
     input: { background: '#000', color: 'rgba(0, 0, 0, 0.6)', contrastText: '#fff' },
     button: { background: '#000', color: 'rgba(0, 0, 0, 0.6)', contrastText: '#fff' },
-    disabled: { background: 'rgba(0, 0, 0, 0.26)', color: "rgba(0, 0, 0, 0.26)", contrastText: '#fff' }
+    disabled: { background: 'rgba(0, 0, 0, 0.26)', color: "rgba(0, 0, 0, 0.26)", contrastText: '#fff' },
+    textfield: { borderColor: 'rgba(0, 0, 0, 0.23)', color: 'rgba(0, 0, 0, 0.6)' }
 }
 
 export const dark_palette = {
@@ -70,5 +71,6 @@ export const dark_palette = {
     breadcrumbs: { background: '#fff', color: 'rgba(255, 255, 255, 0.54)', },
     input: { background: 'rgba(255, 255, 255, 0.7)', color: 'rgba(255, 255, 255, 0.7)', contrastText: '#fff' },
     button: { background: 'rgba(255, 255, 255, 1)', color: 'rgba(255, 255, 255, 1)', contrastText: '#fff' },
-    disabled: { background: 'rgba(0, 0, 0, 0.36)', color: "rgba(255, 255, 255, 0.36)", contrastText: dark[500] }
+    disabled: { background: 'rgba(0, 0, 0, 0.36)', color: "rgba(255, 255, 255, 0.36)", contrastText: dark[500] },
+    textfield: { borderColor: 'rgba(255, 255, 255, 0.23)', color: 'rgba(255, 255, 255, 0.7)' }
 }

@@ -6,10 +6,10 @@ import SearchIcon from "@mui/icons-material/Search";
 
 const StyledTextField = styled(MuiTextField)(({ theme }) => ({
   "& .MuiOutlinedInput-notchedOutline": {
-    borderColor: 'rgba(0, 0, 0, 0.23)'
+    borderColor: theme.palette.textfield.borderColor
   },
   "& .MuiInput-underline:before": {
-    borderColor: theme.palette.layout.color,
+    borderColor: theme.palette.textfield.borderColor
   },
   "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
     borderColor: theme.palette.primary.main,
@@ -17,6 +17,7 @@ const StyledTextField = styled(MuiTextField)(({ theme }) => ({
   },
   "& .MuiInputLabel-root.MuiInputLabel-shrink": {
     top: 3,
+    color: theme.palette.layout.color,
   },
   "& .MuiInputLabel-root": {
     top: 7,
@@ -31,7 +32,7 @@ const StyledTextField = styled(MuiTextField)(({ theme }) => ({
     opacity: 1,
   },
   '& .MuiFormLabel-root': {
-    color: 'rgba(0, 0, 0, 0.6)'
+    borderColor: theme.palette.textfield.color
   },
   '& span': {
     // color: theme.palette.error.main // Consider if this is still needed or handled by MUI default error styles
