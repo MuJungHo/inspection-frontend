@@ -38,6 +38,7 @@ const routes = [
         path: "/region",
         name: "region",
         component: Region,
+        authName: "sysAdmin",
       },
       {
         path: "/factory",
@@ -114,6 +115,7 @@ const routes = [
         path: "/authorization",
         name: "authorization",
         component: Authorization,
+        authName: "sysAdmin",
       },
       {
         path: "/role",
