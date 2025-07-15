@@ -108,6 +108,7 @@ const routes = [
   {
     name: "user-management",
     icon: ManageAccount,
+    authName: "user",
     children: [
       {
         path: "/authorization",
@@ -123,6 +124,7 @@ const routes = [
         path: "/user",
         name: "user",
         component: User,
+        authName: "user",
       },
     ]
   },
