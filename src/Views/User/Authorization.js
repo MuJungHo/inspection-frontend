@@ -150,7 +150,7 @@ const Authorization = () => {
           { key: 'name', label: t('name'), sortable: false },
           { key: 'scope', label: t('scope'), sortable: false },
           { key: 'description', label: t('description'), sortable: false },
-          { key: '_isEnabled', label: t('enable'), sortable: false },
+          { key: '_isEnabled', label: t('is-enabled'), sortable: false },
           { key: '_isBuiltIn', label: t('built-in'), sortable: false },
         ]}
         checkable={false}

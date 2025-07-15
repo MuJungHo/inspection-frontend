@@ -212,10 +212,10 @@ const CameraSection = ({
         <FormControlLabel
           value="end"
           control={<Checkbox
-            checked={state.isEnabled}
+            checked={state.isActive}
             color="default"
-            onChange={e => setState({ ...state, isEnabled: e.target.checked })} />}
-          label={t("enable")}
+            onChange={e => setState({ ...state, isActive: e.target.checked })} />}
+          label={t("is-active")}
           labelPlacement="end"
         />
 

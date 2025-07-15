@@ -34,7 +34,10 @@ const PLC = () => {
   const getPLCs = async () => {
     const { data, total, success } = await authedApi.plc.getPLCs(filter);
 
-    const _rows = data.map(a => ({ ...a, _id: a.plcId }));
+    const _rows = data.map(a => ({
+      ...a, _id: a.plcId,
+      _count: a.plcPoints.length
+    }));
 
     if (success) {
       setPLCList(_rows);
@@ -146,6 +149,7 @@ const PLC = () => {
           { key: 'name', label: t('name'), sortable: false },
           { key: 'host', label: t('host'), sortable: false },
           { key: 'port', label: t('port'), sortable: false },
+          { key: '_count', label: t('thing-amount', { thing: t("plc-point") }), sortable: false },
           { key: 'protocol', label: t('protocol'), sortable: false },
         ]}
         checkable={false}

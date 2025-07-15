@@ -47,6 +47,7 @@ const CameraSection = ({
     retryCount: "",
     timeout: ""
   },
+  parkingFacilityGateId = "",
   onConfirm = () => { },
 }) => {
   // console.log(edgeServer)
@@ -61,11 +62,12 @@ const CameraSection = ({
   }, [])
 
   const getParkingFacilityGateLanes = async () => {
-    const { data } = await authedApi.parkingFacilityGateLanes.getParkingFacilityGateLanes();
+    const { data, success } = await authedApi.parkingFacilityGateLanes.getParkingFacilityGateLanesByGateId({ gateId: parkingFacilityGateId });
 
-    const _rows = data.map(a => ({ ...a, _id: a.parkingFacilityGateLaneId }));
-
-    setParkingFacilityGateLaneList(_rows);
+    if (success) {
+      const _rows = data.map(a => ({ ...a, _id: a.parkingFacilityGateLaneId }));
+      setParkingFacilityGateLaneList(_rows);
+    }
 
   }
 

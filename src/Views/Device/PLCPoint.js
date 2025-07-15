@@ -25,10 +25,24 @@ const PLCPoint = () => {
 
   const { plcId } = useParams();
   const [PLCPointList, setPLCPointList] = React.useState([]);
+  const [PLC, setPLC] = React.useState({});
 
   React.useEffect(() => {
-    getPLCPointByPLCId()
+    getPLCById();
+  }, [])
+
+  React.useEffect(() => {
+    getPLCPointByPLCId();
   }, [filter])
+
+  const getPLCById = async () => {
+    const { data, success } = await authedApi.plc.getPLCById({ id: plcId });
+
+    if (success) {
+      setPLC(data);
+    }
+  }
+
 
   const getPLCPointByPLCId = async () => {
     const { data, total, success } = await authedApi.plcPoint.getPLCPointByPLCId({ plcId });
@@ -39,7 +53,6 @@ const PLCPoint = () => {
       setPLCPointList(_rows);
       setTotal(total);
     }
-
   }
 
   const openEditPLCPointDialog = (plcPoint) => {
@@ -47,7 +60,11 @@ const PLCPoint = () => {
       title: t("edit-thing", { thing: t("plc-point") }),
       maxWidth: "md",
       fullWidth: true,
-      section: <PLCPointSection onConfirm={handleEditPLCPoint} plcPoint={plcPoint} />
+      section: <PLCPointSection
+        onConfirm={handleEditPLCPoint}
+        plcPoint={plcPoint}
+        parkingFacilityGateId={PLC.parkingFacilityGateId}
+      />
     });
   }
 
@@ -56,7 +73,10 @@ const PLCPoint = () => {
       title: t("add-thing", { thing: t("plc-point") }),
       maxWidth: "md",
       fullWidth: true,
-      section: <PLCPointSection onConfirm={handleAddPLCPoint} />
+      section: <PLCPointSection
+        onConfirm={handleAddPLCPoint}
+        parkingFacilityGateId={PLC.parkingFacilityGateId}
+      />
     });
   }
 
@@ -74,7 +94,7 @@ const PLCPoint = () => {
     const { success } = await authedApi.plcPoint.patchUpdatePLCPoint({ id: state._id, data: plcPoint });
 
     if (success) {
-      getPLCPoints();
+      getPLCPointByPLCId();
       closeDialog();
       openSnackbar({
         severity: "success",
@@ -97,7 +117,7 @@ const PLCPoint = () => {
       const { success } = await authedApi.plcPoint.postCreatePLCPoint({ data: { ...plcPoint } });
 
       if (success) {
-        getPLCPoints();
+        getPLCPointByPLCId();
         closeDialog();
         openSnackbar({
           severity: "success",
@@ -121,7 +141,7 @@ const PLCPoint = () => {
     const { success } = await authedApi.plcPoint.deletePLCPoint({ id: plcPoint.plcPointId });
 
     if (success) {
-      getPLCPoints();
+      getPLCPointByPLCId();
       closeDialog();
       openSnackbar({
         severity: "success",

@@ -163,7 +163,7 @@ const User = () => {
         columns={[
           { key: 'displayName', label: t('display-name'), sortable: false },
           { key: 'username', label: t('username'), sortable: false },
-          { key: '_isEnabled', label: t('enable'), sortable: false },
+          { key: '_isEnabled', label: t('is-enabled'), sortable: false },
         ]}
         checkable={false}
         filterable={false}

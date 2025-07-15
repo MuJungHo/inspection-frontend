@@ -7,8 +7,11 @@ import { Add } from "../../images/icons";
 import {
   BorderColorSharp,
   Delete,
+  CheckCircle,
+  Cancel,
   History
 } from '@mui/icons-material';
+import { green, red } from '@mui/material/colors';
 import EdgeServerSection from "../../components/device/EdgeServerSection";
 
 
@@ -34,7 +37,10 @@ const EdgeServer = () => {
   const getEdgeServers = async () => {
     const { data, total } = await authedApi.edgeServer.getEdgeServers(filter);
 
-    const _rows = data.map(a => ({ ...a, _id: a.edgeServerId }));
+    const _rows = data.map(a => ({
+      ...a, _id: a.edgeServerId,
+      _isEnabled: a.isEnabled ? <CheckCircle sx={{ color: green[300] }} /> : <Cancel sx={{ color: red[300] }} />,
+    }));
 
     setEdgeServerList(_rows);
 
@@ -126,6 +132,7 @@ const EdgeServer = () => {
           { key: 'host', label: t('host'), sortable: false },
           { key: 'port', label: t('port'), sortable: false },
           { key: 'serialNumber', label: t('serial-number'), sortable: false },
+          { key: '_isEnabled', label: t('is-enabled'), sortable: false },
         ]}
         checkable={false}
         filterable={false}

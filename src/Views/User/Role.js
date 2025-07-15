@@ -146,7 +146,7 @@ const Role = () => {
         rows={RoleList}
         columns={[
           { key: 'roleName', label: t('role-name'), sortable: false },
-          { key: '_isEnabled', label: t('enable'), sortable: false },
+          { key: '_isEnabled', label: t('is-enabled'), sortable: false },
         ]}
         checkable={false}
         filterable={false}
