@@ -46,6 +46,8 @@
     "host": "Host",
     "identity": "Identity",
     "input": "Input",
+    "is-active": "Is Active",
+    "is-enabled": "Is Enabled",
     "keep-me": "Keep Me",
     "layout": "Layout",
     "license": "License",

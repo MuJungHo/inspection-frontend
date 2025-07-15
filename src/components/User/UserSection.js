@@ -122,7 +122,7 @@ const UserSection = ({
               checked={state.isEnabled}
               color="default"
               onChange={e => setState({ ...state, isEnabled: e.target.checked })} />}
-            label={t("enable")}
+            label={t("is-enabled")}
             labelPlacement="end"
           />
         </div>

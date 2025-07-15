@@ -6,7 +6,10 @@ import { Add } from "../../images/icons";
 import {
   BorderColorSharp,
   Delete,
+  CheckCircle,
+  Cancel
 } from '@mui/icons-material';
+import { green, red } from '@mui/material/colors';
 import CameraSection from "../../components/device/CameraSection";
 
 const initFilter = {
@@ -30,7 +33,11 @@ const Camera = () => {
   const getCameras = async () => {
     const { data, total, success } = await authedApi.camera.getCameras(filter);
 
-    const _rows = data.map(a => ({ ...a, _id: a.cameraId }));
+    const _rows = data.map(a => ({
+      ...a, _id: a.cameraId,
+      _isActive: a.isActive ? <CheckCircle sx={{ color: green[300] }} /> : <Cancel sx={{ color: red[300] }} />,
+
+    }));
 
     if (success) {
       setCameraList(_rows);
@@ -152,6 +159,9 @@ const Camera = () => {
         columns={[
           { key: 'name', label: t('name'), sortable: false },
           { key: 'streamType', label: t('stream-type'), sortable: false },
+          { key: 'host', label: t('host'), sortable: false },
+          { key: 'port', label: t('port'), sortable: false },
+          { key: '_isActive', label: t('is-active'), sortable: false },
         ]}
         checkable={false}
         filterable={false}

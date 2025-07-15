@@ -46,6 +46,8 @@
     "host": "主機",
     "identity": "身份",
     "input": "輸入",
+    "is-active": "運行中",
+    "is-enabled": "啟用中",
     "keep-me": "記住我",
     "layout": "佈局",
     "license": "授權",
