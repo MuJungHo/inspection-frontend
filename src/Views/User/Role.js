@@ -28,7 +28,7 @@ const Role = () => {
   const [filter, setFilter] = React.useState(initFilter);
 
   const [RoleList, setRoleList] = React.useState([]);
-  const actionCondition = (action) => (row) => canAccessAction("role", action);
+  const actionCondition = (action) => (row) => canAccessAction("admin", action);
 
   // const navigate = useNavigate();
 

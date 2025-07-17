@@ -18,6 +18,8 @@
     "close": "關閉",
     "confirm": "確認",
     "content": "內容",
+    "copy-failed": "複製失敗",
+    "copy-success": "{{thing}} 複製成功",
     "count": "數量",
     "createtime": "建立時間",
     "current-location": "目前在 {{page}}",
@@ -160,6 +162,14 @@
     "direction": {
         "in": "入口",
         "out": "出口"
+    },
+    "device": {
+        "app-secret-copy-instruction": "點擊複製按鈕可將資訊複製到剪貼簿，方便填入設備中。",
+        "renew-app-secret": "更新應用程式金鑰",
+        "renew-app-secret-confirmation": "確認更新應用程式金鑰",
+        "renew-app-secret-warning": "一旦進行更新後，現有的應用程式金鑰會即刻失效。\n請確認是否要繼續進行？",
+        "renew-app-secret-success": "應用程式金鑰更新成功",
+        "renew-app-secret-success-message": "請將以下資訊填入設備中："
     },
     "yes": "是",
     "no": "否",

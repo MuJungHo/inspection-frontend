@@ -18,6 +18,8 @@
     "close": "Close",
     "confirm": "Confirm",
     "content": "Content",
+    "copy-failed": "Copy failed",
+    "copy-success": "{{thing}} copied successfully",
     "count": "Count",
     "createtime": "Create Time",
     "current-location": "The current location is {{page}}.",
@@ -81,7 +83,7 @@
     "retry-count": "Retry Count",
     "require": "Require",
     "role": "Role",
-    "rolen-ame": "Role Name",
+    "role-name": "Role Name",
     "room": "Room",
     "save": "Save",
     "scope": "Scope",
@@ -160,6 +162,14 @@
     "direction": {
         "in": "Entrance",
         "out": "Exit"
+    },
+    "device": {
+        "app-secret-copy-instruction": "Click the copy button to copy the information to clipboard for easy input into the device.",
+        "renew-app-secret": "Renew App Secret",
+        "renew-app-secret-confirmation": "Renew App Secret Confirmation",
+        "renew-app-secret-warning": "Once renewed, the current app secret will be immediately invalidated.\n Are you sure you want to continue?",
+        "renew-app-secret-success": "App Secret Renewed Successfully",
+        "renew-app-secret-success-message": "Please fill in the following information in the device:"
     },
     "yes": "Yes",
     "no": "No",

@@ -122,7 +122,7 @@ const CloseMutiLevel = ({ route }) => {
       >
         {
           children
-            .filter(route => canAccessRoute(route.name))
+            .filter(route => canAccessRoute(route.authName))
             .filter(route => route.sidebar !== false)
             .map((route, key) => (
               <NavLink key={key} to={route.path} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -167,7 +167,7 @@ const OpenMultiLevel = ({ route }) => {
         <List component="div" disablePadding>
           {
             children
-              .filter(route => canAccessRoute(route.name))
+              .filter(route => canAccessRoute(route.authName))
               .filter(route => route.sidebar !== false)
               .map((route, key) => {
                 const isActive = location.pathname === route.path;
@@ -218,7 +218,7 @@ const Siderbar = ({ open, setOpen }) => {
       <List sx={{ height: 'calc(100vh - 175px)', overflow: 'auto', paddingTop: 0 }}> {/* Removed style, added paddingTop 0 */}
         {
           routes
-            .filter(route => canAccessRoute(route.name))
+            .filter(route => canAccessRoute(route.authName))
             .filter(route => route.sidebar !== false)
             .map(route => Array.isArray(route.children)
               ?

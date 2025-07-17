@@ -45,6 +45,7 @@ const routes = [
         path: "/region",
         name: "region",
         component: Region,
+        authName: "sysAdmin",
       },
       {
         path: "/factory",
@@ -115,21 +116,25 @@ const routes = [
   {
     name: "user-management",
     icon: ManageAccount,
+    authName: "admin",
     children: [
       {
         path: "/authorization",
         name: "authorization",
         component: Authorization,
+        authName: "sysAdmin",
       },
       {
         path: "/role",
         name: "role",
         component: Role,
+        authName: "admin",
       },
       {
         path: "/user",
         name: "user",
         component: User,
+        authName: "admin",
       },
     ]
   },

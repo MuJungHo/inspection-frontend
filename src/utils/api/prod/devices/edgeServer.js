@@ -30,4 +30,10 @@ export const edgeServerApi = {
   getEdgeServerHistories: async ({ id }) => {
     return await instance.get(`/v1/EdgeServer/history/${id}`);
   },
+
+  putEdgeServerAppSecretRenew: async ({ id }) => {
+    return await instance.put(`/v1/EdgeServer/appsecret/renew`, {
+      edgeServerId: id,
+    });
+  },
 };

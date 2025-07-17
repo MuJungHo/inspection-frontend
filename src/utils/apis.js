@@ -133,6 +133,8 @@ export const compatibleApi = (logout = () => { }) => {
     postCreateEdgeServer: modules.edgeServer.postCreateEdgeServer,
     patchUpdateEdgeServer: modules.edgeServer.patchUpdateEdgeServer,
     deleteEdgeServer: modules.edgeServer.deleteEdgeServer,
+    putEdgeServerAppSecretRenew: modules.edgeServer.putEdgeServerAppSecretRenew,
+    
 
     getCameras: modules.camera.getCameras,
     getCameraById: modules.camera.getCameraById,
