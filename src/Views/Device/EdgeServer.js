@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from '@mui/material/styles';
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Paper, Table } from "../../components/common";
@@ -27,6 +28,7 @@ const initFilter = {
 const EdgeServer = () => {
   const { t, authedApi, openDialog, closeDialog, openSnackbar, openWarningDialog, } = useContext(GlobalContext);
   const { canAccessAction } = useContext(AuthContext);
+  const theme = useTheme();
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
   const [edgeServerList, setEdgeServerList] = React.useState([]);
@@ -165,14 +167,26 @@ const EdgeServer = () => {
         openDialog({
           title: t("device.renew-app-secret-success"),
           section: (
-            <Box sx={{ padding: 2, minWidth: 480 }}>
-              <Typography variant="body1" sx={{ marginBottom: 2 }}>
+            <Box sx={{ 
+              padding: 2, 
+              minWidth: 480,
+              backgroundColor: theme.palette.paper.background,
+              color: theme.palette.paper.color
+            }}>
+              <Typography 
+                variant="body1" 
+                sx={{ 
+                  marginBottom: 2,
+                  color: theme.palette.paper.color
+                }}
+              >
                 {t("device.renew-app-secret-success-message")}
               </Typography>
               
+
               <Box sx={{ marginBottom: 2 }}>
                 <MuiTextField
-                  label="Edge Server ID"
+                  label="EdgeServerId"
                   value={edgeServerId}
                   fullWidth
                   variant="outlined"
@@ -182,22 +196,38 @@ const EdgeServer = () => {
                     endAdornment: (
                       <InputAdornment position="end">
                         <MuiIconButton
-                          onClick={() => handleCopyToClipboard(edgeServerId, 'Edge Server ID')}
+                          onClick={() => handleCopyToClipboard(edgeServerId, 'EdgeServerId')}
                           edge="end"
                           size="small"
+                          sx={{ color: theme.palette.paper.color }}
                         >
                           <ContentCopy fontSize="small" />
                         </MuiIconButton>
                       </InputAdornment>
                     ),
                   }}
-                  sx={{ marginBottom: 1 }}
+                  sx={{ 
+                    marginBottom: 1,
+                    '& .MuiOutlinedInput-root': {
+                      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : theme.palette.background.default,
+                      color: theme.palette.paper.color,
+                      '& fieldset': {
+                        borderColor: theme.palette.textfield?.borderColor || theme.palette.divider,
+                      },
+                      '&:hover fieldset': {
+                        borderColor: theme.palette.primary.main,
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: theme.palette.textfield?.color || theme.palette.text.secondary,
+                    }
+                  }}
                 />
               </Box>
 
               <Box sx={{ marginBottom: 2 }}>
                 <MuiTextField
-                  label="App Secret"
+                  label="AppSecret"
                   value={appSecret}
                   fullWidth
                   variant="outlined"
@@ -209,10 +239,14 @@ const EdgeServer = () => {
                     endAdornment: (
                       <InputAdornment position="end">
                         <MuiIconButton
-                          onClick={() => handleCopyToClipboard(appSecret, 'App Secret')}
+                          onClick={() => handleCopyToClipboard(appSecret, 'AppSecret')}
                           edge="end"
                           size="small"
-                          sx={{ alignSelf: 'flex-start', marginTop: 0.5 }}
+                          sx={{ 
+                            alignSelf: 'flex-start', 
+                            marginTop: 0.5,
+                            color: theme.palette.paper.color
+                          }}
                         >
                           <ContentCopy fontSize="small" />
                         </MuiIconButton>
@@ -223,13 +257,34 @@ const EdgeServer = () => {
                     '& .MuiInputBase-input': {
                       wordBreak: 'break-all',
                       fontFamily: 'monospace',
-                      fontSize: '0.875rem'
+                      fontSize: '0.875rem',
+                      color: theme.palette.paper.color,
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : theme.palette.background.default,
+                      color: theme.palette.paper.color,
+                      '& fieldset': {
+                        borderColor: theme.palette.textfield?.borderColor || theme.palette.divider,
+                      },
+                      '&:hover fieldset': {
+                        borderColor: theme.palette.primary.main,
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: theme.palette.textfield?.color || theme.palette.text.secondary,
                     }
                   }}
                 />
               </Box>
 
-              <Typography variant="caption" color="textSecondary">
+              <Typography 
+                variant="caption" 
+                sx={{ 
+                  color: theme.palette.mode === 'dark' 
+                    ? theme.palette.text.secondary 
+                    : 'textSecondary'
+                }}
+              >
                 {t("device.app-secret-copy-instruction")}
               </Typography>
             </Box>
