@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 import {
   Table,
@@ -23,6 +24,8 @@ const initFilter = {
 
 const GateLane = () => {
   const { t, openDialog, closeDialog, openSnackbar, openWarningDialog, authedApi } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
+
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
 
@@ -37,6 +40,7 @@ const GateLane = () => {
 
   const [loading, setLoading] = React.useState(false);
 
+  const actionCondition = (action) => (row) => canAccessAction("gate-lane", action);
   // 載入全部 region 資料供選擇使用
   const getAllRegions = async () => {
     try {
@@ -344,12 +348,12 @@ const GateLane = () => {
         // onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddGateLaneDialog, icon: <Add /> },
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddGateLaneDialog, icon: <Add /> },
           // { name: t('upload'), onClick: openImportGateLaneDialog, icon: <Upload /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditGateLaneDialog(row), icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditGateLaneDialog(row), icon: <BorderColorSharp /> },
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />

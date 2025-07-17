@@ -50,7 +50,7 @@ const openedMixin = (theme) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  backgroundColor: theme.palette.siderbar.background,
+  backgroundColor: theme.palette.sidebar.background,
   overflowX: 'hidden',
 });
 
@@ -65,22 +65,22 @@ const closedMixin = (theme) => ({
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 1px)`, // Adjusted from theme.spacing(9) for MUI v5
   },
-  backgroundColor: theme.palette.siderbar.background,
+  backgroundColor: theme.palette.sidebar.background,
 });
 
 
 const ListItemStyled = styled(ListItem)(({ theme }) => ({
-  color: theme.palette.siderbar.color,
+  color: theme.palette.sidebar.color,
   // padding: 16,
   '&:hover': {
-    color: theme.palette.siderbar.color,
-    backgroundColor: theme.palette.siderbar.hover,
+    color: theme.palette.sidebar.color,
+    backgroundColor: theme.palette.sidebar.hover,
   },
 }));
 
 const ListItemActiveStyled = styled(ListItemStyled)(({ theme }) => ({
-  color: theme.palette.siderbar.color,
-  backgroundColor: theme.palette.siderbar.active
+  color: theme.palette.sidebar.color,
+  backgroundColor: theme.palette.sidebar.active
 }));
 
 
@@ -88,6 +88,7 @@ const CloseMutiLevel = ({ route }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { children } = route;
   const { t } = useContext(GlobalContext); // Ensure t is available
+  const { canAccessRoute } = useContext(AuthContext);
   const location = useLocation();
   // const theme = useTheme(); // theme might not be needed directly here
 
@@ -121,11 +122,12 @@ const CloseMutiLevel = ({ route }) => {
       >
         {
           children
-            .filter(route => route.siderbar !== false)
+            .filter(route => canAccessRoute(route.authName))
+            .filter(route => route.sidebar !== false)
             .map((route, key) => (
               <NavLink key={key} to={route.path} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <MenuItem onClick={handleClose}>
-                  {t(`siderbar.${route.name}`)}
+                  {t(`sidebar.${route.name}`)}
                 </MenuItem>{/* Use t() for child names */}
               </NavLink>
             ))
@@ -140,6 +142,7 @@ const OpenMultiLevel = ({ route }) => {
   const location = useLocation();
   const { children } = route;
   const { t } = useContext(GlobalContext);
+  const { canAccessRoute } = useContext(AuthContext);
   // const theme = useTheme();
   const [open, setOpen] = React.useState(route.children.findIndex(route => route.path === location.pathname) > -1);
 
@@ -156,7 +159,7 @@ const OpenMultiLevel = ({ route }) => {
             ml: 1,
             "span": { fontSize: '16px' }
           }}
-          primary={t(`siderbar.${route.name}`)}
+          primary={t(`sidebar.${route.name}`)}
         />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemStyled>
@@ -164,7 +167,8 @@ const OpenMultiLevel = ({ route }) => {
         <List component="div" disablePadding>
           {
             children
-              .filter(route => route.siderbar !== false)
+              .filter(route => canAccessRoute(route.authName))
+              .filter(route => route.sidebar !== false)
               .map((route, key) => {
                 const isActive = location.pathname === route.path;
                 const NodeComponent = isActive ? ListItemActiveStyled : ListItemStyled;
@@ -173,7 +177,7 @@ const OpenMultiLevel = ({ route }) => {
                     <NodeComponent button="true">
                       <FiberManualRecord sx={{ width: 10, mr: 1.25, fontSize: '0.6rem', ml: 2 }} />
                       <ListItemText
-                        primary={t(`siderbar.${route.name}`)}
+                        primary={t(`sidebar.${route.name}`)}
                       />
                     </NodeComponent>
                   </NavLink>
@@ -207,11 +211,14 @@ const SingleLevel = ({ route, open }) => {
 };
 const Siderbar = ({ open, setOpen }) => {
   const theme = useTheme();
+  const { canAccessRoute } = useContext(AuthContext);
+
   return (
     <StyledDrawer variant="permanent" open={open}>
       <List sx={{ height: 'calc(100vh - 175px)', overflow: 'auto', paddingTop: 0 }}> {/* Removed style, added paddingTop 0 */}
         {
           routes
+            .filter(route => canAccessRoute(route.authName))
             .map(route => Array.isArray(route.children)
               ?
               open

@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import { Paper, Table } from "../../components/common";
 import { Add } from "../../images/icons";
 import {
@@ -17,15 +18,31 @@ const initFilter = {
 
 const PLCPoint = () => {
   const { t, authedApi, openDialog, closeDialog, openSnackbar, openWarningDialog, } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
+  const actionCondition = (action) => (row) => canAccessAction("plc-point", action);
 
   const { plcId } = useParams();
   const [PLCPointList, setPLCPointList] = React.useState([]);
+  const [PLC, setPLC] = React.useState({});
 
   React.useEffect(() => {
-    getPLCPointByPLCId()
+    getPLCById();
+  }, [])
+
+  React.useEffect(() => {
+    getPLCPointByPLCId();
   }, [filter])
+
+  const getPLCById = async () => {
+    const { data, success } = await authedApi.plc.getPLCById({ id: plcId });
+
+    if (success) {
+      setPLC(data);
+    }
+  }
+
 
   const getPLCPointByPLCId = async () => {
     const { data, total, success } = await authedApi.plcPoint.getPLCPointByPLCId({ plcId });
@@ -36,7 +53,6 @@ const PLCPoint = () => {
       setPLCPointList(_rows);
       setTotal(total);
     }
-
   }
 
   const openEditPLCPointDialog = (plcPoint) => {
@@ -44,7 +60,11 @@ const PLCPoint = () => {
       title: t("edit-thing", { thing: t("plc-point") }),
       maxWidth: "md",
       fullWidth: true,
-      section: <PLCPointSection onConfirm={handleEditPLCPoint} plcPoint={plcPoint} />
+      section: <PLCPointSection
+        onConfirm={handleEditPLCPoint}
+        plcPoint={plcPoint}
+        parkingFacilityGateId={PLC.parkingFacilityGateId}
+      />
     });
   }
 
@@ -53,7 +73,10 @@ const PLCPoint = () => {
       title: t("add-thing", { thing: t("plc-point") }),
       maxWidth: "md",
       fullWidth: true,
-      section: <PLCPointSection onConfirm={handleAddPLCPoint} />
+      section: <PLCPointSection
+        onConfirm={handleAddPLCPoint}
+        parkingFacilityGateId={PLC.parkingFacilityGateId}
+      />
     });
   }
 
@@ -71,7 +94,7 @@ const PLCPoint = () => {
     const { success } = await authedApi.plcPoint.patchUpdatePLCPoint({ id: state._id, data: plcPoint });
 
     if (success) {
-      getPLCPoints();
+      getPLCPointByPLCId();
       closeDialog();
       openSnackbar({
         severity: "success",
@@ -94,7 +117,7 @@ const PLCPoint = () => {
       const { success } = await authedApi.plcPoint.postCreatePLCPoint({ data: { ...plcPoint } });
 
       if (success) {
-        getPLCPoints();
+        getPLCPointByPLCId();
         closeDialog();
         openSnackbar({
           severity: "success",
@@ -118,7 +141,7 @@ const PLCPoint = () => {
     const { success } = await authedApi.plcPoint.deletePLCPoint({ id: plcPoint.plcPointId });
 
     if (success) {
-      getPLCPoints();
+      getPLCPointByPLCId();
       closeDialog();
       openSnackbar({
         severity: "success",
@@ -164,11 +187,11 @@ const PLCPoint = () => {
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddPLCPointDialog, icon: <Add /> },
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddPLCPointDialog, icon: <Add /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditPLCPointDialog(row), icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditPLCPointDialog(row), icon: <BorderColorSharp /> },
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />

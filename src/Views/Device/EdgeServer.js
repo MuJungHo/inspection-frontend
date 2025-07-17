@@ -1,13 +1,20 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import { Paper, Table } from "../../components/common";
 import { Add } from "../../images/icons";
 import {
   BorderColorSharp,
   Delete,
-  History
+  CheckCircle,
+  Cancel,
+  History,
+  VpnKey,
+  ContentCopy
 } from '@mui/icons-material';
+import { green, red } from '@mui/material/colors';
+import { Box, Typography, InputAdornment, TextField as MuiTextField, IconButton as MuiIconButton } from '@mui/material';
 import EdgeServerSection from "../../components/device/EdgeServerSection";
 
 
@@ -19,10 +26,12 @@ const initFilter = {
 
 const EdgeServer = () => {
   const { t, authedApi, openDialog, closeDialog, openSnackbar, openWarningDialog, } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
   const [edgeServerList, setEdgeServerList] = React.useState([]);
   const navigate = useNavigate();
+  const actionCondition = (action) => (row) => canAccessAction("edge-server", action);
 
   React.useEffect(() => {
     getEdgeServers()
@@ -31,7 +40,10 @@ const EdgeServer = () => {
   const getEdgeServers = async () => {
     const { data, total } = await authedApi.edgeServer.getEdgeServers(filter);
 
-    const _rows = data.map(a => ({ ...a, _id: a.edgeServerId }));
+    const _rows = data.map(a => ({
+      ...a, _id: a.edgeServerId,
+      _isEnabled: a.isEnabled ? <CheckCircle sx={{ color: green[300] }} /> : <Cancel sx={{ color: red[300] }} />,
+    }));
 
     setEdgeServerList(_rows);
 
@@ -112,6 +124,135 @@ const EdgeServer = () => {
       onConfirm: () => handleDeleteEdgeServers(edgeServer)
     })
   }
+
+  const handleCopyToClipboard = async (text, fieldName) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      openSnackbar({
+        severity: "success",
+        message: t("copy-success", { thing: fieldName })
+      });
+    } catch (error) {
+      // 降級處理，使用舊的方法
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        openSnackbar({
+          severity: "success",
+          message: t("copy-success", { thing: fieldName })
+        });
+      } catch (fallbackError) {
+        openSnackbar({
+          severity: "error",
+          message: t("copy-failed")
+        });
+      }
+      document.body.removeChild(textArea);
+    }
+  };
+
+  const handleRenewAppSecret = async (edgeServer) => {
+    try {
+      const response = await authedApi.edgeServer.putEdgeServerAppSecretRenew({ id: edgeServer.edgeServerId });
+      
+      if (response.data) {
+        const { edgeServerId, appSecret } = response.data;
+        closeDialog();
+        openDialog({
+          title: t("device.renew-app-secret-success"),
+          section: (
+            <Box sx={{ padding: 2, minWidth: 480 }}>
+              <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                {t("device.renew-app-secret-success-message")}
+              </Typography>
+              
+              <Box sx={{ marginBottom: 2 }}>
+                <MuiTextField
+                  label="Edge Server ID"
+                  value={edgeServerId}
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  InputProps={{
+                    readOnly: true,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <MuiIconButton
+                          onClick={() => handleCopyToClipboard(edgeServerId, 'Edge Server ID')}
+                          edge="end"
+                          size="small"
+                        >
+                          <ContentCopy fontSize="small" />
+                        </MuiIconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{ marginBottom: 1 }}
+                />
+              </Box>
+
+              <Box sx={{ marginBottom: 2 }}>
+                <MuiTextField
+                  label="App Secret"
+                  value={appSecret}
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  multiline
+                  maxRows={3}
+                  InputProps={{
+                    readOnly: true,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <MuiIconButton
+                          onClick={() => handleCopyToClipboard(appSecret, 'App Secret')}
+                          edge="end"
+                          size="small"
+                          sx={{ alignSelf: 'flex-start', marginTop: 0.5 }}
+                        >
+                          <ContentCopy fontSize="small" />
+                        </MuiIconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      wordBreak: 'break-all',
+                      fontFamily: 'monospace',
+                      fontSize: '0.875rem'
+                    }
+                  }}
+                />
+              </Box>
+
+              <Typography variant="caption" color="textSecondary">
+                {t("device.app-secret-copy-instruction")}
+              </Typography>
+            </Box>
+          )
+        });
+      }
+    } catch (error) {
+      closeDialog();
+      openSnackbar({
+        severity: "error",
+        message: t("failed-thing", { thing: t("device.renew-app-secret") })
+      });
+    }
+  }
+
+  const handleSetRenewAppSecretWarningDialog = (edgeServer) => {
+    openWarningDialog({
+      title: t("device.renew-app-secret-confirmation"),
+      message: t("device.renew-app-secret-warning"),
+      onConfirm: () => handleRenewAppSecret(edgeServer)
+    })
+  }
+
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
@@ -122,6 +263,7 @@ const EdgeServer = () => {
           { key: 'host', label: t('host'), sortable: false },
           { key: 'port', label: t('port'), sortable: false },
           { key: 'serialNumber', label: t('serial-number'), sortable: false },
+          { key: '_isEnabled', label: t('is-enabled'), sortable: false },
         ]}
         checkable={false}
         filterable={false}
@@ -137,12 +279,13 @@ const EdgeServer = () => {
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddEdgeServerDialog, icon: <Add /> },
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddEdgeServerDialog, icon: <Add /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditEdgeServerDialog(row), icon: <BorderColorSharp /> },
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditEdgeServerDialog(row), icon: <BorderColorSharp /> },
+          { name: t('device.renew-app-secret'), condition: actionCondition("update"), onClick: (e, row) => handleSetRenewAppSecretWarningDialog(row), icon: <VpnKey /> },
           { name: t('history'), onClick: (e, row) => navigate(`/edge-server/history/${row.edgeServerId}`), icon: <History /> },
-          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />

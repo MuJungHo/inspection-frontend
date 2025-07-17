@@ -38,6 +38,7 @@ const routes = [
         path: "/region",
         name: "region",
         component: Region,
+        authName: "sysAdmin",
       },
       {
         path: "/factory",
@@ -74,7 +75,7 @@ const routes = [
         path: "/edge-server/history/:edgeServerId",
         name: "edge-server-history",
         component: EdgeServerHistory,
-        siderbar: false // 不顯示在 siderbar
+        sidebar: false // 不顯示在 sidebar
       },
       {
         path: "/camera",
@@ -90,7 +91,7 @@ const routes = [
         path: "/plc-point/:plcId",
         name: "plc-point",
         component: PLCPoint,
-        siderbar: false // 不顯示在 siderbar
+        sidebar: false // 不顯示在 sidebar
       },
       {
         path: "/failover-group",
@@ -101,28 +102,32 @@ const routes = [
         path: "/failover/event/:failoverGroupId",
         name: "failover-event",
         component: FailoverEvent,
-        siderbar: false // 不顯示在 siderbar
+        sidebar: false // 不顯示在 sidebar
       },
     ]
   },
   {
-    name: "user",
+    name: "user-management",
     icon: ManageAccount,
+    authName: "admin",
     children: [
       {
         path: "/authorization",
         name: "authorization",
         component: Authorization,
+        authName: "sysAdmin",
       },
       {
         path: "/role",
         name: "role",
         component: Role,
+        authName: "admin",
       },
       {
         path: "/user",
         name: "user",
         component: User,
+        authName: "admin",
       },
     ]
   },

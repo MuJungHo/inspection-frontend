@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import Appbar from './Appbar'; // Updated import
-import Siderbar from './Siderbar'; // Updated import
+import Sidebar from './Sidebar'; // Updated import
 
 const RootStyled = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
   return (
     <RootStyled>
       <Appbar open={open} />
-      <Siderbar open={open} setOpen={setOpen} />
+      <Sidebar open={open} setOpen={setOpen} />
       <MainStyled>
         {children}
       </MainStyled>

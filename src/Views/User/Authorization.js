@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 // import { useNavigate } from "react-router-dom";
 import { green, red } from '@mui/material/colors';
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import { Paper, Table } from "../../components/common";
 import { Add } from "../../images/icons";
 import {
@@ -21,8 +22,10 @@ const initFilter = {
 
 const Authorization = () => {
   const { t, authedApi, openDialog, closeDialog, openSnackbar, openWarningDialog, } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
+  const actionCondition = (action) => (row) => canAccessAction("authorization", action) && !row.isBuiltIn;
 
   const [AuthorizationList, setAuthorizationList] = React.useState([]);
   // const navigate = useNavigate();
@@ -138,8 +141,6 @@ const Authorization = () => {
     })
   }
 
-  const actionCondition = row => !row.isBuiltIn;
-
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
@@ -149,7 +150,7 @@ const Authorization = () => {
           { key: 'name', label: t('name'), sortable: false },
           { key: 'scope', label: t('scope'), sortable: false },
           { key: 'description', label: t('description'), sortable: false },
-          { key: '_isEnabled', label: t('enable'), sortable: false },
+          { key: '_isEnabled', label: t('is-enabled'), sortable: false },
           { key: '_isBuiltIn', label: t('built-in'), sortable: false },
         ]}
         checkable={false}
@@ -166,11 +167,11 @@ const Authorization = () => {
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddAuthorizationDialog, icon: <Add /> },
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddAuthorizationDialog, icon: <Add /> },
         ]}
         rowActions={[
-          { name: t('edit'), condition: actionCondition, onClick: (e, row) => openEditAuthorizationDialog(row), icon: <BorderColorSharp /> },
-          { name: t('delete'), condition: actionCondition, onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditAuthorizationDialog(row), icon: <BorderColorSharp /> },
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />

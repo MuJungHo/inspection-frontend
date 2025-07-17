@@ -7,3 +7,41 @@ export const dummyUserList = {
     { id: 5, name: 'user5', account: 'user5', email: 'user5@email.com' },
   ], count: 5
 }
+
+export const accountAccessRoutes = [
+  "facility",
+  "device",
+  "user-management",
+  "user",
+  "authorization",
+  "role",
+  "region",
+  "parking-facility",
+  "gate-lane",
+  "gate",
+  "factory",
+  "camera",
+  "edge-server",
+  "edge-server-history",
+  "failover-event",
+  "failover-group",
+  "plc",
+  "plc-point"
+]
+
+
+export const accountAccessActions = {
+  "user": ["create", "update", "delete"],
+  "authorization": ["create", "update", "delete"],
+  "role": ["create", "update", "delete"],
+  "region": ["create", "update", "delete"],
+  "parking-facility": ["create", "update", "delete"],
+  "gate-lane": ["create", "update", "delete"],
+  "gate": ["create", "update", "delete"],
+  "factory": ["create", "update", "delete"],
+  "camera": ["create", "update", "delete"],
+  "edge-server": ["create", "update", "delete"],
+  "failover-group": ["create", "update", "delete"],
+  "plc": ["create", "update", "delete"],
+  "plc-point": ["create", "update", "delete"],
+}

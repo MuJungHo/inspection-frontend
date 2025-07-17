@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 import {
   Table,
@@ -23,10 +24,12 @@ const initFilter = {
 
 const Region = () => {
   const { t, openDialog, closeDialog, openSnackbar, openWarningDialog, authedApi } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
 
   const [regionList, setRegionList] = React.useState([]);
+  const actionCondition = (action) => (row) => canAccessAction("region", action);
 
   const getRegionList = async () => {
     let { data, total } = await authedApi.regions.getRegions({
@@ -37,7 +40,7 @@ const Region = () => {
       // sort: filter.sort
     })
 
-    const _rows = data.map(a => ({ ...a, _id: a.id }))
+    const _rows = data.map(a => ({ ...a, _id: a.regionId }))
     setRegionList(_rows)
     setTotal(total)
   };
@@ -149,12 +152,12 @@ const Region = () => {
         // onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddUserDialog, icon: <Add /> },
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddUserDialog, icon: <Add /> },
           // { name: t('upload'), onClick: openImportUserDialog, icon: <Upload /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp /> },
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import { Paper, Table } from "../../components/common";
 import { Add } from "../../images/icons";
 import {
@@ -20,8 +21,10 @@ const initFilter = {
 
 const FailoverGroup = () => {
   const { t, authedApi, openDialog, closeDialog, openSnackbar, openWarningDialog, } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
+  const actionCondition = (action) => (row) => canAccessAction("failover-group", action);
 
   const [failoverGroupList, setFailoverGroupList] = React.useState([]);
   const navigate = useNavigate();
@@ -140,13 +143,13 @@ const FailoverGroup = () => {
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddFailoverGroupDialog, icon: <Add /> }
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddFailoverGroupDialog, icon: <Add /> }
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditFailoverGroupDialog(row), icon: <BorderColorSharp /> },
-          { name: t('member'), onClick: (e, row) => openEditPriorityDialog(row), icon: <LowPriority /> },
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditFailoverGroupDialog(row), icon: <BorderColorSharp /> },
+          { name: t('member'), condition: actionCondition("update"), onClick: (e, row) => openEditPriorityDialog(row), icon: <LowPriority /> },
           { name: t('event'), onClick: (e, row) => navigate(`/failover/event/${row.failoverGroupId}`), icon: <Event /> },
-          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />

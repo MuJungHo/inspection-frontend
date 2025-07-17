@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import { Paper, Table } from "../../components/common";
 import { Add } from "../../images/icons";
 import {
@@ -18,8 +19,10 @@ const initFilter = {
 
 const PLC = () => {
   const { t, authedApi, openDialog, closeDialog, openSnackbar, openWarningDialog, } = useContext(GlobalContext);
+  const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
+  const actionCondition = (action) => (row) => canAccessAction("plc", action);
 
   const [PLCList, setPLCList] = React.useState([]);
   const navigate = useNavigate();
@@ -31,7 +34,10 @@ const PLC = () => {
   const getPLCs = async () => {
     const { data, total, success } = await authedApi.plc.getPLCs(filter);
 
-    const _rows = data.map(a => ({ ...a, _id: a.plcId }));
+    const _rows = data.map(a => ({
+      ...a, _id: a.plcId,
+      _count: a.plcPoints.length
+    }));
 
     if (success) {
       setPLCList(_rows);
@@ -143,6 +149,7 @@ const PLC = () => {
           { key: 'name', label: t('name'), sortable: false },
           { key: 'host', label: t('host'), sortable: false },
           { key: 'port', label: t('port'), sortable: false },
+          { key: '_count', label: t('thing-amount', { thing: t("plc-point") }), sortable: false },
           { key: 'protocol', label: t('protocol'), sortable: false },
         ]}
         checkable={false}
@@ -159,12 +166,12 @@ const PLC = () => {
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: openAddPLCDialog, icon: <Add /> },
+          { name: t('add'), condition: actionCondition("create"), onClick: openAddPLCDialog, icon: <Add /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditPLCDialog(row), icon: <BorderColorSharp /> },
+          { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditPLCDialog(row), icon: <BorderColorSharp /> },
           { name: t('plc-point'), onClick: (e, row) => navigate(`/plc-point/${row.plcId}`), icon: <Ballot /> },
-          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+          { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
       // dense
       />
