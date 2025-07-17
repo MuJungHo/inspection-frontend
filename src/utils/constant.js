@@ -26,9 +26,15 @@ export const accountAccessRoutes = [
   "failover-event",
   "failover-group",
   "plc",
-  "plc-point"
+  "plc-point",
+  "instant",
+  "record",
+  "abnormal-record-instant",
+  "abnormal-record-record",
+  "usage-record-instant",
+  "vehicle-record",
+  "abnormal-exit-entry"
 ]
-
 
 export const accountAccessActions = {
   "user": ["create", "update", "delete"],

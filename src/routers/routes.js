@@ -16,6 +16,13 @@ import User from "../Views/User/User";
 import Role from "../Views/User/Role";
 import Authorization from "../Views/User/Authorization";
 
+import UsageRecordInstant from "../Views/Report/UsageRecordInstant";
+import UsageRecordByPlate from "../Views/Report/UsageRecordByPlate";
+import AbnormalRecordInstant from "../Views/Report/AbnormalRecordInstant";
+import AbnormalRecordRecord from "../Views/Report/AbnormalRecordRecord";
+import AbnormalExitEntry from "../Views/Report/AbnormalExitEntry";
+import VehicleRecord from "../Views/Report/VehicleRecord";
+
 import {
   ManageAccount,
   // IdCard,
@@ -26,13 +33,13 @@ import {
   // Tools
 } from "../images/icons";
 
-import DomainIcon from '@mui/icons-material/Domain';
+import { Domain, DataUsage, Storage, Warning, TaxiAlert } from '@mui/icons-material';
 
 
 const routes = [
   {
     name: "facility",
-    icon: DomainIcon,
+    icon: Domain,
     children: [
       {
         path: "/region",
@@ -126,6 +133,63 @@ const routes = [
       },
     ]
   },
+  {
+    name: "instant",
+    icon: DataUsage,
+    children: [
+      {
+        name: "usage-record-instant",
+        path: "/usage-record-instant",
+        component: UsageRecordInstant
+      },
+    ]
+  },
+  {
+    name: "abnormal-record-instant",
+    icon: Warning,
+    path: "/abnormal-record-instant",
+    component: AbnormalRecordInstant
+  },
+  {
+    name: "abnormal-exit-entry",
+    icon: TaxiAlert,
+    path: "/abnormal-exit-entry",
+    component: AbnormalExitEntry
+  },
+  {
+    name: "record",
+    icon: Storage,
+    children: [
+      {
+        name: "abnormal-record-record",
+        path: "/abnormal-record-record",
+        component: AbnormalRecordRecord
+      },
+      {
+        name: "vehicle-record",
+        path: "/vehicle-record",
+        component: VehicleRecord
+      },
+    ]
+  },
+  {
+    name: "usage-record-instant-usage-record-by-plate",
+    path: "/usage-record-instant/usage-record-by-plate/:plateNumber",
+    component: UsageRecordByPlate,
+    sidebar: false
+  },
+  {
+    name: "abnormal-record-instant-usage-record-by-plate",
+    path: "/abnormal-record-instant/usage-record-by-plate/:plateNumber",
+    component: UsageRecordByPlate,
+    sidebar: false
+  },
+  {
+    name: "abnormal-record-record-usage-record-by-plate",
+    path: "/abnormal-record-record/usage-record-by-plate/:plateNumber",
+    component: UsageRecordByPlate,
+    sidebar: false
+  }
 ]
 
 export default routes

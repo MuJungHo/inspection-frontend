@@ -219,6 +219,7 @@ const Siderbar = ({ open, setOpen }) => {
         {
           routes
             .filter(route => canAccessRoute(route.name))
+            .filter(route => route.sidebar !== false)
             .map(route => Array.isArray(route.children)
               ?
               open

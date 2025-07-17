@@ -1,4 +1,7 @@
 {
+    "abnormal-record-instant": "即時違規狀況",
+    "abnormal-record-record": "異常紀錄查詢",
+    "abnormal-exit-entry": "進出車場異常管理",
     "account": "帳號",
     "action": "操作",
     "add": "新增",
@@ -35,7 +38,15 @@
     "edit-thing": "編輯{{thing}}",
     "email": "電子信箱",
     "enable": "啟用",
+    "entry-time": "進入時間",
+    "entry-image": "進入照片",
+    "entry-history": "進場歷程",
+    "entry-plate-image": "進入車牌",
     "event": "事件",
+    "event-image": "事件圖片",
+    "exit-time": "離開時間",
+    "exit-image": "離開照片",
+    "exit-plate-image": "離開車牌",
     "failed-thing": "{{thing}}失敗",
     "failover-event": "容錯事件",
     "failover-group": "容錯群組",
@@ -57,7 +68,9 @@
     "member": "成員",
     "name": "名稱",
     "navigation": "導航",
+    "parking-duration": "停車時間",
     "password": "密碼",
+    "plate-number": "車牌號碼",
     "plc": "PLC",
     "plc-point": "點位",
     "protocol": "協定",
@@ -88,8 +101,16 @@
         "factory": "廠區",
         "parking-facility": "停車場",
         "gate": "哨口",
-        "gate-lane": "車道"
+        "gate-lane": "車道",
+        "instant": "即時停車狀況",
+        "abnormal-record-instant": "即時違規",
+        "usage-record-instant": "清單檢視",
+        "record": "歷史資料查詢",
+        "abnormal-record-record": "異常紀錄查詢",
+        "abnormal-exit-entry": "進出車場異常管理",
+        "vehicle-record": "車輛停放紀錄"
     },
+    "snapshot-image": "快照",
     "stream-type": "串流種類",
     "stream-url": "串流網址",
     "status": "狀態",
@@ -100,6 +121,7 @@
     "thing-management": "{{thing}}管理",
     "timeout": "延遲時間",
     "upload": "上傳",
+    "usage-record-instant": "清單檢視",
     "user": "使用者",
     "username": "使用者名稱",
     "user-profile": "用戶資料",
@@ -126,6 +148,8 @@
         "car": "汽車",
         "motorcycle": "機車"
     },
+    "vehicle-data": "車籍資料",
+    "vehicle-record": "車輛停放紀錄",
     "lane": {
         "reversible": "調撥車道",
         "reversible-enabled": "啟用調撥",
@@ -139,5 +163,11 @@
     },
     "yes": "是",
     "no": "否",
-    "error-thing": "{{thing}} 錯誤"
+    "error-thing": "{{thing}} 錯誤",
+    "TYPE": {
+        "IN": "重複入場",
+        "OUT": "異常離場",
+        "UNAUTHORIZED": "無車證",
+        "OVERTIME": "超時"
+    }
 }

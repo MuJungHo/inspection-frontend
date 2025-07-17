@@ -36,7 +36,7 @@ const PLC = () => {
 
     const _rows = data.map(a => ({
       ...a, _id: a.plcId,
-      _count: a.plcPoints.length
+      _count: a.plcPoints?.length
     }));
 
     if (success) {

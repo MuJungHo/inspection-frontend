@@ -8,7 +8,7 @@ const apiModules = config.useMockData ? mockApis : prodApis;
 // 包裝 API 呼叫以處理登出邏輯
 const wrapApiModule = (apiModule, logout) => {
   const wrappedModule = {};
-  
+
   Object.keys(apiModule).forEach(key => {
     wrappedModule[key] = async (params) => {
       try {
@@ -21,12 +21,12 @@ const wrapApiModule = (apiModule, logout) => {
       }
     };
   });
-  
+
   return wrappedModule;
 };
 
 // 新的模組化 API 介面
-export const api = (logout = () => {}) => {
+export const api = (logout = () => { }) => {
   return {
     auth: wrapApiModule(apiModules.authApi, logout),
     user: wrapApiModule(apiModules.userApi, logout),
@@ -38,8 +38,8 @@ export const api = (logout = () => {}) => {
     parkingFacilities: wrapApiModule(apiModules.parkingFacilitiesApi, logout),
     parkingFacilityGates: wrapApiModule(apiModules.parkingFacilityGatesApi, logout),
     parkingFacilityGateLanes: wrapApiModule(apiModules.parkingFacilityGateLanesApi, logout),
-    
-    // 設備相關
+    record: wrapApiModule(apiModules.recordApi, logout),
+    vehicle: wrapApiModule(apiModules.vehicleApi, logout),
     edgeServer: wrapApiModule(apiModules.edgeServerApi, logout),
     camera: wrapApiModule(apiModules.cameraApi, logout),
     failoverGroup: wrapApiModule(apiModules.failoverGroupApi, logout),
@@ -51,13 +51,13 @@ export const api = (logout = () => {}) => {
 };
 
 // 向後相容性 - 保留原有的扁平化結構
-export const compatibleApi = (logout = () => {}) => {
+export const compatibleApi = (logout = () => { }) => {
   const modules = api(logout);
-  
+
   return {
     // Auth (更新 API 路徑)
     postAuthLogin: modules.auth.postAuthLogin,
-    
+
     // Users (新版 API + 保持舊版相容性)
     getUsers: modules.user.getUsers,
     getUserById: modules.user.getUserById,
@@ -66,7 +66,7 @@ export const compatibleApi = (logout = () => {}) => {
     deleteUser: modules.user.deleteUser,
     getUserList: modules.user.getUserList, // 向後相容
     postCreateUser: modules.user.postCreateUser, // 向後相容
-    
+
     // Authorization
     getAuthorizations: modules.authorization.getAuthorizations,
     getAuthorizationNames: modules.authorization.getAuthorizationNames,
@@ -75,34 +75,34 @@ export const compatibleApi = (logout = () => {}) => {
     postAddAuthorization: modules.authorization.postAddAuthorization,
     putUpdateAuthorization: modules.authorization.putUpdateAuthorization,
     deleteAuthorization: modules.authorization.deleteAuthorization,
-    
+
     // Role
     getRoles: modules.role.getRoles,
     getRoleById: modules.role.getRoleById,
     postAddRole: modules.role.postAddRole,
     putUpdateRole: modules.role.putUpdateRole,
     deleteRole: modules.role.deleteRole,
-    
+
     // Role Attribute
     getRoleAttributes: modules.roleAttribute.getRoleAttributes,
     getRoleAttributeById: modules.roleAttribute.getRoleAttributeById,
     postAddRoleAttribute: modules.roleAttribute.postAddRoleAttribute,
     putUpdateRoleAttribute: modules.roleAttribute.putUpdateRoleAttribute,
     deleteRoleAttribute: modules.roleAttribute.deleteRoleAttribute,
-    
+
     // User Attribute
     getUserAttributes: modules.userAttribute.getUserAttributes,
     getUserAttributeById: modules.userAttribute.getUserAttributeById,
     postAddUserAttribute: modules.userAttribute.postAddUserAttribute,
     putUpdateUserAttribute: modules.userAttribute.putUpdateUserAttribute,
     deleteUserAttribute: modules.userAttribute.deleteUserAttribute,
-    
+
     // Regions
     getRegions: modules.regions.getRegions,
     postCreateRegion: modules.regions.postCreateRegion,
     patchUpdateRegion: modules.regions.patchUpdateRegion,
     deleteRegion: modules.regions.deleteRegion,
-    
+
     // Parking Facilities
     getParkingFacilities: modules.parkingFacilities.getParkingFacilities,
     getParkingFacilityById: modules.parkingFacilities.getParkingFacilityById,
@@ -110,7 +110,7 @@ export const compatibleApi = (logout = () => {}) => {
     postCreateParkingFacility: modules.parkingFacilities.postCreateParkingFacility,
     patchUpdateParkingFacility: modules.parkingFacilities.patchUpdateParkingFacility,
     deleteParkingFacility: modules.parkingFacilities.deleteParkingFacility,
-    
+
     // Parking Facility Gates
     getParkingFacilityGates: modules.parkingFacilityGates.getParkingFacilityGates,
     getParkingFacilityGateById: modules.parkingFacilityGates.getParkingFacilityGateById,
@@ -118,14 +118,14 @@ export const compatibleApi = (logout = () => {}) => {
     postCreateParkingFacilityGate: modules.parkingFacilityGates.postCreateParkingFacilityGate,
     patchUpdateParkingFacilityGate: modules.parkingFacilityGates.patchUpdateParkingFacilityGate,
     deleteParkingFacilityGate: modules.parkingFacilityGates.deleteParkingFacilityGate,
-    
+
     // Parking Facility Gate Lanes
     getParkingFacilityGateLanes: modules.parkingFacilityGateLanes.getParkingFacilityGateLanes,
     getParkingFacilityGateLanesByGateId: modules.parkingFacilityGateLanes.getParkingFacilityGateLanesByGateId,
     postCreateParkingFacilityGateLane: modules.parkingFacilityGateLanes.postCreateParkingFacilityGateLane,
     patchUpdateParkingFacilityGateLane: modules.parkingFacilityGateLanes.patchUpdateParkingFacilityGateLane,
     deleteParkingFacilityGateLane: modules.parkingFacilityGateLanes.deleteParkingFacilityGateLane,
-    
+
     // Devices
     getEdgeServers: modules.edgeServer.getEdgeServers,
     getEdgeServerHistories: modules.edgeServer.getEdgeServerHistories,
@@ -133,13 +133,13 @@ export const compatibleApi = (logout = () => {}) => {
     postCreateEdgeServer: modules.edgeServer.postCreateEdgeServer,
     patchUpdateEdgeServer: modules.edgeServer.patchUpdateEdgeServer,
     deleteEdgeServer: modules.edgeServer.deleteEdgeServer,
-    
+
     getCameras: modules.camera.getCameras,
     getCameraById: modules.camera.getCameraById,
     postCreateCamera: modules.camera.postCreateCamera,
     patchUpdateCamera: modules.camera.patchUpdateCamera,
     deleteCamera: modules.camera.deleteCamera,
-    
+
     getFailoverGroups: modules.failoverGroup.getFailoverGroups,
     getFailoverGroupById: modules.failoverGroup.getFailoverGroupById,
     postCreateFailoverGroup: modules.failoverGroup.postCreateFailoverGroup,
@@ -153,7 +153,7 @@ export const compatibleApi = (logout = () => {}) => {
     deleteFailoverGroupMember: modules.failoverGroupMember.deleteFailoverGroupMember,
 
     getFailoverEventsByGroupId: modules.failoverEvent.getFailoverEventsByGroupId,
-    
+
     // PLC
     getPLCs: modules.plc.getPLCs,
     getPLCById: modules.plc.getPLCById,
@@ -161,7 +161,7 @@ export const compatibleApi = (logout = () => {}) => {
     postCreatePLC: modules.plc.postCreatePLC,
     patchUpdatePLC: modules.plc.patchUpdatePLC,
     deletePLC: modules.plc.deletePLC,
-    
+
     // PLC Point
     getPLCPoints: modules.plcPoint.getPLCPoints,
     getPLCPointById: modules.plcPoint.getPLCPointById,
@@ -169,6 +169,9 @@ export const compatibleApi = (logout = () => {}) => {
     postCreatePLCPoint: modules.plcPoint.postCreatePLCPoint,
     patchUpdatePLCPoint: modules.plcPoint.patchUpdatePLCPoint,
     deletePLCPoint: modules.plcPoint.deletePLCPoint,
+
+    getAbnormalRecordInstants: modules.record.getAbnormalRecordInstants,
+    getUsageRecordInstants: modules.record.getUsageRecordInstants,
   };
 };
 

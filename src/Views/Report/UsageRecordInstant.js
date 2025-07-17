@@ -1,0 +1,112 @@
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { GlobalContext } from "../../contexts/GlobalContext";
+// import { AuthContext } from "../../contexts/AuthContext";
+import { Paper, Table } from "../../components/common";
+// import { Add } from "../../images/icons";
+import {
+  // BorderColorSharp,
+  // Delete,
+  // Ballot,
+  History,
+  TimeToLeave
+} from '@mui/icons-material';
+import { config } from "../../utils/config";
+import Vehicle from "../../components/vehicle/Vehicle";
+
+const initFilter = {
+  amount: 5,
+  skip: 0,
+  page: 0
+}
+
+const imageStyle = {
+  height: 32
+}
+
+const UsageRecord = () => {
+  const { t, authedApi, openDialog,
+    // closeDialog, openSnackbar, openWarningDialog,
+  } = useContext(GlobalContext);
+  // const { canAccessAction } = useContext(AuthContext);
+  const [total, setTotal] = React.useState(0);
+  const [filter, setFilter] = React.useState(initFilter);
+  const [UsageRecordList, setUsageRecordList] = React.useState([]);
+  const navigate = useNavigate();
+  const host = `${config.apiProtocol}://${config.apiHost}${config.apiPort ? `:${config.apiPort}` : ''}`;
+
+  React.useEffect(() => {
+    getUsageRecordInstants()
+  }, [filter])
+
+  const getUsageRecordInstants = async () => {
+    const { data, total, success } = await authedApi.record.getUsageRecordInstants(filter);
+
+    const _rows = data.map(a => ({
+      ...a,
+      _id: a.parkingFacilityUsageRecordId,
+      _entryTime: a.entryExitRecord?.entryTime,
+      _entryImage: a.entryExitRecord.entryImageFileId && <img style={imageStyle} src={`${host}/api/v1/Image/${a.entryExitRecord.entryImageFileId}`} alt="" />,
+      _entryPlateImage: a.entryExitRecord.entryImagePlateFileId && <img style={imageStyle} src={`${host}/api/v1/Image/${a.entryExitRecord.entryImagePlateFileId}`} alt="" />,
+      _exitTime: a.entryExitRecord?.exitTime,
+      _exitImage: a.entryExitRecord.exitImageFileId && <img style={imageStyle} src={`${host}/api/v1/Image/${a.entryExitRecord.exitImageFileId}`} alt="" />,
+      _exitPlateImage: a.entryExitRecord.exitImagePlateFileId && <img style={imageStyle} src={`${host}/api/v1/Image/${a.entryExitRecord.exitImagePlateFileId}`} alt="" />,
+      _parkingDuration: a.entryExitRecord?.parkingDuration
+    }));
+
+    if (success) {
+      setUsageRecordList(_rows);
+      setTotal(total);
+    }
+  }
+
+  const openVehicleDialog = (plateNumber) => {
+    openDialog({
+      title: t("vehicle-data"),
+      maxWidth: "sm",
+      fullWidth: true,
+      section: <Vehicle onConfirm={() => { }} plateNumber={plateNumber} />
+    })
+  }
+
+  return (
+    <Paper sx={{ margin: 3 }}>
+      <Table
+        title={t("usage-record-instant")}
+        rows={UsageRecordList}
+        columns={[
+          { key: 'plateNumber', label: t('plate-number'), sortable: false },
+          { key: '_entryTime', label: t('entry-time'), sortable: false },
+          { key: '_entryImage', label: t('entry-image'), sortable: false },
+          { key: '_entryPlateImage', label: t('entry-plate-image'), sortable: false },
+          { key: '_exitTime', label: t('exit-time'), sortable: false },
+          { key: '_exitImage', label: t('exit-image'), sortable: false },
+          { key: '_exitPlateImage', label: t('exit-plate-image'), sortable: false },
+          { key: '_parkingDuration', label: t('parking-duration'), sortable: false },
+        ]}
+        checkable={false}
+        filterable={false}
+        order={filter.order}
+        sort={filter.sort}
+        rowsPerPage={filter.amount}
+        page={filter.page}
+        total={total}
+        onSearchClick={getUsageRecordInstants}
+        onClearClick={() => setFilter(initFilter)}
+        onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
+        onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
+        onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
+        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
+        toolbarActions={[]}
+        rowActions={[
+          { name: t('entry-history'), onClick: (e, row) => navigate(`/usage-record-instant/usage-record-by-plate/${row.plateNumber}`), icon: <History /> },
+          { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> }
+        ]}
+      // dense
+      />
+    </Paper>
+  );
+}
+
+
+export default UsageRecord;

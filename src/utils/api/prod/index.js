@@ -9,6 +9,8 @@ export { regionsApi } from './regions';
 export { parkingFacilitiesApi } from './parkingFacilities';
 export { parkingFacilityGatesApi } from './parkingFacilityGates';
 export { parkingFacilityGateLanesApi } from './parkingFacilityGateLanes';
+export { recordApi } from './record';
+export { vehicleApi } from './vehicle';
 
 // 設備相關 API
 export * from './devices';

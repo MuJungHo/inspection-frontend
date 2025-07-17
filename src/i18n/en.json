@@ -1,4 +1,7 @@
 {
+    "abnormal-record-instant": "Instant Abnormal Record",
+    "abnormal-record-record": "Historical Abnormal Record",
+    "abnormal-exit-entry": "Abnormal Exit Entry",
     "account": "Account",
     "action": "Action",
     "add": "Add",
@@ -35,7 +38,15 @@
     "edit-thing": "Edit {{thing}}",
     "email": "EMail",
     "enable": "Enable",
+    "entry-time": "Entry Time",
+    "entry-image": "Entry Image",
+    "entry-history": "Entry History",
+    "entry-plate-image": "Entry Plate Image",
     "event": "Event",
+    "event-image": "Event Image",
+    "exit-time": "Exit Time",
+    "exit-image": "Exit Image",
+    "exit-plate-image": "Exit Plate Image",
     "failed-thing": "Failed to {{thing}}",
     "failover-event": "Failover Event",
     "failover-group": "Failover Group",
@@ -57,7 +68,9 @@
     "member": "Member",
     "name": "Name",
     "navigation": "Navigation",
+    "parking-duration": "Parking Duration",
     "password": "Password",
+    "plate-number": "Plate Number",
     "port": "Port",
     "plc": "PLC",
     "protocol": "Protocol",
@@ -88,8 +101,16 @@
         "factory": "Factory",
         "parking-facility": "Parking Facility",
         "gate": "Gate",
-        "gate-lane": "Lane"
+        "gate-lane": "Lane",
+        "instant": "Instant",
+        "abnormal-record-instant": "Abnormal Record",
+        "usage-record-instant": "Usage Record",
+        "record": "Record",
+        "abnormal-record-record": "Abnormal Record",
+        "abnormal-exit-entry": "Abnormal Exit Entry",
+        "vehicle-record": "Vehicle Record"
     },
+    "snapshot-image": "Snapshot Image",
     "stream-type": "Stream Type",
     "stream-url": "Stream URL",
     "status": "Status",
@@ -100,6 +121,7 @@
     "thing-management": "{{thing}} Management",
     "timeout": "Timeout",
     "upload": "Upload",
+    "usage-record-instant": "Instant Usage Record",
     "user": "User",
     "username": "Username",
     "user-profile": "User Profile",
@@ -126,6 +148,8 @@
         "car": "Car",
         "motorcycle": "Motorcycle"
     },
+    "vehicle-data": "Vehicle Data",
+    "vehicle-record": "Vehicle Record",
     "lane": {
         "reversible": "Reversible Lane",
         "reversible-enabled": "Enable Reversible",
@@ -139,5 +163,11 @@
     },
     "yes": "Yes",
     "no": "No",
-    "error-thing": "{{thing}} Error"
+    "error-thing": "{{thing}} Error",
+    "TYPE": {
+        "IN": "IN",
+        "OUT": "OUT",
+        "UNAUTHORIZED": "UNAUTHORIZED",
+        "OVERTIME": "OVERTIME"
+    }
 }
