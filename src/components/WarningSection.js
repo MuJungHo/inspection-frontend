@@ -26,7 +26,9 @@ export default ({
         style={{
           width: 500
         }}>
-        {message}
+        <div style={{ whiteSpace: 'pre-line' }}>
+          {message}
+        </div>
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>

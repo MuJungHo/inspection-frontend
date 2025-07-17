@@ -9,9 +9,12 @@ import {
   Delete,
   CheckCircle,
   Cancel,
-  History
+  History,
+  VpnKey,
+  ContentCopy
 } from '@mui/icons-material';
 import { green, red } from '@mui/material/colors';
+import { Box, Typography, InputAdornment, TextField as MuiTextField, IconButton as MuiIconButton } from '@mui/material';
 import EdgeServerSection from "../../components/device/EdgeServerSection";
 
 
@@ -122,6 +125,134 @@ const EdgeServer = () => {
     })
   }
 
+  const handleCopyToClipboard = async (text, fieldName) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      openSnackbar({
+        severity: "success",
+        message: t("copy-success", { thing: fieldName })
+      });
+    } catch (error) {
+      // 降級處理，使用舊的方法
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        openSnackbar({
+          severity: "success",
+          message: t("copy-success", { thing: fieldName })
+        });
+      } catch (fallbackError) {
+        openSnackbar({
+          severity: "error",
+          message: t("copy-failed")
+        });
+      }
+      document.body.removeChild(textArea);
+    }
+  };
+
+  const handleRenewAppSecret = async (edgeServer) => {
+    try {
+      const response = await authedApi.edgeServer.putEdgeServerAppSecretRenew({ id: edgeServer.edgeServerId });
+      
+      if (response.data) {
+        const { edgeServerId, appSecret } = response.data;
+        closeDialog();
+        openDialog({
+          title: t("device.renew-app-secret-success"),
+          section: (
+            <Box sx={{ padding: 2, minWidth: 480 }}>
+              <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                {t("device.renew-app-secret-success-message")}
+              </Typography>
+              
+              <Box sx={{ marginBottom: 2 }}>
+                <MuiTextField
+                  label="Edge Server ID"
+                  value={edgeServerId}
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  InputProps={{
+                    readOnly: true,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <MuiIconButton
+                          onClick={() => handleCopyToClipboard(edgeServerId, 'Edge Server ID')}
+                          edge="end"
+                          size="small"
+                        >
+                          <ContentCopy fontSize="small" />
+                        </MuiIconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{ marginBottom: 1 }}
+                />
+              </Box>
+
+              <Box sx={{ marginBottom: 2 }}>
+                <MuiTextField
+                  label="App Secret"
+                  value={appSecret}
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  multiline
+                  maxRows={3}
+                  InputProps={{
+                    readOnly: true,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <MuiIconButton
+                          onClick={() => handleCopyToClipboard(appSecret, 'App Secret')}
+                          edge="end"
+                          size="small"
+                          sx={{ alignSelf: 'flex-start', marginTop: 0.5 }}
+                        >
+                          <ContentCopy fontSize="small" />
+                        </MuiIconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      wordBreak: 'break-all',
+                      fontFamily: 'monospace',
+                      fontSize: '0.875rem'
+                    }
+                  }}
+                />
+              </Box>
+
+              <Typography variant="caption" color="textSecondary">
+                {t("device.app-secret-copy-instruction")}
+              </Typography>
+            </Box>
+          )
+        });
+      }
+    } catch (error) {
+      closeDialog();
+      openSnackbar({
+        severity: "error",
+        message: t("failed-thing", { thing: t("device.renew-app-secret") })
+      });
+    }
+  }
+
+  const handleSetRenewAppSecretWarningDialog = (edgeServer) => {
+    openWarningDialog({
+      title: t("device.renew-app-secret-confirmation"),
+      message: t("device.renew-app-secret-warning"),
+      onConfirm: () => handleRenewAppSecret(edgeServer)
+    })
+  }
+
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
@@ -152,6 +283,7 @@ const EdgeServer = () => {
         ]}
         rowActions={[
           { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditEdgeServerDialog(row), icon: <BorderColorSharp /> },
+          { name: t('device.renew-app-secret'), condition: actionCondition("update"), onClick: (e, row) => handleSetRenewAppSecretWarningDialog(row), icon: <VpnKey /> },
           { name: t('history'), onClick: (e, row) => navigate(`/edge-server/history/${row.edgeServerId}`), icon: <History /> },
           { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
