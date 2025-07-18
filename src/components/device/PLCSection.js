@@ -104,7 +104,7 @@ const CameraSection = ({
               protocol: e.target.value
             })}
           >
-            <MenuItem value="Mobus"> Mobus </MenuItem>
+            <MenuItem value="Modbus"> Modbus </MenuItem>
           </Select>
         </FormControl>
         <FormControl>

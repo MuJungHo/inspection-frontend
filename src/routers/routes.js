@@ -38,6 +38,45 @@ import { Domain, DataUsage, Storage, Warning, TaxiAlert } from '@mui/icons-mater
 
 const routes = [
   {
+    name: "instant",
+    icon: DataUsage,
+    children: [
+      {
+        name: "usage-record-instant",
+        path: "/usage-record-instant",
+        component: UsageRecordInstant
+      },
+    ]
+  },
+  {
+    name: "abnormal-record-instant",
+    icon: Warning,
+    path: "/abnormal-record-instant",
+    component: AbnormalRecordInstant
+  },
+  {
+    name: "abnormal-exit-entry",
+    icon: TaxiAlert,
+    path: "/abnormal-exit-entry",
+    component: AbnormalExitEntry
+  },
+  {
+    name: "record",
+    icon: Storage,
+    children: [
+      {
+        name: "abnormal-record-record",
+        path: "/abnormal-record-record",
+        component: AbnormalRecordRecord
+      },
+      {
+        name: "vehicle-record",
+        path: "/vehicle-record",
+        component: VehicleRecord
+      },
+    ]
+  },
+  {
     name: "facility",
     icon: Domain,
     children: [
@@ -46,6 +85,7 @@ const routes = [
         name: "region",
         component: Region,
         authName: "sysAdmin",
+        sidebar: false // 暫時不顯示這個頁面
       },
       {
         path: "/factory",
@@ -123,6 +163,7 @@ const routes = [
         name: "authorization",
         component: Authorization,
         authName: "sysAdmin",
+        sidebar: false // 暫時不顯示這個頁面
       },
       {
         path: "/role",
@@ -135,45 +176,6 @@ const routes = [
         name: "user",
         component: User,
         authName: "admin",
-      },
-    ]
-  },
-  {
-    name: "instant",
-    icon: DataUsage,
-    children: [
-      {
-        name: "usage-record-instant",
-        path: "/usage-record-instant",
-        component: UsageRecordInstant
-      },
-    ]
-  },
-  {
-    name: "abnormal-record-instant",
-    icon: Warning,
-    path: "/abnormal-record-instant",
-    component: AbnormalRecordInstant
-  },
-  {
-    name: "abnormal-exit-entry",
-    icon: TaxiAlert,
-    path: "/abnormal-exit-entry",
-    component: AbnormalExitEntry
-  },
-  {
-    name: "record",
-    icon: Storage,
-    children: [
-      {
-        name: "abnormal-record-record",
-        path: "/abnormal-record-record",
-        component: AbnormalRecordRecord
-      },
-      {
-        name: "vehicle-record",
-        path: "/vehicle-record",
-        component: VehicleRecord
       },
     ]
   },
