@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { AuthContext } from "../../contexts/AuthContext";
-import { Paper, Table } from "../../components/common";
+// import { AuthContext } from "../../contexts/AuthContext";
+import { Paper, Table, Image } from "../../components/common";
 // import { Add } from "../../images/icons";
 import {
   // BorderColorSharp,
@@ -11,7 +11,7 @@ import {
   History,
   TimeToLeave
 } from '@mui/icons-material';
-import { config } from "../../utils/config";
+import { host } from "../../utils/api/axios";
 import Vehicle from "../../components/vehicle/Vehicle";
 
 import InputLabel from '@mui/material/InputLabel';
@@ -27,11 +27,6 @@ const initFilter = {
   type: "unauthorized"
 }
 
-const imageStyle = {
-  height: 32,
-  cursor: 'pointer'
-}
-
 const AbnormalRecordInstant = () => {
   const { t, authedApi, openDialog,
     // closeDialog, openSnackbar, openWarningDialog,
@@ -40,7 +35,6 @@ const AbnormalRecordInstant = () => {
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
   const [AbnormalRecordInstantList, setAbnormalRecordInstantList] = React.useState([]);
-  const host = `${config.apiProtocol}://${config.apiHost}${config.apiPort ? `:${config.apiPort}` : ''}`
 
   const navigate = useNavigate();
 
@@ -57,8 +51,8 @@ const AbnormalRecordInstant = () => {
         ...a,
         _id: a.parkingAbnormalRecordId,
         _type: t(`TYPE.${a.type}`),
-        _eventImage: a.eventImageFileId && <img onClick={() => onImageDialg(t('event-image'), _eventImageSrc)} style={imageStyle} src={_eventImageSrc} alt="" />,
-        _snapshotImage: a.snapshotImageFileId && <img onClick={() => onImageDialg(t('snapshot-image'), _snapshotImageSrc)} style={imageStyle} src={_snapshotImageSrc} alt="" />,
+        _eventImage: a.eventImageFileId && <Image name={t('event-image')} src={_eventImageSrc} />,
+        _snapshotImage: a.snapshotImageFileId && <Image name={t('snapshot-image')} src={_snapshotImageSrc} />,
       })
     });
 
@@ -66,15 +60,6 @@ const AbnormalRecordInstant = () => {
       setAbnormalRecordInstantList(_rows);
       setTotal(total);
     }
-  }
-
-  const onImageDialg = (title, src) => {
-    openDialog({
-      title,
-      maxWidth: "sm",
-      fullWidth: true,
-      section: <img src={src} alt="" />
-    })
   }
 
   const openVehicleDialog = (plateNumber) => {

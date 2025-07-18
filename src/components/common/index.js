@@ -11,3 +11,4 @@ export { default as Actions } from './Actions';
 export { default as DialogContent } from './DialogContent';
 export { default as DialogActions } from './DialogActions';
 export { default as IconButton } from './IconButton';
+export { default as Image } from './Image';

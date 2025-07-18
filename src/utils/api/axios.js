@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { config } from '../config';
 
-const host = import.meta.env.MODE === 'production'
+export const host = import.meta.env.MODE === 'production'
   ? ""
   : `${config.apiProtocol}://${config.apiHost}${config.apiPort ? `:${config.apiPort}` : ''}`;
 

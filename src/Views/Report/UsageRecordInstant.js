@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 // import { AuthContext } from "../../contexts/AuthContext";
-import { Paper, Table } from "../../components/common";
+import { Paper, Table, Image } from "../../components/common";
 // import { Add } from "../../images/icons";
 import {
   // BorderColorSharp,
@@ -11,17 +11,13 @@ import {
   History,
   TimeToLeave
 } from '@mui/icons-material';
-import { config } from "../../utils/config";
 import Vehicle from "../../components/vehicle/Vehicle";
+import { host } from "../../utils/api/axios";
 
 const initFilter = {
   amount: 5,
   skip: 0,
   page: 0
-}
-
-const imageStyle = {
-  height: 32
 }
 
 const UsageRecord = () => {
@@ -33,7 +29,6 @@ const UsageRecord = () => {
   const [filter, setFilter] = React.useState(initFilter);
   const [UsageRecordList, setUsageRecordList] = React.useState([]);
   const navigate = useNavigate();
-  const host = `${config.apiProtocol}://${config.apiHost}${config.apiPort ? `:${config.apiPort}` : ''}`;
 
   React.useEffect(() => {
     getUsageRecordInstants()
@@ -42,17 +37,23 @@ const UsageRecord = () => {
   const getUsageRecordInstants = async () => {
     const { data, total, success } = await authedApi.record.getUsageRecordInstants(filter);
 
-    const _rows = data.map(a => ({
-      ...a,
-      _id: a.parkingFacilityUsageRecordId,
-      _entryTime: a.entryExitRecord?.entryTime,
-      _entryImage: a.entryExitRecord.entryImageFileId && <img style={imageStyle} src={`${host}/api/v1/Image/${a.entryExitRecord.entryImageFileId}`} alt="" />,
-      _entryPlateImage: a.entryExitRecord.entryImagePlateFileId && <img style={imageStyle} src={`${host}/api/v1/Image/${a.entryExitRecord.entryImagePlateFileId}`} alt="" />,
-      _exitTime: a.entryExitRecord?.exitTime,
-      _exitImage: a.entryExitRecord.exitImageFileId && <img style={imageStyle} src={`${host}/api/v1/Image/${a.entryExitRecord.exitImageFileId}`} alt="" />,
-      _exitPlateImage: a.entryExitRecord.exitImagePlateFileId && <img style={imageStyle} src={`${host}/api/v1/Image/${a.entryExitRecord.exitImagePlateFileId}`} alt="" />,
-      _parkingDuration: a.entryExitRecord?.parkingDuration
-    }));
+    const _rows = data.map(a => {
+      const _entryImageSrc = `${host}/api/v1/Image/${a.entryExitRecord.entryImageFileId}`;
+      const _entryPlateImageSrc = `${host}/api/v1/Image/${a.entryExitRecord.entryImagePlateFileId}`;
+      const _exitImageSrc = `${host}/api/v1/Image/${a.entryExitRecord.exitImageFileId}`;
+      const _exitPlateImageSrc = `${host}/api/v1/Image/${a.entryExitRecord.exitImagePlateFileId}`;
+      return {
+        ...a,
+        _id: a.parkingFacilityUsageRecordId,
+        _entryTime: a.entryExitRecord?.entryTime,
+        _entryImage: a.entryExitRecord.entryImageFileId && <Image name={t('entry-image')} src={_entryImageSrc} />,
+        _entryPlateImage: a.entryExitRecord.entryImagePlateFileId && <Image name={t('entry-plate-image')} src={_entryPlateImageSrc} />,
+        _exitTime: a.entryExitRecord?.exitTime,
+        _exitImage: a.entryExitRecord.exitImageFileId && <Image name={t('exit-image')} src={_exitImageSrc} />,
+        _exitPlateImage: a.entryExitRecord.exitImagePlateFileId && <Image name={t('exit-plate-image')} src={_exitPlateImageSrc} />,
+        _parkingDuration: a.entryExitRecord?.parkingDuration
+      }
+    });
 
     if (success) {
       setUsageRecordList(_rows);

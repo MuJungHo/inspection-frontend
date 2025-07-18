@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { Paper, Table } from "../../components/common";
+import { Paper, Table, Image } from "../../components/common";
 import { useParams } from "react-router-dom";
 // import { Add } from "../../images/icons";
 import { useLocation } from "react-router";
@@ -9,7 +9,7 @@ import {
   // Delete,
   TimeToLeave
 } from '@mui/icons-material';
-import { config } from "../../utils/config";
+import { host } from "../../utils/api/axios";
 import Vehicle from "../../components/vehicle/Vehicle";
 import { DateRangePicker } from 'rsuite';
 
@@ -25,11 +25,6 @@ const initFilter = {
   endTime,
 }
 
-const imageStyle = {
-  height: 32,
-  cursor: 'pointer'
-}
-
 const UsageRecordByPlate = () => {
   const { t, authedApi,
     openDialog,
@@ -43,7 +38,6 @@ const UsageRecordByPlate = () => {
 
   const [filter, setFilter] = React.useState({ ...initFilter, plateNumber });
   const [UsageRecordList, setUsageRecordList] = React.useState([]);
-  const host = `${config.apiProtocol}://${config.apiHost}${config.apiPort ? `:${config.apiPort}` : ''}`;
   const lastPage = location.pathname.split("/")[1];
 
   React.useEffect(() => {
@@ -63,11 +57,11 @@ const UsageRecordByPlate = () => {
         ...a,
         _id: a.parkingFacilityUsageRecordId,
         _entryTime: a.entryExitRecord?.entryTime,
-        _entryImage: a.entryExitRecord.entryImageFileId && <img onClick={() => onImageDialg(t('entry-image'), _entryImageSrc)} style={imageStyle} src={_entryImageSrc} alt="" />,
-        _entryPlateImage: a.entryExitRecord.entryImagePlateFileId && <img onClick={() => onImageDialg(t('entry-plate-image'), _entryPlateImageSrc)}  style={imageStyle} src={_entryPlateImageSrc} alt="" />,
+        _entryImage: a.entryExitRecord.entryImageFileId && <Image name={t('entry-image')} src={_entryImageSrc} />,
+        _entryPlateImage: a.entryExitRecord.entryImagePlateFileId && <Image name={t('entry-plate-image')} src={_entryPlateImageSrc} />,
         _exitTime: a.entryExitRecord?.exitTime,
-        _exitImage: a.entryExitRecord.exitImageFileId && <img onClick={() => onImageDialg(t('exit-image'), _exitImageSrc)} style={imageStyle} src={_exitImageSrc} alt="" />,
-        _exitPlateImage: a.entryExitRecord.exitImagePlateFileId && <img onClick={() => onImageDialg(t('exit-plate-image'), _exitPlateImageSrc)} style={imageStyle} src={_exitPlateImageSrc} alt="" />,
+        _exitImage: a.entryExitRecord.exitImageFileId && <Image name={t('exit-image')} src={_exitImageSrc} />,
+        _exitPlateImage: a.entryExitRecord.exitImagePlateFileId && <Image name={t('exit-plate-image')} src={_exitPlateImageSrc} />,
         _parkingDuration: a.entryExitRecord?.parkingDuration
       })
     });
@@ -77,15 +71,6 @@ const UsageRecordByPlate = () => {
       setTotal(total);
     }
 
-  }
-
-  const onImageDialg = (title, src) => {
-    openDialog({
-      title,
-      maxWidth: "sm",
-      fullWidth: true,
-      section: <img src={src} alt="" />
-    })
   }
 
   const openVehicleDialog = (plateNumber) => {
