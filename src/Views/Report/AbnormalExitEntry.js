@@ -1,131 +1,38 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
-// import { AuthContext } from "../../contexts/AuthContext";
 import { Paper, Table, Image } from "../../components/common";
+import { useParams } from "react-router-dom";
 // import { Add } from "../../images/icons";
+import { useLocation } from "react-router";
 import {
   // BorderColorSharp,
   // Delete,
-  // Ballot,
-  History,
   TimeToLeave
 } from '@mui/icons-material';
 import { host } from "../../utils/api/axios";
 import Vehicle from "../../components/vehicle/Vehicle";
+import { DateRangePicker } from 'rsuite';
 
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 
+var startTime = new Date();
+startTime.setHours(0, 0, 0, 0);
+
+var endTime = new Date();
+endTime.setHours(23, 59, 59, 999);
 
 const initFilter = {
-  amount: 5,
-  skip: 0,
-  page: 0,
-  type: "unauthorized"
+  startTime,
+  endTime,
+  
 }
 
-const AbnormalRecordInstant = () => {
-  const { t, authedApi, openDialog,
-    // closeDialog, openSnackbar, openWarningDialog,
-  } = useContext(GlobalContext);
-  // const { canAccessAction } = useContext(AuthContext);
-  const [total, setTotal] = React.useState(0);
-  const [filter, setFilter] = React.useState(initFilter);
-  const [AbnormalRecordInstantList, setAbnormalRecordInstantList] = React.useState([]);
-
-  const navigate = useNavigate();
-
-  React.useEffect(() => {
-    getAbnormalRecordInstants()
-  }, [filter])
-
-  const getAbnormalRecordInstants = async () => {
-    const { data, total, success } = await authedApi.record.getAbnormalRecordInstants(filter);
-    const _rows = data.map(a => {
-      const _eventImageSrc = `${host}/api/v1/Image/${a.eventImageFileId}`;
-      const _snapshotImageSrc = `${host}/api/v1/Image/${a.snapshotImageFileId}`;
-      return ({
-        ...a,
-        _id: a.parkingAbnormalRecordId,
-        _type: t(`TYPE.${a.type}`),
-        _eventImage: a.eventImageFileId && <Image name={t('event-image')} src={_eventImageSrc} />,
-        _snapshotImage: a.snapshotImageFileId && <Image name={t('snapshot-image')} src={_snapshotImageSrc} />,
-      })
-    });
-
-    if (success) {
-      setAbnormalRecordInstantList(_rows);
-      setTotal(total);
-    }
-  }
-
-  const openVehicleDialog = (plateNumber) => {
-    openDialog({
-      title: t("vehicle-data"),
-      maxWidth: "sm",
-      fullWidth: true,
-      section: <Vehicle onConfirm={() => { }} plateNumber={plateNumber} />
-    })
-  }
+const UsageRecordByTime = () => {
 
   return (
     <Paper sx={{ margin: 3 }}>
-      <Table
-        title={t("abnormal-exit-entry")}
-        rows={AbnormalRecordInstantList}
-        columns={[
-          { key: '_type', label: t('type'), sortable: false },
-          { key: 'status', label: t('status'), sortable: false },
-          { key: 'plateNumber', label: t('plate-number'), sortable: false },
-          { key: '_eventImage', label: t('event-image'), sortable: false },
-          { key: '_snapshotImage', label: t('snapshot-image'), sortable: false },
-        ]}
-        checkable={false}
-        filterable={false}
-        order={filter.order}
-        sort={filter.sort}
-        rowsPerPage={filter.amount}
-        page={filter.page}
-        total={total}
-        toolbarFilters={<div style={{ width: '100%', display: 'flex' }}>
-          <div style={{ flex: 1 }} />
-          <FormControl >
-            <InputLabel>{t("type")}</InputLabel>
-            <Select
-              size="small"
-              value={filter.type}
-              label={t("type")}
-              onChange={e => setFilter({
-                ...filter,
-                type: e.target.value
-              })}
-            >
-              {/* <MenuItem value="">All</MenuItem> */}
-              <MenuItem value="in">{t("TYPE.IN")}</MenuItem>
-              <MenuItem value="out">{t("TYPE.OUT")}</MenuItem>
-              <MenuItem value="overtime">{t("TYPE.OVERTIME")}</MenuItem>
-              <MenuItem value="unauthorized">{t("TYPE.UNAUTHORIZED")}</MenuItem>
-            </Select>
-          </FormControl></div>}
-        onSearchClick={getAbnormalRecordInstants}
-        onClearClick={() => setFilter(initFilter)}
-        onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
-        onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
-        onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
-        toolbarActions={[]}
-        rowActions={[
-          { name: t('entry-history'), onClick: (e, row) => navigate(`/abnormal-record-instant/usage-record-by-plate/${row.plateNumber}`), icon: <History /> },
-          { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> }
-        ]}
-      // dense
-      />
     </Paper>
   );
 }
 
 
-export default AbnormalRecordInstant;
+export default UsageRecordByTime;

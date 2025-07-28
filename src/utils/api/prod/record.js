@@ -16,5 +16,14 @@ export const recordApi = {
   },
   getUsageRecordByPlate: async (params = {}) => {
     return await instance.get('/v1/UsageRecord/byPlate', { params });
-  }
+  },
+  getUsageRecordByTime: async (params = {}) => {
+    return await instance.get('/v1/UsageRecord/byTime', { params });
+  },
+  getUsageRecordHistory: async ({ parkingFacilityUsageRecordId }) => {
+    return await instance.get(`/v1/UsageRecord/history/${parkingFacilityUsageRecordId}`);
+  },
+  patchUsageRecord: async ({ id, data }) => {
+    return await instance.patch(`/v1/UsageRecord/revise/entry/${id}`, data);
+  },
 };

@@ -110,7 +110,7 @@
         "record": "Record",
         "abnormal-record-record": "Abnormal Record",
         "abnormal-exit-entry": "Abnormal Exit Entry",
-        "vehicle-record": "Vehicle Record"
+        "usage-record-record": "Usage Record"
     },
     "snapshot-image": "Snapshot Image",
     "stream-type": "Stream Type",
@@ -123,7 +123,9 @@
     "thing-management": "{{thing}} Management",
     "timeout": "Timeout",
     "upload": "Upload",
+    "usage-record-history": "Usage Record History",
     "usage-record-instant": "Instant Usage Record",
+    "usage-record-record": "Usage Record Record",
     "user": "User",
     "username": "Username",
     "user-profile": "User Profile",

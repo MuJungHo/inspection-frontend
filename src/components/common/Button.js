@@ -12,8 +12,8 @@ const FinalButton = styled(MuiButton)(({ theme }) => ({
     color: theme.palette.secondary.main,
   },
   "&.MuiButton-textPrimary:not(.Mui-disabled)": {
-    borderColor: theme.palette.primary.main,
-    color: theme.palette.primary.main,
+    // borderColor: theme.palette.primary.main,
+    // color: theme.palette.primary.main,
   },
   "&.MuiButton-outlinedSecondary:not(.Mui-disabled)": {
     borderColor: theme.palette.secondary.main,

@@ -110,7 +110,7 @@
         "record": "歷史資料查詢",
         "abnormal-record-record": "異常紀錄查詢",
         "abnormal-exit-entry": "進出車場異常管理",
-        "vehicle-record": "車輛停放紀錄"
+        "usage-record-record": "車輛停放紀錄"
     },
     "snapshot-image": "快照",
     "stream-type": "串流種類",
@@ -123,7 +123,9 @@
     "thing-management": "{{thing}}管理",
     "timeout": "延遲時間",
     "upload": "上傳",
+    "usage-record-history": "歷史紀錄",
     "usage-record-instant": "清單檢視",
+    "usage-record-record": "車輛停放紀錄",
     "user": "使用者",
     "username": "使用者名稱",
     "user-profile": "用戶資料",

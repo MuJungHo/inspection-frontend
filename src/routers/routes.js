@@ -17,11 +17,12 @@ import Role from "../Views/User/Role";
 import Authorization from "../Views/User/Authorization";
 
 import UsageRecordInstant from "../Views/Report/UsageRecordInstant";
-import UsageRecordByPlate from "../Views/Report/UsageRecordByPlate";
+// import UsageRecordByPlate from "../Views/Report/UsageRecordByPlate";
+import UsageRecordHistory from "../Views/Report/UsageRecordHistory";
 import AbnormalRecordInstant from "../Views/Report/AbnormalRecordInstant";
 import AbnormalRecordRecord from "../Views/Report/AbnormalRecordRecord";
 import AbnormalExitEntry from "../Views/Report/AbnormalExitEntry";
-import VehicleRecord from "../Views/Report/VehicleRecord";
+import UsageRecordRecord from "../Views/Report/UsageRecordRecord";
 
 import {
   ManageAccount,
@@ -70,10 +71,10 @@ const routes = [
         component: AbnormalRecordRecord
       },
       {
-        name: "vehicle-record",
-        path: "/vehicle-record",
-        component: VehicleRecord
-      },
+        name: "usage-record-record",
+        path: "/usage-record-record",
+        component: UsageRecordRecord
+      }
     ]
   },
   {
@@ -180,23 +181,17 @@ const routes = [
     ]
   },
   {
-    name: "usage-record-instant-usage-record-by-plate",
-    path: "/usage-record-instant/usage-record-by-plate/:plateNumber",
-    component: UsageRecordByPlate,
+    name: "usage-record-instant-usage-record-history",
+    path: "/usage-record-instant/usage-record-history/:parkingFacilityUsageRecordId",
+    component: UsageRecordHistory,
     sidebar: false
   },
   {
-    name: "abnormal-record-instant-usage-record-by-plate",
-    path: "/abnormal-record-instant/usage-record-by-plate/:plateNumber",
-    component: UsageRecordByPlate,
+    name: "usage-record-record-usage-record-history",
+    path: "/usage-record-record/usage-record-history/:parkingFacilityUsageRecordId",
+    component: UsageRecordHistory,
     sidebar: false
   },
-  {
-    name: "abnormal-record-record-usage-record-by-plate",
-    path: "/abnormal-record-record/usage-record-by-plate/:plateNumber",
-    component: UsageRecordByPlate,
-    sidebar: false
-  }
 ]
 
 export default routes

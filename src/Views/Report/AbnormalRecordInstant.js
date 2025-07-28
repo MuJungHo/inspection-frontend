@@ -118,7 +118,6 @@ const AbnormalRecordInstant = () => {
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[]}
         rowActions={[
-          { name: t('entry-history'), onClick: (e, row) => navigate(`/abnormal-record-instant/usage-record-by-plate/${row.plateNumber}`), icon: <History /> },
           { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> }
         ]}
       // dense
