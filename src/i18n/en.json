@@ -1,7 +1,7 @@
 {
     "abnormal-record-instant": "Instant Abnormal Record",
     "abnormal-record-record": "Historical Abnormal Record",
-    "abnormal-exit-entry": "Abnormal Exit Entry",
+    "abnormal-record-management": "Abnormal Record Mangement",
     "account": "Account",
     "action": "Action",
     "add": "Add",
@@ -109,7 +109,7 @@
         "usage-record-instant": "Usage Record",
         "record": "Record",
         "abnormal-record-record": "Abnormal Record",
-        "abnormal-exit-entry": "Abnormal Exit Entry",
+        "abnormal-record-management": "Abnormal Exit Entry",
         "usage-record-record": "Usage Record"
     },
     "snapshot-image": "Snapshot Image",

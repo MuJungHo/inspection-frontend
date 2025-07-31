@@ -21,7 +21,7 @@ import UsageRecordInstant from "../Views/Report/UsageRecordInstant";
 import UsageRecordHistory from "../Views/Report/UsageRecordHistory";
 import AbnormalRecordInstant from "../Views/Report/AbnormalRecordInstant";
 import AbnormalRecordRecord from "../Views/Report/AbnormalRecordRecord";
-import AbnormalExitEntry from "../Views/Report/AbnormalExitEntry";
+import AbnormalRecordManagement from "../Views/Report/AbnormalRecordManagement";
 import UsageRecordRecord from "../Views/Report/UsageRecordRecord";
 
 import {
@@ -56,10 +56,10 @@ const routes = [
     component: AbnormalRecordInstant
   },
   {
-    name: "abnormal-exit-entry",
+    name: "abnormal-record-management",
     icon: TaxiAlert,
-    path: "/abnormal-exit-entry",
-    component: AbnormalExitEntry
+    path: "/abnormal-record-management",
+    component: AbnormalRecordManagement
   },
   {
     name: "record",

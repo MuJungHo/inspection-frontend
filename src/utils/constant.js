@@ -33,7 +33,7 @@ export const accountAccessRoutes = [
   "abnormal-record-record",
   "usage-record-instant",
   "vehicle-record",
-  "abnormal-exit-entry"
+  "abnormal-record-management"
 ]
 
 export const accountAccessActions = {

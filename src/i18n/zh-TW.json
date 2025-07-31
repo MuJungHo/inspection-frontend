@@ -1,7 +1,7 @@
 {
     "abnormal-record-instant": "即時違規狀況",
     "abnormal-record-record": "異常紀錄查詢",
-    "abnormal-exit-entry": "進出車場異常管理",
+    "abnormal-record-management": "進出車場異常管理",
     "account": "帳號",
     "action": "操作",
     "add": "新增",
@@ -109,7 +109,7 @@
         "usage-record-instant": "清單檢視",
         "record": "歷史資料查詢",
         "abnormal-record-record": "異常紀錄查詢",
-        "abnormal-exit-entry": "進出車場異常管理",
+        "abnormal-record-management": "進出車場異常管理",
         "usage-record-record": "車輛停放紀錄"
     },
     "snapshot-image": "快照",
