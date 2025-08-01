@@ -139,84 +139,124 @@ const EdgeServer = () => {
         return;
       }
       
-      // 降級處理：使用 textarea 和 selection API
+      // 第二種方法：嘗試使用 Clipboard API (不檢查 isSecureContext)
+      if (navigator.clipboard) {
+        try {
+          await navigator.clipboard.writeText(text);
+          openSnackbar({
+            severity: "success",
+            message: t("copy-success", { thing: fieldName })
+          });
+          return;
+        } catch (clipboardError) {
+          console.warn('Clipboard API 失敗:', clipboardError);
+        }
+      }
+      
+      // 降級處理：使用 Selection API
       const textArea = document.createElement('textarea');
       textArea.value = text;
       textArea.style.position = 'fixed';
       textArea.style.left = '-999999px';
       textArea.style.top = '-999999px';
+      textArea.style.opacity = '0';
       document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
       
-      return new Promise((resolve, reject) => {
-        // 使用 document.execCommand 的現代替代方案
-        if (document.queryCommandSupported && document.queryCommandSupported('copy')) {
-          try {
-            const successful = document.execCommand('copy');
-            document.body.removeChild(textArea);
-            if (successful) {
-              openSnackbar({
-                severity: "success",
-                message: t("copy-success", { thing: fieldName })
-              });
-              resolve();
-            } else {
-              reject(new Error('Copy command failed'));
-            }
-          } catch (err) {
-            document.body.removeChild(textArea);
-            reject(err);
-          }
-        } else {
+      try {
+        textArea.focus();
+        textArea.select();
+        
+        // 使用 Selection API 代替 execCommand
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(textArea);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        
+        // 觸發鍵盤快捷鍵複製 (模擬 Ctrl+C)
+        const keyboardEvent = new KeyboardEvent('keydown', {
+          key: 'c',
+          code: 'KeyC',
+          ctrlKey: true,
+          bubbles: true,
+          cancelable: true
+        });
+        
+        document.dispatchEvent(keyboardEvent);
+        
+        // 延遲移除元素，確保複製操作完成
+        setTimeout(() => {
           document.body.removeChild(textArea);
-          reject(new Error('Copy command not supported'));
-        }
-      });
+        }, 100);
+        
+        openSnackbar({
+          severity: "success",
+          message: t("copy-success", { thing: fieldName })
+        });
+        
+      } catch (selectionError) {
+        console.error('Selection API 失敗:', selectionError);
+        document.body.removeChild(textArea);
+        throw selectionError;
+      }
       
     } catch (error) {
       console.error('複製失敗:', error);
       
-      // 最終降級：提示使用者手動複製
-      const confirmCopy = window.confirm(
-        `${t("copy-manual-instruction")}\n\n${text}\n\n${t("copy-manual-confirm")}`
-      );
-      
-      if (confirmCopy) {
-        // 建立一個模擬對話框顯示要複製的內容
-        openDialog({
-          title: t("copy-manual-title"),
-          section: (
-            <Box sx={{ 
-              padding: 2, 
-              minWidth: 400,
-              backgroundColor: theme.palette.paper.background,
-              color: theme.palette.paper.color
+      // 最終降級：顯示手動複製對話框
+      openDialog({
+        title: t("copy-manual-title"),
+        section: (
+          <Box sx={{ 
+            padding: 2, 
+            minWidth: 400,
+            backgroundColor: theme.palette.paper.background,
+            color: theme.palette.paper.color
+          }}>
+            <Typography variant="body2" sx={{ marginBottom: 2, color: theme.palette.paper.color }}>
+              請手動選擇並複製以下內容 (Ctrl+C)：
+            </Typography>
+            <MuiTextField
+              value={text}
+              fullWidth
+              multiline
+              variant="outlined"
+              size="small"
+              InputProps={{
+                readOnly: true,
+              }}
+              sx={{
+                '& .MuiInputBase-input': {
+                  fontFamily: 'monospace',
+                  fontSize: '0.875rem',
+                  color: theme.palette.paper.color,
+                },
+                '& .MuiOutlinedInput-root': {
+                  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : theme.palette.background.default,
+                  color: theme.palette.paper.color,
+                  '& fieldset': {
+                    borderColor: theme.palette.textfield?.borderColor || theme.palette.divider,
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: theme.palette.textfield?.color || theme.palette.text.secondary,
+                }
+              }}
+              onFocus={(e) => e.target.select()}
+              autoFocus
+            />
+            <Typography variant="caption" sx={{ 
+              marginTop: 1, 
+              display: 'block',
+              color: theme.palette.mode === 'dark' 
+                ? theme.palette.text.secondary 
+                : 'textSecondary'
             }}>
-              <Typography variant="body2" sx={{ marginBottom: 2 }}>
-                {t("copy-manual-description")}
-              </Typography>
-              <MuiTextField
-                value={text}
-                fullWidth
-                multiline
-                variant="outlined"
-                size="small"
-                InputProps={{
-                  readOnly: true,
-                }}
-                sx={{
-                  '& .MuiInputBase-input': {
-                    fontFamily: 'monospace',
-                    fontSize: '0.875rem',
-                  }
-                }}
-                onFocus={(e) => e.target.select()}
-              />
-            </Box>
-          )
-        });
-      }
+              文字已自動選取，請按 Ctrl+C 複製
+            </Typography>
+          </Box>
+        )
+      });
     }
   };
 
