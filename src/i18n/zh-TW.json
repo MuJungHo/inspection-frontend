@@ -21,7 +21,7 @@
     "copy-failed": "複製失敗",
     "copy-success": "{{thing}} 複製成功",
     "count": "數量",
-    "createtime": "建立時間",
+    "create-time": "建立時間",
     "current-location": "目前在 {{page}}",
     "datetime": "日期時間",
     "delete": "刪除",

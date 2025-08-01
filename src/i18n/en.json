@@ -21,7 +21,7 @@
     "copy-failed": "Copy failed",
     "copy-success": "{{thing}} copied successfully",
     "count": "Count",
-    "createtime": "Create Time",
+    "create-time": "Create Time",
     "current-location": "The current location is {{page}}.",
     "datetime": "Datetime",
     "delete": "Delete",

@@ -125,7 +125,7 @@ const EnhancedTableToolbar = (props) => {
     onKeywordSearch(e.target.value)
   }
   return (
-    <StyledToolbar style={{ padding: 16, paddingRight: 16 }}>
+    <StyledToolbar style={{ height: 70 }}>
       {
         numSelected > 0 ? (
           <>
@@ -237,6 +237,7 @@ export default ({
   dense = false,
   checkable = true,
   filterable = true,
+  paginable = true,
   rows = [],
   columns = [],
   rowActions = [],
@@ -374,7 +375,7 @@ export default ({
           </TableBody>
         </StyledMuiTable>
       </StyledTableContainer>
-      <StyledTablePagination
+      {paginable && <StyledTablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={total}
@@ -382,7 +383,7 @@ export default ({
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      />}
     </RootContainer>
   );
 };
