@@ -127,137 +127,94 @@ const EdgeServer = () => {
     })
   }
 
-  const handleCopyToClipboard = async (text, fieldName) => {
-    try {
-      // 首先嘗試使用現代的 Clipboard API
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
+  const handleCopyToClipboard = (text, fieldName, inputRef = null) => {
+    // console.log(`Copying ${fieldName}: ${text}`);
+    
+    // 方法1: 現代瀏覽器的 Clipboard API
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => {
+        // console.log(`Copied from navigator ${fieldName}: ${text}`);
         openSnackbar({
           severity: "success",
           message: t("copy-success", { thing: fieldName })
         });
-        return;
-      }
-      
-      // 第二種方法：嘗試使用 Clipboard API (不檢查 isSecureContext)
-      if (navigator.clipboard) {
-        try {
-          await navigator.clipboard.writeText(text);
-          openSnackbar({
-            severity: "success",
-            message: t("copy-success", { thing: fieldName })
-          });
-          return;
-        } catch (clipboardError) {
-          console.warn('Clipboard API 失敗:', clipboardError);
+      }).catch(error => {
+        // console.log(`Navigator clipboard failed: ${error}`);
+        fallbackCopy();
+      });
+      return;
+    }
+    
+    // 方法2: 降級處理
+    function fallbackCopy() {
+      // 如果有傳入 input 的參考，直接使用
+      if (inputRef && inputRef.current) {
+        // 查找 input 或 textarea 元素
+        const inputElement = inputRef.current.querySelector('input') || inputRef.current.querySelector('textarea');
+        if (inputElement) {
+          // console.log(`Found ${inputElement.tagName.toLowerCase()} element via ref`);
+          inputElement.focus();
+          inputElement.select();
+          
+          // 對於 textarea，確保選取整個內容
+          if (inputElement.tagName.toLowerCase() === 'textarea') {
+            inputElement.setSelectionRange(0, text.length);
+          }
+          
+          const successful = document.execCommand('copy');
+          // console.log(`execCommand result via ref: ${successful}`);
+          
+          if (successful) {
+            // console.log(`Copied from ref ${fieldName}: ${text}`);
+            openSnackbar({
+              severity: "success",
+              message: t("copy-success", { thing: fieldName })
+            });
+            return;
+          }
         }
       }
       
-      // 降級處理：使用 Selection API
-      const textArea = document.createElement('textarea');
-      textArea.value = text;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-999999px';
-      textArea.style.top = '-999999px';
-      textArea.style.opacity = '0';
-      document.body.appendChild(textArea);
-      
-      try {
-        textArea.focus();
-        textArea.select();
-        
-        // 使用 Selection API 代替 execCommand
-        const selection = window.getSelection();
-        const range = document.createRange();
-        range.selectNodeContents(textArea);
-        selection.removeAllRanges();
-        selection.addRange(range);
-        
-        // 觸發鍵盤快捷鍵複製 (模擬 Ctrl+C)
-        const keyboardEvent = new KeyboardEvent('keydown', {
-          key: 'c',
-          code: 'KeyC',
-          ctrlKey: true,
-          bubbles: true,
-          cancelable: true
-        });
-        
-        document.dispatchEvent(keyboardEvent);
-        
-        // 延遲移除元素，確保複製操作完成
-        setTimeout(() => {
-          document.body.removeChild(textArea);
-        }, 100);
-        
-        openSnackbar({
-          severity: "success",
-          message: t("copy-success", { thing: fieldName })
-        });
-        
-      } catch (selectionError) {
-        console.error('Selection API 失敗:', selectionError);
-        document.body.removeChild(textArea);
-        throw selectionError;
-      }
-      
-    } catch (error) {
-      console.error('複製失敗:', error);
-      
-      // 最終降級：顯示手動複製對話框
-      openDialog({
-        title: t("copy-manual-title"),
-        section: (
-          <Box sx={{ 
-            padding: 2, 
-            minWidth: 400,
-            backgroundColor: theme.palette.paper.background,
-            color: theme.palette.paper.color
-          }}>
-            <Typography variant="body2" sx={{ marginBottom: 2, color: theme.palette.paper.color }}>
-              請手動選擇並複製以下內容 (Ctrl+C)：
-            </Typography>
-            <MuiTextField
-              value={text}
-              fullWidth
-              multiline
-              variant="outlined"
-              size="small"
-              InputProps={{
-                readOnly: true,
-              }}
-              sx={{
-                '& .MuiInputBase-input': {
-                  fontFamily: 'monospace',
-                  fontSize: '0.875rem',
-                  color: theme.palette.paper.color,
-                },
-                '& .MuiOutlinedInput-root': {
-                  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : theme.palette.background.default,
-                  color: theme.palette.paper.color,
-                  '& fieldset': {
-                    borderColor: theme.palette.textfield?.borderColor || theme.palette.divider,
-                  },
-                },
-                '& .MuiInputLabel-root': {
-                  color: theme.palette.textfield?.color || theme.palette.text.secondary,
-                }
-              }}
-              onFocus={(e) => e.target.select()}
-              autoFocus
-            />
-            <Typography variant="caption" sx={{ 
-              marginTop: 1, 
-              display: 'block',
-              color: theme.palette.mode === 'dark' 
-                ? theme.palette.text.secondary 
-                : 'textSecondary'
-            }}>
-              文字已自動選取，請按 Ctrl+C 複製
-            </Typography>
-          </Box>
-        )
-      });
+      // 尋找包含該文字的現有輸入欄位（包含 input 和 textarea）
+// 尋找包含該文字的現有輸入欄位（包含 input 和 textarea）
+const inputElements = document.querySelectorAll('input[readonly], textarea[readonly]');
+// console.log(`Found ${inputElements.length} readonly elements`);
+
+for (const element of inputElements) {
+  // console.log(`Checking ${element.tagName.toLowerCase()}: "${element.value}"`);
+  if (element.value === text) {
+    // console.log(`Found matching ${element.tagName.toLowerCase()}`);
+    element.focus();
+    element.select();
+    
+    // 對於 textarea，確保選取整個內容
+    if (element.tagName.toLowerCase() === 'textarea') {
+      element.setSelectionRange(0, text.length);
     }
+    
+    const successful = document.execCommand('copy');
+    // console.log(`execCommand result: ${successful}`);
+    
+    if (successful) {
+      // console.log(`Copied from existing ${element.tagName.toLowerCase()} ${fieldName}: ${text}`);
+      openSnackbar({
+        severity: "success",
+        message: t("copy-success", { thing: fieldName })
+      });
+      return;
+    }
+  }
+}
+
+// 如果都失敗，提示手動複製
+// console.log(`All copy methods failed for ${fieldName}`);
+openSnackbar({
+  severity: "warning",
+  message: `請手動選取並複製 ${fieldName}`
+});
+}
+  
+fallbackCopy();
   };
 
   const handleRenewAppSecret = async (edgeServer) => {
@@ -266,6 +223,11 @@ const EdgeServer = () => {
       
       if (response.data) {
         const { edgeServerId, appSecret } = response.data;
+        
+        // 使用 callback refs 而不是 createRef
+        let edgeServerIdRef = null;
+        let appSecretRef = null;
+        
         closeDialog();
         openDialog({
           title: t("device.renew-app-secret-success"),
@@ -289,6 +251,7 @@ const EdgeServer = () => {
 
               <Box sx={{ marginBottom: 2 }}>
                 <MuiTextField
+                  ref={(el) => { edgeServerIdRef = el; }}
                   label="EdgeServerId"
                   value={edgeServerId}
                   fullWidth
@@ -299,7 +262,7 @@ const EdgeServer = () => {
                     endAdornment: (
                       <InputAdornment position="end">
                         <MuiIconButton
-                          onClick={() => handleCopyToClipboard(edgeServerId, 'EdgeServerId')}
+                          onClick={() => handleCopyToClipboard(edgeServerId, 'EdgeServerId', { current: edgeServerIdRef })}
                           edge="end"
                           size="small"
                           sx={{ color: theme.palette.paper.color }}
@@ -330,6 +293,7 @@ const EdgeServer = () => {
 
               <Box sx={{ marginBottom: 2 }}>
                 <MuiTextField
+                  ref={(el) => { appSecretRef = el; }}
                   label="AppSecret"
                   value={appSecret}
                   fullWidth
@@ -342,7 +306,7 @@ const EdgeServer = () => {
                     endAdornment: (
                       <InputAdornment position="end">
                         <MuiIconButton
-                          onClick={() => handleCopyToClipboard(appSecret, 'AppSecret')}
+                          onClick={() => handleCopyToClipboard(appSecret, 'AppSecret', { current: appSecretRef })}
                           edge="end"
                           size="small"
                           sx={{ 
