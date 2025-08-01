@@ -129,31 +129,94 @@ const EdgeServer = () => {
 
   const handleCopyToClipboard = async (text, fieldName) => {
     try {
-      await navigator.clipboard.writeText(text);
-      openSnackbar({
-        severity: "success",
-        message: t("copy-success", { thing: fieldName })
-      });
-    } catch (error) {
-      // 降級處理，使用舊的方法
-      const textArea = document.createElement('textarea');
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      try {
-        document.execCommand('copy');
+      // 首先嘗試使用現代的 Clipboard API
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
         openSnackbar({
           severity: "success",
           message: t("copy-success", { thing: fieldName })
         });
-      } catch (fallbackError) {
-        openSnackbar({
-          severity: "error",
-          message: t("copy-failed")
+        return;
+      }
+      
+      // 降級處理：使用 textarea 和 selection API
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      return new Promise((resolve, reject) => {
+        // 使用 document.execCommand 的現代替代方案
+        if (document.queryCommandSupported && document.queryCommandSupported('copy')) {
+          try {
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textArea);
+            if (successful) {
+              openSnackbar({
+                severity: "success",
+                message: t("copy-success", { thing: fieldName })
+              });
+              resolve();
+            } else {
+              reject(new Error('Copy command failed'));
+            }
+          } catch (err) {
+            document.body.removeChild(textArea);
+            reject(err);
+          }
+        } else {
+          document.body.removeChild(textArea);
+          reject(new Error('Copy command not supported'));
+        }
+      });
+      
+    } catch (error) {
+      console.error('複製失敗:', error);
+      
+      // 最終降級：提示使用者手動複製
+      const confirmCopy = window.confirm(
+        `${t("copy-manual-instruction")}\n\n${text}\n\n${t("copy-manual-confirm")}`
+      );
+      
+      if (confirmCopy) {
+        // 建立一個模擬對話框顯示要複製的內容
+        openDialog({
+          title: t("copy-manual-title"),
+          section: (
+            <Box sx={{ 
+              padding: 2, 
+              minWidth: 400,
+              backgroundColor: theme.palette.paper.background,
+              color: theme.palette.paper.color
+            }}>
+              <Typography variant="body2" sx={{ marginBottom: 2 }}>
+                {t("copy-manual-description")}
+              </Typography>
+              <MuiTextField
+                value={text}
+                fullWidth
+                multiline
+                variant="outlined"
+                size="small"
+                InputProps={{
+                  readOnly: true,
+                }}
+                sx={{
+                  '& .MuiInputBase-input': {
+                    fontFamily: 'monospace',
+                    fontSize: '0.875rem',
+                  }
+                }}
+                onFocus={(e) => e.target.select()}
+              />
+            </Box>
+          )
         });
       }
-      document.body.removeChild(textArea);
     }
   };
 
