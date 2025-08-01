@@ -125,7 +125,7 @@ const EnhancedTableToolbar = (props) => {
     onKeywordSearch(e.target.value)
   }
   return (
-    <StyledToolbar style={{ height: 70 }}>
+    <StyledToolbar style={{ height: 70, padding: '0 16px' }}>
       {
         numSelected > 0 ? (
           <>

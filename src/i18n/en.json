@@ -1,4 +1,5 @@
 {
+    "abnormal-record-history": "Abnormal Record History",
     "abnormal-record-instant": "Instant Abnormal Record",
     "abnormal-record-record": "Historical Abnormal Record",
     "abnormal-record-management": "Abnormal Record Mangement",
@@ -67,6 +68,7 @@
     "login": "Login",
     "login-failed": "Login Failed",
     "logout": "Logout",
+    "manual-correction": "Manual Correction",
     "member": "Member",
     "name": "Name",
     "navigation": "Navigation",
@@ -180,6 +182,9 @@
         "IN": "IN",
         "OUT": "OUT",
         "UNAUTHORIZED": "UNAUTHORIZED",
-        "OVERTIME": "OVERTIME"
+        "OVERTIME": "OVERTIME",
+        "Entry": "Entry",
+        "Exit": "Exit",
+        "IGNORE": "IGNORE"
     }
 }

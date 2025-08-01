@@ -1,4 +1,5 @@
 {
+    "abnormal-record-history": "歷史紀錄",
     "abnormal-record-instant": "即時違規狀況",
     "abnormal-record-record": "異常紀錄查詢",
     "abnormal-record-management": "進出車場異常管理",
@@ -67,6 +68,7 @@
     "login": "登入",
     "login-failed": "登入失敗",
     "logout": "登出",
+    "manual-correction": "手動修正",
     "member": "成員",
     "name": "名稱",
     "navigation": "導航",
@@ -180,6 +182,9 @@
         "IN": "重複入場",
         "OUT": "異常離場",
         "UNAUTHORIZED": "無車證",
-        "OVERTIME": "超時"
+        "OVERTIME": "超時",
+        "Entry": "入場記錄",
+        "Exit": "出場紀錄",
+        "IGNORE": "忽略此記錄"
     }
 }

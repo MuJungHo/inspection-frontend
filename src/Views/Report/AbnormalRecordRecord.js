@@ -9,7 +9,8 @@ import {
   // Delete,
   // Ballot,
   History,
-  TimeToLeave
+  TimeToLeave,
+  Handyman
 } from '@mui/icons-material';
 import { host } from "../../utils/api/axios";
 import Vehicle from "../../components/vehicle/Vehicle";
@@ -36,7 +37,9 @@ const initFilter = {
 
 const AbnormalRecordRecord = () => {
   const { t, authedApi, openDialog,
-    // closeDialog, openSnackbar, openWarningDialog,
+    closeDialog, 
+    openSnackbar, 
+    // openWarningDialog,
   } = useContext(GlobalContext);
   // const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
@@ -79,6 +82,25 @@ const AbnormalRecordRecord = () => {
       fullWidth: true,
       section: <Vehicle onConfirm={() => { }} plateNumber={plateNumber} />
     })
+  }
+
+  const handlePostManualRecordAbnormalRecord = async (state) => {
+    const { success } = await authedApi.record.postManualRecordAbnormalRecord({
+      abnormalRecordId: state.parkingAbnormalRecordId,
+      data: {
+        "Type": state.Type,
+        "Time": state.Time
+      }
+    });
+
+    if (success) {
+      getAbnormalRecordRecords();
+      closeDialog();
+      openSnackbar({
+        severity: "success",
+        message: t("success-thing", { thing: t("add") })
+      });
+    }
   }
 
   return (
@@ -138,7 +160,9 @@ const AbnormalRecordRecord = () => {
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[]}
         rowActions={[
-          { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> }
+          { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> },
+          { name: t('abnormal-record-history'), onClick: (e, row) => navigate(`/abnormal-record-record/abnormal-record-history/${row._id}`), icon: <History /> },
+          { name: t('manual-correction'), onClick: (e, row) => handlePostManualRecordAbnormalRecord(row), icon: <Handyman /> },
         ]}
       // dense
       />

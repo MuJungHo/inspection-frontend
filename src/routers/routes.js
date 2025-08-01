@@ -19,6 +19,7 @@ import Authorization from "../Views/User/Authorization";
 import UsageRecordInstant from "../Views/Report/UsageRecordInstant";
 // import UsageRecordByPlate from "../Views/Report/UsageRecordByPlate";
 import UsageRecordHistory from "../Views/Report/UsageRecordHistory";
+import AbnormalRecordHistory from "../Views/Report/AbnormalRecordHistory";
 import AbnormalRecordInstant from "../Views/Report/AbnormalRecordInstant";
 import AbnormalRecordRecord from "../Views/Report/AbnormalRecordRecord";
 import AbnormalRecordManagement from "../Views/Report/AbnormalRecordManagement";
@@ -190,6 +191,24 @@ const routes = [
     name: "usage-record-record-usage-record-history",
     path: "/usage-record-record/usage-record-history/:parkingFacilityUsageRecordId",
     component: UsageRecordHistory,
+    sidebar: false
+  },
+  {
+    name: "abnormal-record-management-abnormal-record-history",
+    path: "/abnormal-record-management/abnormal-record-history/:abnormalRecordId",
+    component: AbnormalRecordHistory,
+    sidebar: false
+  },
+  {
+    name: "abnormal-record-instant-abnormal-record-history",
+    path: "/abnormal-record-instant/abnormal-record-history/:abnormalRecordId",
+    component: AbnormalRecordHistory,
+    sidebar: false
+  },
+  {
+    name: "abnormal-record-record-abnormal-record-history",
+    path: "/abnormal-record-record/abnormal-record-history/:abnormalRecordId",
+    component: AbnormalRecordHistory,
     sidebar: false
   },
 ]

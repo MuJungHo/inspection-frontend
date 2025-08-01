@@ -9,7 +9,8 @@ import {
   // Delete,
   // Ballot,
   History,
-  TimeToLeave
+  TimeToLeave,
+  Handyman
 } from '@mui/icons-material';
 import { host } from "../../utils/api/axios";
 import Vehicle from "../../components/vehicle/Vehicle";
@@ -18,6 +19,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import ManualRecordDialog from "../../components/report/ManualRecordDialog";
 
 var startTime = new Date();
 startTime.setHours(0, 0, 0, 0);
@@ -36,7 +38,9 @@ const initFilter = {
 
 const AbnormalRecordRecord = () => {
   const { t, authedApi, openDialog,
-    // closeDialog, openSnackbar, openWarningDialog,
+    closeDialog, 
+    openSnackbar, 
+    // openWarningDialog,
   } = useContext(GlobalContext);
   // const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
@@ -79,6 +83,34 @@ const AbnormalRecordRecord = () => {
       fullWidth: true,
       section: <Vehicle onConfirm={() => { }} plateNumber={plateNumber} />
     })
+  }
+
+  const openMaunalRecordDialog = (AbnormalRecord) => {
+    openDialog({
+      title: t("maunal-record"),
+      maxWidth: "sm",
+      fullWidth: true,
+      section: <ManualRecordDialog onConfirm={handlePostManualRecordAbnormalRecord} AbnormalRecord={AbnormalRecord} />
+    })
+  }
+
+  const handlePostManualRecordAbnormalRecord = async (state) => {
+    const { success } = await authedApi.record.postManualRecordAbnormalRecord({
+      abnormalRecordId: state.parkingAbnormalRecordId,
+      data: {
+        "Type": state.Type,
+        "Time": state.Time
+      }
+    });
+
+    if (success) {
+      getAbnormalRecordRecords();
+      closeDialog();
+      openSnackbar({
+        severity: "success",
+        message: t("success-thing", { thing: t("add") })
+      });
+    }
   }
 
   return (
@@ -138,7 +170,9 @@ const AbnormalRecordRecord = () => {
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[]}
         rowActions={[
-          { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> }
+          { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> },
+          { name: t('abnormal-record-history'), onClick: (e, row) => navigate(`/abnormal-record-management/abnormal-record-history/${row._id}`), icon: <History /> },
+          { name: t('manual-correction'), onClick: (e, row) => openMaunalRecordDialog(row), icon: <Handyman /> },
         ]}
       // dense
       />
