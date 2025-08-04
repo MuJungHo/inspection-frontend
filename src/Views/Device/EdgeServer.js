@@ -127,34 +127,94 @@ const EdgeServer = () => {
     })
   }
 
-  const handleCopyToClipboard = async (text, fieldName) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      openSnackbar({
-        severity: "success",
-        message: t("copy-success", { thing: fieldName })
-      });
-    } catch (error) {
-      // 降級處理，使用舊的方法
-      const textArea = document.createElement('textarea');
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      try {
-        document.execCommand('copy');
+  const handleCopyToClipboard = (text, fieldName, inputRef = null) => {
+    // console.log(`Copying ${fieldName}: ${text}`);
+    
+    // 方法1: 現代瀏覽器的 Clipboard API
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => {
+        // console.log(`Copied from navigator ${fieldName}: ${text}`);
         openSnackbar({
           severity: "success",
           message: t("copy-success", { thing: fieldName })
         });
-      } catch (fallbackError) {
-        openSnackbar({
-          severity: "error",
-          message: t("copy-failed")
-        });
-      }
-      document.body.removeChild(textArea);
+      }).catch(error => {
+        // console.log(`Navigator clipboard failed: ${error}`);
+        fallbackCopy();
+      });
+      return;
     }
+    
+    // 方法2: 降級處理
+    function fallbackCopy() {
+      // 如果有傳入 input 的參考，直接使用
+      if (inputRef && inputRef.current) {
+        // 查找 input 或 textarea 元素
+        const inputElement = inputRef.current.querySelector('input') || inputRef.current.querySelector('textarea');
+        if (inputElement) {
+          // console.log(`Found ${inputElement.tagName.toLowerCase()} element via ref`);
+          inputElement.focus();
+          inputElement.select();
+          
+          // 對於 textarea，確保選取整個內容
+          if (inputElement.tagName.toLowerCase() === 'textarea') {
+            inputElement.setSelectionRange(0, text.length);
+          }
+          
+          const successful = document.execCommand('copy');
+          // console.log(`execCommand result via ref: ${successful}`);
+          
+          if (successful) {
+            // console.log(`Copied from ref ${fieldName}: ${text}`);
+            openSnackbar({
+              severity: "success",
+              message: t("copy-success", { thing: fieldName })
+            });
+            return;
+          }
+        }
+      }
+      
+      // 尋找包含該文字的現有輸入欄位（包含 input 和 textarea）
+// 尋找包含該文字的現有輸入欄位（包含 input 和 textarea）
+const inputElements = document.querySelectorAll('input[readonly], textarea[readonly]');
+// console.log(`Found ${inputElements.length} readonly elements`);
+
+for (const element of inputElements) {
+  // console.log(`Checking ${element.tagName.toLowerCase()}: "${element.value}"`);
+  if (element.value === text) {
+    // console.log(`Found matching ${element.tagName.toLowerCase()}`);
+    element.focus();
+    element.select();
+    
+    // 對於 textarea，確保選取整個內容
+    if (element.tagName.toLowerCase() === 'textarea') {
+      element.setSelectionRange(0, text.length);
+    }
+    
+    const successful = document.execCommand('copy');
+    // console.log(`execCommand result: ${successful}`);
+    
+    if (successful) {
+      // console.log(`Copied from existing ${element.tagName.toLowerCase()} ${fieldName}: ${text}`);
+      openSnackbar({
+        severity: "success",
+        message: t("copy-success", { thing: fieldName })
+      });
+      return;
+    }
+  }
+}
+
+// 如果都失敗，提示手動複製
+// console.log(`All copy methods failed for ${fieldName}`);
+openSnackbar({
+  severity: "warning",
+  message: `請手動選取並複製 ${fieldName}`
+});
+}
+  
+fallbackCopy();
   };
 
   const handleRenewAppSecret = async (edgeServer) => {
@@ -163,6 +223,11 @@ const EdgeServer = () => {
       
       if (response.data) {
         const { edgeServerId, appSecret } = response.data;
+        
+        // 使用 callback refs 而不是 createRef
+        let edgeServerIdRef = null;
+        let appSecretRef = null;
+        
         closeDialog();
         openDialog({
           title: t("device.renew-app-secret-success"),
@@ -186,6 +251,7 @@ const EdgeServer = () => {
 
               <Box sx={{ marginBottom: 2 }}>
                 <MuiTextField
+                  ref={(el) => { edgeServerIdRef = el; }}
                   label="EdgeServerId"
                   value={edgeServerId}
                   fullWidth
@@ -196,7 +262,7 @@ const EdgeServer = () => {
                     endAdornment: (
                       <InputAdornment position="end">
                         <MuiIconButton
-                          onClick={() => handleCopyToClipboard(edgeServerId, 'EdgeServerId')}
+                          onClick={() => handleCopyToClipboard(edgeServerId, 'EdgeServerId', { current: edgeServerIdRef })}
                           edge="end"
                           size="small"
                           sx={{ color: theme.palette.paper.color }}
@@ -227,6 +293,7 @@ const EdgeServer = () => {
 
               <Box sx={{ marginBottom: 2 }}>
                 <MuiTextField
+                  ref={(el) => { appSecretRef = el; }}
                   label="AppSecret"
                   value={appSecret}
                   fullWidth
@@ -239,7 +306,7 @@ const EdgeServer = () => {
                     endAdornment: (
                       <InputAdornment position="end">
                         <MuiIconButton
-                          onClick={() => handleCopyToClipboard(appSecret, 'AppSecret')}
+                          onClick={() => handleCopyToClipboard(appSecret, 'AppSecret', { current: appSecretRef })}
                           edge="end"
                           size="small"
                           sx={{ 
