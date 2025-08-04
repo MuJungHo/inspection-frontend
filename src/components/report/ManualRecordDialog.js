@@ -65,7 +65,7 @@ const ManualRecordDialog = ({
           format="yyyy/MM/dd  HH:mm:ss"
           value={state.Time} onChange={Time => setState({ ...state, Time })} />
         <FormControl fullWidth>
-          <InputLabel>{t("record-type")}</InputLabel>
+          <InputLabel>{t("type")}</InputLabel>
           <Select
             size="small"
             value={state.Type}

@@ -91,7 +91,7 @@ const AbnormalRecordRecord = () => {
 
   const openMaunalRecordDialog = (AbnormalRecord) => {
     openDialog({
-      title: t("maunal-record"),
+      title: t("manual-correction"),
       maxWidth: "sm",
       fullWidth: true,
       section: <ManualRecordDialog onConfirm={handlePostManualRecordAbnormalRecord} AbnormalRecord={AbnormalRecord} />
