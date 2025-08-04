@@ -10,7 +10,7 @@ import {
   // Ballot,
   History,
   TimeToLeave,
-  Handyman
+  // Handyman
 } from '@mui/icons-material';
 import { host } from "../../utils/api/axios";
 import Vehicle from "../../components/vehicle/Vehicle";
@@ -19,6 +19,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+// import ManualRecordDialog from "../../components/report/ManualRecordDialog";
 // import { initFilters } from "../../utils/constant";
 import { useFilter } from "../../hooks/useFilter";
 
@@ -69,24 +70,33 @@ const AbnormalRecordRecord = () => {
     })
   }
 
-  const handlePostManualRecordAbnormalRecord = async (state) => {
-    const { success } = await authedApi.record.postManualRecordAbnormalRecord({
-      abnormalRecordId: state.parkingAbnormalRecordId,
-      data: {
-        "Type": state.Type,
-        "Time": state.Time
-      }
-    });
+  // const openMaunalRecordDialog = (AbnormalRecord) => {
+  //   openDialog({
+  //     title: t("maunal-record"),
+  //     maxWidth: "sm",
+  //     fullWidth: true,
+  //     section: <ManualRecordDialog onConfirm={handlePostManualRecordAbnormalRecord} AbnormalRecord={AbnormalRecord} />
+  //   })
+  // }
 
-    if (success) {
-      getAbnormalRecordRecords();
-      closeDialog();
-      openSnackbar({
-        severity: "success",
-        message: t("success-thing", { thing: t("add") })
-      });
-    }
-  }
+  // const handlePostManualRecordAbnormalRecord = async (state) => {
+  //   const { success } = await authedApi.record.postManualRecordAbnormalRecord({
+  //     abnormalRecordId: state.parkingAbnormalRecordId,
+  //     data: {
+  //       "Type": state.Type,
+  //       "Time": state.Time
+  //     }
+  //   });
+
+  //   if (success) {
+  //     getAbnormalRecordRecords();
+  //     closeDialog();
+  //     openSnackbar({
+  //       severity: "success",
+  //       message: t("success-thing", { thing: t("add") })
+  //     });
+  //   }
+  // }
 
   return (
     <Paper sx={{ margin: 3 }}>
@@ -151,7 +161,7 @@ const AbnormalRecordRecord = () => {
         rowActions={[
           { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> },
           { name: t('abnormal-record-history'), onClick: (e, row) => navigate(`/abnormal-record-record/abnormal-record-history/${row._id}`), icon: <History /> },
-          { name: t('manual-correction'), onClick: (e, row) => handlePostManualRecordAbnormalRecord(row), icon: <Handyman /> },
+          // { name: t('manual-correction'), onClick: (e, row) => openMaunalRecordDialog(row), icon: <Handyman /> },
         ]}
       // dense
       />
