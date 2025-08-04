@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { instance } from "../utils/apis";
-import { accountAccessRoutes, accountAccessActions } from "../utils/constant";
+
 const AuthContext = createContext();
 
 function AuthProvider(props) {

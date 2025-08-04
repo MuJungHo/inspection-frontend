@@ -23,6 +23,7 @@ import i18n from '../i18n';
 import { api } from '../utils/apis';
 import WarningSection from '../components/WarningSection';
 import { instance as axiosInstance } from "../utils/apis"; // Renamed for clarity
+import { initFilters } from "../utils/constant";
 import "../style/normalize.css";
 import 'rsuite/dist/rsuite.min.css';
 
@@ -53,6 +54,7 @@ function GlobalProvider({ children, ...rest }) {
   const [locale, setLocale] = useState(localStorage.getItem('locale') || 'zh-TW');
   const [themeMode, setThemeMode] = useState(localStorage.getItem("theme") || "light");
   const [rsuiteLocaleData, setRsuiteLocaleData] = useState(null); // State to hold loaded rsuite locale data
+  const [globalFilter, setGlobalFilter] = React.useState(initFilters);
 
   const [snackBar, setSnackBar] = useState({
     open: false,
@@ -74,6 +76,13 @@ function GlobalProvider({ children, ...rest }) {
   // Provide the t function based on the current locale
   const t = React.useCallback((key, arg, options) => i18n(locale)(key, arg, options), [locale]);
 
+
+  const applyGlobalFilter = React.useCallback((key, value) => {
+    setGlobalFilter({
+      ...globalFilter,
+      [key]: value
+    })
+  }, [globalFilter])
 
   const changeTheme = (themeName) => {
     setThemeMode(themeName);
@@ -175,7 +184,9 @@ function GlobalProvider({ children, ...rest }) {
         token,
         t,
         // theme,
-        authedApi: api(logout)
+        authedApi: api(logout),
+        globalFilter,
+        applyGlobalFilter
       }}
     >
       <ThemeProvider theme={currentTheme}>

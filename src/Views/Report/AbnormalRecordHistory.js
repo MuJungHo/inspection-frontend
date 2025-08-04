@@ -13,17 +13,10 @@ import { useLocation } from "react-router";
 // import Vehicle from "../../components/vehicle/Vehicle";
 // import { DateRangePicker } from 'rsuite';
 import dayjs from "dayjs";
+// import { initFilters } from "../../utils/constant";
+import { useFilter } from "../../hooks/useFilter";
 
-var startTime = new Date();
-startTime.setHours(0, 0, 0, 0);
-
-var endTime = new Date();
-endTime.setHours(23, 59, 59, 999);
-
-const initFilter = {
-  startTime,
-  endTime,
-}
+const NAME = "abnormal-record-history";
 
 const AbnormalRecordHistory = () => {
   const { t, authedApi,
@@ -36,7 +29,8 @@ const AbnormalRecordHistory = () => {
   const { abnormalRecordId } = useParams();
   const location = useLocation()
 
-  const [filter, setFilter] = React.useState({ ...initFilter, abnormalRecordId });
+  const [filter, setFilter] = useFilter(NAME);
+
   const [UsageRecordList, setUsageRecordList] = React.useState([]);
   const lastPage = location.pathname.split("/")[1];
 
@@ -45,7 +39,7 @@ const AbnormalRecordHistory = () => {
   }, [filter])
 
   const getAbnormalRecordHistory = async () => {
-    const { data, total, success } = await authedApi.record.getAbnormalRecordHistory(filter);
+    const { data, total, success } = await authedApi.record.getAbnormalRecordHistory({ ...filter, abnormalRecordId });
 
     const _rows = data.map(a => {
 

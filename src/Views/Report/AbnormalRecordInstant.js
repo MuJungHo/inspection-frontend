@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 // import { AuthContext } from "../../contexts/AuthContext";
 import { Paper, Table, Image } from "../../components/common";
@@ -8,7 +8,7 @@ import {
   // BorderColorSharp,
   // Delete,
   // Ballot,
-  History,
+  // History,
   TimeToLeave
 } from '@mui/icons-material';
 import { host } from "../../utils/api/axios";
@@ -18,14 +18,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+// import { initFilters } from "../../utils/constant";
+import { useFilter } from "../../hooks/useFilter";
 
-
-const initFilter = {
-  amount: 5,
-  skip: 0,
-  page: 0,
-  type: "unauthorized"
-}
+const NAME = "abnormal-record-instant";
 
 const AbnormalRecordInstant = () => {
   const { t, authedApi, openDialog,
@@ -33,10 +29,10 @@ const AbnormalRecordInstant = () => {
   } = useContext(GlobalContext);
   // const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
-  const [filter, setFilter] = React.useState(initFilter);
   const [AbnormalRecordInstantList, setAbnormalRecordInstantList] = React.useState([]);
+  const [filter, setFilter] = useFilter(NAME);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   React.useEffect(() => {
     getAbnormalRecordInstants()
@@ -74,7 +70,7 @@ const AbnormalRecordInstant = () => {
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
-        title={t("abnormal-record-instant")}
+        title={t(NAME)}
         rows={AbnormalRecordInstantList}
         columns={[
           { key: '_type', label: t('type'), sortable: false },
@@ -110,13 +106,13 @@ const AbnormalRecordInstant = () => {
               <MenuItem value="unauthorized">{t("TYPE.UNAUTHORIZED")}</MenuItem>
             </Select>
           </FormControl></div>}
-        onSearchClick={getAbnormalRecordInstants}
-        onClearClick={() => setFilter(initFilter)}
+        // onSearchClick={getAbnormalRecordInstants}
+        // onClearClick={() => setFilter(initFilters[NAME])}
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
-        onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
-        toolbarActions={[]}
+        // onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
+        // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
+        // toolbarActions={[]}
         rowActions={[
           { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> }
         ]}

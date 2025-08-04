@@ -20,6 +20,10 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ManualRecordDialog from "../../components/report/ManualRecordDialog";
+import { initFilters } from "../../utils/constant";
+import { useFilter } from "../../hooks/useFilter";
+
+const NAME = "abnormal-record-management";
 
 var startTime = new Date();
 startTime.setHours(0, 0, 0, 0);
@@ -38,13 +42,13 @@ const initFilter = {
 
 const AbnormalRecordRecord = () => {
   const { t, authedApi, openDialog,
-    closeDialog, 
-    openSnackbar, 
+    closeDialog,
+    openSnackbar,
     // openWarningDialog,
   } = useContext(GlobalContext);
   // const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
-  const [filter, setFilter] = React.useState(initFilter);
+  const [filter, setFilter] = useFilter(NAME);
 
   const [AbnormalRecordRecordList, setAbnormalRecordRecordList] = React.useState([]);
   const navigate = useNavigate();
@@ -116,7 +120,7 @@ const AbnormalRecordRecord = () => {
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
-        title={t("abnormal-record-management")}
+        title={t(NAME)}
         rows={AbnormalRecordRecordList}
         columns={[
           { key: '_type', label: t('type'), sortable: false },
@@ -163,7 +167,7 @@ const AbnormalRecordRecord = () => {
           </FormControl>
         </div>}
         onSearchClick={getAbnormalRecordRecords}
-        onClearClick={() => setFilter(initFilter)}
+        onClearClick={() => setFilter(initFilters[NAME])}
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}

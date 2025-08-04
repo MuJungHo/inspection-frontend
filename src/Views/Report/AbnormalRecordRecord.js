@@ -19,32 +19,20 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+// import { initFilters } from "../../utils/constant";
+import { useFilter } from "../../hooks/useFilter";
 
-var startTime = new Date();
-startTime.setHours(0, 0, 0, 0);
-
-var endTime = new Date();
-endTime.setHours(23, 59, 59, 999);
-
-const initFilter = {
-  amount: 5,
-  skip: 0,
-  page: 0,
-  startTime,
-  endTime,
-  type: "unauthorized"
-}
+const NAME = "abnormal-record-record";
 
 const AbnormalRecordRecord = () => {
   const { t, authedApi, openDialog,
-    closeDialog, 
-    openSnackbar, 
+    closeDialog,
+    openSnackbar,
     // openWarningDialog,
   } = useContext(GlobalContext);
   // const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
-  const [filter, setFilter] = React.useState(initFilter);
-
+  const [filter, setFilter] = useFilter(NAME);
   const [AbnormalRecordRecordList, setAbnormalRecordRecordList] = React.useState([]);
   const navigate = useNavigate();
 
@@ -54,8 +42,7 @@ const AbnormalRecordRecord = () => {
 
   const getAbnormalRecordRecords = async () => {
     const { data, total, success } = await authedApi.record.getAbnormalRecordRecords(filter);
-
-    const _data = data.map(async a => {
+    const _rows = data.map(a => {
       const _eventImageSrc = `${host}/api/v1/Image/${a.eventImageFileId}`;
       const _snapshotImageSrc = `${host}/api/v1/Image/${a.snapshotImageFileId}`;
       return ({
@@ -66,13 +53,11 @@ const AbnormalRecordRecord = () => {
         _snapshotImage: a.snapshotImageFileId && <Image name={t('snapshot-image')} src={_snapshotImageSrc} />,
       })
     });
-    const _rows = await Promise.all(_data)
-
+    
     if (success) {
       setAbnormalRecordRecordList(_rows);
       setTotal(total);
     }
-
   }
 
   const openVehicleDialog = (plateNumber) => {
@@ -106,7 +91,7 @@ const AbnormalRecordRecord = () => {
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
-        title={t("abnormal-record-record")}
+        title={t(NAME)}
         rows={AbnormalRecordRecordList}
         columns={[
           { key: '_type', label: t('type'), sortable: false },
@@ -127,11 +112,15 @@ const AbnormalRecordRecord = () => {
             cleanable={false}
             placement="bottomEnd"
             format="MM/dd/yyyy hh:mm aa"
-            value={[new Date(filter.startTime), new Date(filter.endTime)]} onChange={([startTime, endTime]) => setFilter({
-              ...filter,
-              startTime,
-              endTime
-            })} />
+            value={[new Date(filter.startTime), new Date(filter.endTime)]}
+            onChange={([startTime, endTime]) =>
+              // console.log([startTime, endTime])
+              setFilter({
+                ...filter,
+                startTime,
+                endTime
+              })
+            } />
           <div style={{ flex: 1 }} />
           <FormControl >
             <InputLabel>{t("type")}</InputLabel>
@@ -152,13 +141,13 @@ const AbnormalRecordRecord = () => {
             </Select>
           </FormControl>
         </div>}
-        onSearchClick={getAbnormalRecordRecords}
-        onClearClick={() => setFilter(initFilter)}
+        // onSearchClick={getAbnormalRecordRecords}
+        // onClearClick={() => setFilter(initFilters[NAME])}
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
-        onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
-        onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
-        toolbarActions={[]}
+        onRowsPerPageChange={(rowPerPage) => setFilter({ ...filter, page: 0, skip: 0, amount: rowPerPage })}
+        // onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
+        // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
+        // toolbarActions={[]}
         rowActions={[
           { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> },
           { name: t('abnormal-record-history'), onClick: (e, row) => navigate(`/abnormal-record-record/abnormal-record-history/${row._id}`), icon: <History /> },

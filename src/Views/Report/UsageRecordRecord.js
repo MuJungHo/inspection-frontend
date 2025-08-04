@@ -15,20 +15,10 @@ import { host } from "../../utils/api/axios";
 import Vehicle from "../../components/vehicle/Vehicle";
 import { DateRangePicker } from 'rsuite';
 import ManualPlateNumberDialog from "../../components/report/ManualPlateNumberDialog";
+// import { initFilters } from "../../utils/constant";
+import { useFilter } from "../../hooks/useFilter";
 
-var startTime = new Date();
-startTime.setHours(0, 0, 0, 0);
-
-var endTime = new Date();
-endTime.setHours(23, 59, 59, 999);
-
-const initFilter = {
-  amount: 5,
-  skip: 0,
-  page: 0,
-  startTime,
-  endTime,
-}
+const NAME = "usage-record-record";
 
 const UsageRecordRecord = () => {
   const { t, authedApi, openDialog,
@@ -37,13 +27,13 @@ const UsageRecordRecord = () => {
   } = useContext(GlobalContext);
   // const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
-  const [filter, setFilter] = React.useState(initFilter);
+  const [filter, setFilter] = useFilter(NAME);
 
   const [AbnormalRecordRecordList, setAbnormalRecordRecordList] = React.useState([]);
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    getUsageRecordByTime()
+    getUsageRecordByTime();
   }, [filter])
 
   const getUsageRecordByTime = async () => {
@@ -143,13 +133,13 @@ const UsageRecordRecord = () => {
               endTime
             })} />
         </div>}
-        onSearchClick={getUsageRecordByTime}
-        onClearClick={() => setFilter(initFilter)}
+        // onSearchClick={getUsageRecordByTime}
+        // onClearClick={() => setFilter(initFilters[NAME])}
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
-        onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
-        toolbarActions={[]}
+        // onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
+        // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
+        // toolbarActions={[]}
         rowActions={[
           { name: t('edit'), onClick: (e, row) => openManualPlateNumberDialog(row), icon: <BorderColorSharp /> },
           { name: t('usage-record-history'), onClick: (e, row) => navigate(`/usage-record-record/usage-record-history/${row._id}`), icon: <History /> },

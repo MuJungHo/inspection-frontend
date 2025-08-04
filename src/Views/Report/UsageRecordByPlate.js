@@ -12,18 +12,10 @@ import {
 import { host } from "../../utils/api/axios";
 import Vehicle from "../../components/vehicle/Vehicle";
 import { DateRangePicker } from 'rsuite';
+import { initFilters } from "../../utils/constant";
+import { useFilter } from "../../hooks/useFilter";
 
-
-var startTime = new Date();
-startTime.setHours(0, 0, 0, 0);
-
-var endTime = new Date();
-endTime.setHours(23, 59, 59, 999);
-
-const initFilter = {
-  startTime,
-  endTime,
-}
+const NAME = "usage-record-by-plate";
 
 const UsageRecordByPlate = () => {
   const { t, authedApi,
@@ -36,7 +28,7 @@ const UsageRecordByPlate = () => {
   const { plateNumber } = useParams();
   const location = useLocation()
 
-  const [filter, setFilter] = React.useState({ ...initFilter, plateNumber });
+  const [filter, setFilter] = useFilter(NAME);
   const [UsageRecordList, setUsageRecordList] = React.useState([]);
   const lastPage = location.pathname.split("/")[1];
 
@@ -45,7 +37,7 @@ const UsageRecordByPlate = () => {
   }, [filter])
 
   const getUsageRecordByPlate = async () => {
-    const { data, total, success } = await authedApi.record.getUsageRecordByPlate(filter);
+    const { data, total, success } = await authedApi.record.getUsageRecordByPlate({ ...filter, plateNumber });
 
     const _rows = data.map(a => {
       const _entryImageSrc = `${host}/api/v1/Image/${a.entryExitRecord.entryImageFileId}`;
@@ -85,7 +77,7 @@ const UsageRecordByPlate = () => {
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
-        title={t("entry-history")}
+        title={t(NAME)}
         prevPages={[
           { name: t(lastPage), path: `/#/${lastPage}` }
         ]}
@@ -119,7 +111,7 @@ const UsageRecordByPlate = () => {
             })} />
         </div>}
         onSearchClick={getUsageRecordByPlate}
-        onClearClick={() => setFilter(initFilter)}
+        onClearClick={() => setFilter(initFilters[NAME])}
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}

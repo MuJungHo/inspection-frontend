@@ -13,12 +13,10 @@ import {
 } from '@mui/icons-material';
 import Vehicle from "../../components/vehicle/Vehicle";
 import { host } from "../../utils/api/axios";
+import { initFilters } from "../../utils/constant";
+import { useFilter } from "../../hooks/useFilter";
 
-const initFilter = {
-  amount: 5,
-  skip: 0,
-  page: 0
-}
+const NAME = "usage-record-instant";
 
 const UsageRecordInstant = () => {
   const { t, authedApi, openDialog,
@@ -26,7 +24,7 @@ const UsageRecordInstant = () => {
   } = useContext(GlobalContext);
   // const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
-  const [filter, setFilter] = React.useState(initFilter);
+  const [filter, setFilter] = useFilter(NAME);
   const [UsageRecordList, setUsageRecordList] = React.useState([]);
   const navigate = useNavigate();
 
@@ -73,7 +71,7 @@ const UsageRecordInstant = () => {
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
-        title={t("usage-record-instant")}
+        title={t(NAME)}
         rows={UsageRecordList}
         columns={[
           { key: 'plateNumber', label: t('plate-number'), sortable: false },
@@ -93,7 +91,7 @@ const UsageRecordInstant = () => {
         page={filter.page}
         total={total}
         onSearchClick={getUsageRecordInstants}
-        onClearClick={() => setFilter(initFilter)}
+        onClearClick={() => setFilter(initFilters[NAME])}
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
