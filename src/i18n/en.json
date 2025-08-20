@@ -77,6 +77,8 @@
     "name": "Name",
     "navigation": "Navigation",
     "parking-duration": "Parking Duration",
+    "parking-floor": "Parking Floor",
+    "parking-space": "Parking Space",
     "password": "Password",
     "plate-number": "Plate Number",
     "port": "Port",

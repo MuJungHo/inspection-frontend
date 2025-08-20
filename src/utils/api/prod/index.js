@@ -9,6 +9,7 @@ export { regionsApi } from './regions';
 export { parkingFacilitiesApi } from './parkingFacilities';
 export { parkingFacilityGatesApi } from './parkingFacilityGates';
 export { parkingFacilityGateLanesApi } from './parkingFacilityGateLanes';
+export { parkingFloorApi } from './parkingFloors';
 export { recordApi } from './record';
 export { vehicleApi } from './vehicle';
 

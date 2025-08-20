@@ -25,21 +25,6 @@ import { useFilter } from "../../hooks/useFilter";
 
 const NAME = "abnormal-record-management";
 
-var startTime = new Date();
-startTime.setHours(0, 0, 0, 0);
-
-var endTime = new Date();
-endTime.setHours(23, 59, 59, 999);
-
-const initFilter = {
-  amount: 5,
-  skip: 0,
-  page: 0,
-  startTime,
-  endTime,
-  type: "unauthorized"
-}
-
 const AbnormalRecordRecord = () => {
   const { t, authedApi, openDialog,
     closeDialog,

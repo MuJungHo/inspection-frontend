@@ -77,12 +77,12 @@ function GlobalProvider({ children, ...rest }) {
   const t = React.useCallback((key, arg, options) => i18n(locale)(key, arg, options), [locale]);
 
 
-  const applyGlobalFilter = React.useCallback((key, value) => {
+  const applyGlobalFilter = (key, value) => {
     setGlobalFilter({
       ...globalFilter,
       [key]: value
     })
-  }, [globalFilter])
+  }
 
   const changeTheme = (themeName) => {
     setThemeMode(themeName);

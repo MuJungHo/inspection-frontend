@@ -77,6 +77,8 @@
     "name": "名稱",
     "navigation": "導航",
     "parking-duration": "停車時間",
+    "parking-floor": "停車樓層",
+    "parking-space": "停車格",
     "password": "密碼",
     "plate-number": "車牌號碼",
     "plc": "PLC",

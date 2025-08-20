@@ -1,6 +1,8 @@
 import Region from "../Views/Facility/Region";
 import Factory from "../Views/Facility/Factory";
 import ParkingFacility from '../Views/Facility/ParkingFacility';
+import ParkingFloor from '../Views/Facility/ParkingFloor';
+import ParkingSpace from '../Views/Facility/ParkingSpace';
 import Gate from '../Views/Facility/Gate';
 import GateLane from '../Views/Facility/GateLane';
 
@@ -209,6 +211,18 @@ const routes = [
     name: "abnormal-record-record-abnormal-record-history",
     path: "/abnormal-record-record/abnormal-record-history/:abnormalRecordId",
     component: AbnormalRecordHistory,
+    sidebar: false
+  },
+  {
+    name: "parking-floor",
+    path: "/parking-floor/:parkingFacilityId",
+    component: ParkingFloor,
+    sidebar: false
+  },
+  {
+    name: "parking-space",
+    path: "/parking-space/:parkingFacilityId/:parkingFloorId",
+    component: ParkingSpace,
     sidebar: false
   },
 ]

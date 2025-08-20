@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { AuthContext } from "../../contexts/AuthContext";
 
+import { useNavigate } from "react-router-dom";
 import {
   Table,
   Paper,
@@ -10,6 +11,7 @@ import {
 import {
   BorderColorSharp,
   Delete,
+  EmojiTransportation
 } from '@mui/icons-material';
 import { Upload, Add } from "../../images/icons"
 import RegionDialog from "../../components/Facility/ParkingFacilityDialog";
@@ -27,6 +29,7 @@ const ParkingFacility = () => {
   const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
+  const navigate = useNavigate();
 
   const [parkingFacilityList, setParkingFacilityList] = React.useState([]);
   const actionCondition = (action) => (row) => canAccessAction("parking-facility", action);
@@ -69,7 +72,7 @@ const ParkingFacility = () => {
         // sort: filter.sort
       })
 
-      const _rows = data.map(a => ({ ...a, _id: a.id }))
+      const _rows = data.map(a => ({ ...a, _id: a.parkingFacilityId }))
       setParkingFacilityList(_rows)
       setTotal(total)
     } catch (error) {
@@ -234,6 +237,7 @@ const ParkingFacility = () => {
           // { name: t('upload'), onClick: openImportUserDialog, icon: <Upload /> },
         ]}
         rowActions={[
+          { name: t('parking-floor'), onClick: (e, row) => navigate(`/parking-floor/${row._id}`), icon: <EmojiTransportation /> },
           { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditParkingFacilityDialog(row), icon: <BorderColorSharp /> },
           { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}

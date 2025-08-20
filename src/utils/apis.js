@@ -38,6 +38,7 @@ export const api = (logout = () => { }) => {
     parkingFacilities: wrapApiModule(apiModules.parkingFacilitiesApi, logout),
     parkingFacilityGates: wrapApiModule(apiModules.parkingFacilityGatesApi, logout),
     parkingFacilityGateLanes: wrapApiModule(apiModules.parkingFacilityGateLanesApi, logout),
+    parkingFloors: wrapApiModule(apiModules.parkingFloorApi, logout),
     record: wrapApiModule(apiModules.recordApi, logout),
     vehicle: wrapApiModule(apiModules.vehicleApi, logout),
     edgeServer: wrapApiModule(apiModules.edgeServerApi, logout),

@@ -60,7 +60,7 @@ const AbnormalRecordHistory = () => {
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
-        title={t("abnormal-record-history")}
+        title={t(NAME)}
         prevPages={[
           { name: t(lastPage), path: `/#/${lastPage}` }
         ]}

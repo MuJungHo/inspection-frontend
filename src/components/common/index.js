@@ -12,3 +12,4 @@ export { default as DialogContent } from './DialogContent';
 export { default as DialogActions } from './DialogActions';
 export { default as IconButton } from './IconButton';
 export { default as Image } from './Image';
+export { default as Progress } from './Progress';
