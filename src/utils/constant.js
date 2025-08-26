@@ -40,7 +40,31 @@ export const initFilters = {
     skip: 0,
     page: 0
   },
-  "usage-record-record": {
+  "parking-record": {
+    amount: 5,
+    skip: 0,
+    page: 0,
+    plateNumber: "",
+    parkingSpaceName: "",
+    parkingFloorId: "",
+    startTime,
+    endTime,
+  },
+  "parking-occupancy": {
+    amount: 5,
+    skip: 0,
+    page: 0,
+    startTime,
+    endTime,
+  },
+  "parking-occupancy-history": {
+    amount: 5,
+    skip: 0,
+    page: 0,
+    startTime,
+    endTime,
+  },
+  "parking-occupancy-adjustmentlog": {
     amount: 5,
     skip: 0,
     page: 0,

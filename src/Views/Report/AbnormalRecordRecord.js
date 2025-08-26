@@ -54,7 +54,7 @@ const AbnormalRecordRecord = () => {
         _snapshotImage: a.snapshotImageFileId && <Image name={t('snapshot-image')} src={_snapshotImageSrc} />,
       })
     });
-    
+
     if (success) {
       setAbnormalRecordRecordList(_rows);
       setTotal(total);
@@ -118,8 +118,10 @@ const AbnormalRecordRecord = () => {
         page={filter.page}
         total={total}
         toolbarFilters={<div style={{ width: '100%', display: 'flex' }}>
+          <div style={{ flex: 1 }} />
           <DateRangePicker
             cleanable={false}
+            style={{ marginRight: 20 }}
             placement="bottomEnd"
             format="MM/dd/yyyy hh:mm aa"
             value={[new Date(filter.startTime), new Date(filter.endTime)]}
@@ -131,8 +133,8 @@ const AbnormalRecordRecord = () => {
                 endTime
               })
             } />
-          <div style={{ flex: 1 }} />
-          <FormControl >
+          <FormControl
+            style={{ marginRight: 20 }}>
             <InputLabel>{t("type")}</InputLabel>
             <Select
               size="small"

@@ -32,4 +32,7 @@ export const recordApi = {
   patchUsageRecord: async ({ id, data }) => {
     return await instance.patch(`/v1/UsageRecord/revise/entry/${id}`, data);
   },
+  getParkingRecord: async (params = {}) => {
+    return await instance.get('/v1/ParkingRecord', { params });
+  },
 };

@@ -10,6 +10,8 @@ export { parkingFacilitiesApi } from './parkingFacilities';
 export { parkingFacilityGatesApi } from './parkingFacilityGates';
 export { parkingFacilityGateLanesApi } from './parkingFacilityGateLanes';
 export { parkingFloorApi } from './parkingFloors';
+export { parkingOccupancyApi } from './parkingOccupancy';
+export {} from "./parkingOccupancy";
 export { recordApi } from './record';
 export { vehicleApi } from './vehicle';
 

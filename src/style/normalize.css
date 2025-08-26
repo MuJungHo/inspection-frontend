@@ -97,3 +97,6 @@ video::-webkit-media-controls-enclosure {
 .rs-input-group {
   height: 38px;
 }
+.rs-picker-popup {
+    z-index: 1301 !important;
+}

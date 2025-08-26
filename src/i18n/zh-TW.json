@@ -3,6 +3,8 @@
     "abnormal-record-instant": "即時違規狀況",
     "abnormal-record-record": "異常紀錄查詢",
     "abnormal-record-management": "進出車場異常管理",
+    "adjustment-from": "修正自",
+    "adjustment-to": "修正為",
     "account": "帳號",
     "action": "操作",
     "add": "新增",
@@ -76,8 +78,12 @@
     "member": "成員",
     "name": "名稱",
     "navigation": "導航",
+    "occupied-spaces": "使用停車格",
     "parking-duration": "停車時間",
     "parking-floor": "停車樓層",
+    "parking-occupancy": "停車總數",
+    "parking-occupancy-adjustmentlog": "停車總數修正紀錄",
+    "parking-occupancy-history": "停車總數紀錄",
     "parking-space": "停車格",
     "password": "密碼",
     "plate-number": "車牌號碼",
@@ -118,7 +124,7 @@
         "record": "歷史資料查詢",
         "abnormal-record-record": "異常紀錄查詢",
         "abnormal-record-management": "進出車場異常管理",
-        "usage-record-record": "車輛停放紀錄"
+        "parking-record": "車輛停放紀錄"
     },
     "snapshot-image": "快照",
     "stream-type": "串流種類",
@@ -133,7 +139,7 @@
     "upload": "上傳",
     "usage-record-history": "歷史紀錄",
     "usage-record-instant": "清單檢視",
-    "usage-record-record": "車輛停放紀錄",
+    "parking-record": "車輛停放紀錄",
     "user": "使用者",
     "username": "使用者名稱",
     "user-profile": "用戶資料",
@@ -161,6 +167,7 @@
         "motorcycle": "機車"
     },
     "vehicle-data": "車籍資料",
+    "vehicle-type": "車輛種類",
     "vehicle-record": "車輛停放紀錄",
     "lane": {
         "reversible": "調撥車道",

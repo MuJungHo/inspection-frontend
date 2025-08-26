@@ -11,7 +11,8 @@ import {
 import {
   BorderColorSharp,
   Delete,
-  EmojiTransportation
+  EmojiTransportation,
+  DepartureBoard
 } from '@mui/icons-material';
 import { Upload, Add } from "../../images/icons"
 import RegionDialog from "../../components/Facility/ParkingFacilityDialog";
@@ -238,6 +239,7 @@ const ParkingFacility = () => {
         ]}
         rowActions={[
           { name: t('parking-floor'), onClick: (e, row) => navigate(`/parking-floor/${row._id}`), icon: <EmojiTransportation /> },
+          { name: t('parking-occupancy'), onClick: (e, row) => navigate(`/parking-occupancy/${row._id}`), icon: <DepartureBoard /> },
           { name: t('edit'), condition: actionCondition("update"), onClick: (e, row) => openEditParkingFacilityDialog(row), icon: <BorderColorSharp /> },
           { name: t('delete'), condition: actionCondition("delete"), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}

@@ -3,6 +3,9 @@ import Factory from "../Views/Facility/Factory";
 import ParkingFacility from '../Views/Facility/ParkingFacility';
 import ParkingFloor from '../Views/Facility/ParkingFloor';
 import ParkingSpace from '../Views/Facility/ParkingSpace';
+import ParkingOccupancy from '../Views/Facility/ParkingOccupancy';
+import ParkingOccupancyHistory from '../Views/Facility/ParkingOccupancyHistory';
+import ParkingOccupancyAdjustmentlog from '../Views/Facility/ParkingOccupancyAdjustmentlog';
 import Gate from '../Views/Facility/Gate';
 import GateLane from '../Views/Facility/GateLane';
 
@@ -74,8 +77,8 @@ const routes = [
         component: AbnormalRecordRecord
       },
       {
-        name: "usage-record-record",
-        path: "/usage-record-record",
+        name: "parking-record",
+        path: "/parking-record",
         component: UsageRecordRecord
       }
     ]
@@ -190,8 +193,8 @@ const routes = [
     sidebar: false
   },
   {
-    name: "usage-record-record-usage-record-history",
-    path: "/usage-record-record/usage-record-history/:parkingFacilityUsageRecordId",
+    name: "parking-record-usage-record-history",
+    path: "/parking-record/usage-record-history/:parkingFacilityUsageRecordId",
     component: UsageRecordHistory,
     sidebar: false
   },
@@ -223,6 +226,24 @@ const routes = [
     name: "parking-space",
     path: "/parking-space/:parkingFacilityId/:parkingFloorId",
     component: ParkingSpace,
+    sidebar: false
+  },
+  {
+    name: "parking-occupancy",
+    path: "/parking-occupancy/:parkingFacilityId",
+    component: ParkingOccupancy,
+    sidebar: false
+  },
+  {
+    name: "parking-occupancy-history",
+    path: "/parking-occupancy-history/:parkingFacilityId/:parkingOccupancyId",
+    component: ParkingOccupancyHistory,
+    sidebar: false
+  },
+  {
+    name: "parking-occupancy-adjustmentlog",
+    path: "/parking-occupancy-adjustmentlog/:parkingFacilityId/:parkingOccupancyId",
+    component: ParkingOccupancyAdjustmentlog,
     sidebar: false
   },
 ]

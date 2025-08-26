@@ -76,28 +76,8 @@ const ParkingFloor = () => {
     ]
 
   React.useEffect(() => {
-    const startPolling = () => {
-      pollingRef.current = setInterval(() => {
-        getParkingSpacesStatusByFloor();
-      },  10*1000);
-    };
-    startPolling();
-
-    return () => {
-      clearInterval(pollingRef.current);
-    };
-  }, []);
-
-  React.useEffect(() => {
     getAllParkingSpacesByFloor();
   }, [])
-
-  const getParkingSpacesStatusByFloor = async () => {
-    // console.log('start-polling')
-    // return
-
-    console.log(ParkingSpaceList)
-  }
 
   const getImageSize = (src) => new Promise((resolve, reject) => {
     let img = new Image()

@@ -21,7 +21,11 @@ import Link from '@mui/material/Link';
 import DeleteIcon from '@mui/icons-material/Delete'; // Changed from @material-ui/icons
 // import FilterListIcon from '@mui/icons-material/FilterList'; // Changed from @material-ui/icons
 import { Checkbox, Actions, TextField, Button } from "../common";
-import { Search, SearchOff } from "../../images/icons";
+import { Search } from "../../images/icons";
+
+import {
+  FilterAltOff
+} from '@mui/icons-material';
 
 // Styled TableCell for header
 const StyledHeaderCell = styled(MuiTableCell)(({ theme }) => ({
@@ -117,7 +121,8 @@ const EnhancedTableToolbar = (props) => {
     numSelected,
     title, toolbarActions, onKeywordSearch, filterable,
     onSearchClick, onClearClick,
-    prevPages
+    prevPages,
+    clearable
   } = props;
   const [keyword, setKeyword] = React.useState("")
   const onKeywordChange = (e) => {
@@ -169,10 +174,9 @@ const EnhancedTableToolbar = (props) => {
             }
             {toolbarFilters}
             {filterable && <Button color="inherit" onClick={onSearchClick}><Search /></Button>}
-            {filterable && <Button color="inherit" onClick={() => {
+            {clearable && <Button color="inherit" onClick={() => {
               onClearClick()
-              setKeyword("")
-            }}><SearchOff color="inherit" /></Button>}
+            }}><FilterAltOff color="inherit" /></Button>}
             {
               toolbarActions.length > 0 && <Actions actions={toolbarActions} />
             }
@@ -238,6 +242,7 @@ export default ({
   checkable = true,
   filterable = true,
   paginable = true,
+  clearable = true,
   rows = [],
   columns = [],
   rowActions = [],
@@ -310,6 +315,7 @@ export default ({
         numSelected={selected.length}
         title={title}
         filterable={filterable}
+        clearable={clearable}
         toolbarFilters={toolbarFilters}
         toolbarActions={toolbarActions}
         prevPages={prevPages}

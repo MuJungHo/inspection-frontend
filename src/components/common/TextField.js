@@ -20,7 +20,7 @@ const StyledTextField = styled(MuiTextField)(({ theme }) => ({
     color: theme.palette.layout.color,
   },
   "& .MuiInputLabel-root": {
-    top: 7,
+    // top: 7,
   },
   "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
     borderColor: theme.palette.primary.main,
@@ -57,10 +57,10 @@ const CustomTextField = (props) => (
     size={props.size || "small"}
     {...props}
     inputProps={{
-      style: {
-        height: 53,
-        padding: '0 14px',
-      },
+      // style: {
+      //   height: 53,
+      //   padding: '0 14px',
+      // },
       ...props.inputProps,
     }}
     InputProps={{
