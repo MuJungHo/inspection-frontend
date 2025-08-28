@@ -45,6 +45,7 @@ const ParkingOccupancyHistory = () => {
       return ({
         ...a,
         _id: a.parkingOccupancyHistoryId,
+        _createAt: dayjs(a.createAt).format("YYYY/MM/DD HH:mm")
       })
     });
 
@@ -66,7 +67,8 @@ const ParkingOccupancyHistory = () => {
         rows={ParkingOccupancyList}
         columns={[
           { key: 'occupiedSpaces', label: t('occupied-space'), sortable: false },
-          { key: 'createBy', label: t('create-by'), sortable: false },
+          { key: 'createBy', label: t('user'), sortable: false },
+          { key: '_createAt', label: t('create-time'), sortable: false },
         ]}
         checkable={false}
         filterable={false}

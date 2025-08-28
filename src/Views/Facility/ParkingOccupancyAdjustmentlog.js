@@ -46,6 +46,7 @@ const ParkingOccupancyAdjustmentlog = () => {
       return ({
         ...a,
         _id: a.parkingOccupancyHistoryId,
+        _createAt: dayjs(a.createAt).format("YYYY/MM/DD HH:mm")
       })
     });
 
@@ -68,6 +69,8 @@ const ParkingOccupancyAdjustmentlog = () => {
         columns={[
           { key: 'adjustmentFrom', label: t('adjustment-from'), sortable: false },
           { key: 'adjustmentTo', label: t('adjustment-to'), sortable: false },
+          { key: 'createBy', label: t('user'), sortable: false },
+          { key: '_createAt', label: t('create-time'), sortable: false },
         ]}
         checkable={false}
         filterable={false}

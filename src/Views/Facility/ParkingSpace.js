@@ -2,6 +2,7 @@ import React, { useContext, useRef } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { Progress, Button } from "../../components/common";
 import { useParams } from "react-router-dom";
+
 // import { Add } from "../../images/icons";
 import { useLocation } from "react-router";
 import {
@@ -67,6 +68,7 @@ const ParkingFloor = () => {
 
   const [ParkingFloor, setParkingFloor] = React.useState({})
   const [ParkingSpaceList, setParkingSpaceList] = React.useState([]);
+  const [OccupiedParkingSpaceList, setOccupiedParkingSpaceList] = React.useState([]);
   // const lastPage = location.pathname.split("/")[1];
 
   const prevPages =
@@ -107,6 +109,7 @@ const ParkingFloor = () => {
     let statusPromiseList = [];
     let statusList = [];
     let spaceList = [];
+    let occupiedSpaceList = [];
 
     while (skip < totalParkingSpaces) {
       const spaces = await authedApi
@@ -134,21 +137,28 @@ const ParkingFloor = () => {
     await Promise.all(statusPromiseList).then(promise => {
       promise.forEach(item => {
         if (item.success) {
-          statusList = statusList.concat(item.data)
+          statusList = statusList.concat(item.data);
         }
       })
     })
 
     const _status = new Map(statusList.map(d => [d.parkingSpaceId, d]));
 
+    const _spaces = spaceList.map(a => ({
+      ...a,
+      _id: a.parkingSpaceId,
+      ..._status.get(a.parkingSpaceId),
+    })).filter(a => !a.occupied);
+
     const _rows = spaceList.map(a => ({
       ...a,
       _id: a.parkingSpaceId,
       ..._status.get(a.parkingSpaceId),
-    }));
+    })).filter(a => a.occupied)
 
     setParkingFloor(_ParkingFloor);
-    setParkingSpaceList(_rows);
+    setParkingSpaceList(_spaces);
+    setOccupiedParkingSpaceList(_rows);
 
   }
   const bounds = [[0, 0], [imageSize.height, imageSize.width]];
@@ -166,7 +176,7 @@ const ParkingFloor = () => {
       maxZoom={5}
       zoomSnap={.2}
       zoomControl={false}
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: "100%", height: "100%", background: 'unset' }}
     >
       <ImageOverlay
         url={`${host}/api/v1/Image/${ParkingFloor.imageFileId}`}
@@ -176,7 +186,11 @@ const ParkingFloor = () => {
       />
       <ZoomControl position='bottomright' />
       <Control prepend position='topleft'>
-        <Breadcrumbs aria-label="breadcrumb">
+        <Breadcrumbs
+          sx={(theme) => ({
+            backgroundColor: theme.palette.paper.background,
+          })}
+          style={{ padding: '0 10px', borderRadius: 5 }} aria-label="breadcrumb">
           {
             prevPages.map(prevPage => <Link
               underline="hover"
@@ -195,8 +209,21 @@ const ParkingFloor = () => {
       </Control>
       <MarkerClusterGroup>
         {
+          OccupiedParkingSpaceList.map(space => <Marker
+            icon={occupied}
+            key={space.parkingSpaceId}
+            position={[space.position.y * imageSize.height, space.position.x * imageSize.width]}
+          >
+            <Popup>
+              <ParkingSpacePopup space={space} />
+            </Popup>
+          </Marker>)
+        }
+      </MarkerClusterGroup>
+      <MarkerClusterGroup>
+        {
           ParkingSpaceList.map(space => <Marker
-            icon={space.occupied ? occupied : avaliable}
+            icon={avaliable}
             key={space.parkingSpaceId}
             position={[space.position.y * imageSize.height, space.position.x * imageSize.width]}
           >
