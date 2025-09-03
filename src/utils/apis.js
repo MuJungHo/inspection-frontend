@@ -49,6 +49,7 @@ export const api = (logout = () => { }) => {
     failoverEvent: wrapApiModule(apiModules.failoverEventApi, logout),
     plc: wrapApiModule(apiModules.plcApi, logout),
     plcPoint: wrapApiModule(apiModules.plcPointApi, logout),
+    systemSetting: wrapApiModule(apiModules.systemsettingApi, logout),
   };
 };
 

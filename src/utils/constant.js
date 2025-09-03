@@ -71,4 +71,9 @@ export const initFilters = {
     startTime,
     endTime,
   },
+  "system-setting-history": {
+    amount: 5,
+    skip: 0,
+    page: 0,
+  },
 }

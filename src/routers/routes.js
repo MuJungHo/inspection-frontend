@@ -30,12 +30,14 @@ import AbnormalRecordRecord from "../Views/Report/AbnormalRecordRecord";
 import AbnormalRecordManagement from "../Views/Report/AbnormalRecordManagement";
 import UsageRecordRecord from "../Views/Report/UsageRecordRecord";
 
+import SystemSetting from "../Views/System/Setting";
+import SystemSettingHistory from "../Views/System/History";
 import {
   ManageAccount,
   // IdCard,
   // DataTable,
   // TravelExplore,
-  // Settings,
+  Settings,
   Detector,
   // Tools
 } from "../images/icons";
@@ -185,6 +187,19 @@ const routes = [
         authName: "admin",
       },
     ]
+  },
+  {
+    name: "system-setting",
+    icon: Settings,
+    path: "/system-setting",
+    authName: "admin",
+    component: SystemSetting
+  },
+  {
+    name: "system-setting-history",
+    path: "/system-setting-history/:settingId",
+    component: SystemSettingHistory,
+    sidebar: false
   },
   {
     name: "usage-record-instant-usage-record-history",
