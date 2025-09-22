@@ -32,6 +32,9 @@ import UsageRecordRecord from "../Views/Report/UsageRecordRecord";
 
 import SystemSetting from "../Views/System/Setting";
 import SystemSettingHistory from "../Views/System/History";
+
+import DashboardComponent from "../Views/Dashboard";
+
 import {
   ManageAccount,
   // IdCard,
@@ -42,10 +45,16 @@ import {
   // Tools
 } from "../images/icons";
 
-import { Domain, DataUsage, Storage, Warning, TaxiAlert } from '@mui/icons-material';
+import { Domain, DataUsage, Storage, Warning, TaxiAlert, Dashboard } from '@mui/icons-material';
 
 
 const routes = [
+  {
+    name: 'dashboard',
+    icon: Dashboard,
+    path: "/dashboard",
+    component: DashboardComponent
+  },
   {
     name: "instant",
     icon: DataUsage,

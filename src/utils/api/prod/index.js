@@ -15,6 +15,7 @@ export {} from "./parkingOccupancy";
 export { recordApi } from './record';
 export { vehicleApi } from './vehicle';
 export { systemsettingApi } from './systemsetting';
+export { statisticsApi } from './statistics';
 
 // 設備相關 API
 export * from './devices';

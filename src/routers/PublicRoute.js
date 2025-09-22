@@ -7,7 +7,7 @@ function PublicRoute({ children }) {
   const location = useLocation();
 
   if (token) {
-    return <Navigate to="/user" state={{ from: location }} replace />;
+    return <Navigate to="/dashboard" state={{ from: location }} replace />;
   }
 
   return children;

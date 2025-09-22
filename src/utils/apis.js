@@ -50,6 +50,7 @@ export const api = (logout = () => { }) => {
     plc: wrapApiModule(apiModules.plcApi, logout),
     plcPoint: wrapApiModule(apiModules.plcPointApi, logout),
     systemSetting: wrapApiModule(apiModules.systemsettingApi, logout),
+    statistics: wrapApiModule(apiModules.statisticsApi, logout),
   };
 };
 

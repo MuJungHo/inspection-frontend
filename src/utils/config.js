@@ -4,5 +4,5 @@ export const config = {
   apiHost: import.meta.env.VITE_REACT_APP_HOST,
   apiPort: import.meta.env.VITE_REACT_APP_PORT || '',
   apiProtocol: import.meta.env.VITE_REACT_APP_PROTOCOL || 'http',
-  apiTimeout: 5000
+  apiTimeout: 10000
 };
