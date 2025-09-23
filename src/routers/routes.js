@@ -34,6 +34,7 @@ import SystemSetting from "../Views/System/Setting";
 import SystemSettingHistory from "../Views/System/History";
 
 import DashboardComponent from "../Views/Dashboard";
+import VehicleSearch from "../Views/VehicleSearch";
 
 import {
   ManageAccount,
@@ -63,6 +64,11 @@ const routes = [
         name: "usage-record-instant",
         path: "/usage-record-instant",
         component: UsageRecordInstant
+      },
+      {
+        name: "vehicle-search",
+        path: "/vehicle-search",
+        component: VehicleSearch
       },
     ]
   },

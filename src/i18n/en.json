@@ -68,6 +68,7 @@
     "host": "Host",
     "identity": "Identity",
     "input": "Input",
+    "input-plate-number": "Input Plate Number",
     "is-active": "Is Active",
     "is-enabled": "Is Enabled",
     "keep-me": "Keep Me",
@@ -95,6 +96,7 @@
     "point": "Point",
     "plc-point": "PLC Point",
     "priority": "Priority",
+    "re-search": "Re-search",
     "reject": "Reject",
     "retry-count": "Retry Count",
     "require": "Require",
@@ -103,6 +105,7 @@
     "room": "Room",
     "save": "Save",
     "scope": "Scope",
+    "search": "Search",
     "serial-number": "Serial Number",
     "sidebar": {
         "authorization": "Authorization",
@@ -127,7 +130,8 @@
         "record": "Record",
         "abnormal-record-record": "Abnormal Record",
         "abnormal-record-management": "Abnormal Exit Entry",
-        "parking-record": "Usage Record"
+        "parking-record": "Usage Record",
+        "vehicle-search": "Vehicle Search"
     },
     "snapshot-image": "Snapshot Image",
     "stream-type": "Stream Type",
@@ -174,6 +178,7 @@
         "motorcycle": "Motorcycle"
     },
     "vehicle-data": "Vehicle Data",
+    "vehicle-search": "Vehicle Search",
     "vehicle-type": "Vehicle Type",
     "vehicle-record": "Vehicle Record",
     "lane": {

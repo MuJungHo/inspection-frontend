@@ -167,7 +167,6 @@ const Camera = () => {
       config.series["data"] = _data;
       config.series["data"] = __data;
     }
-    console.log(_data, __data)
     setOption({ ...config, series: { ...config.series, data: _data } })
     setOption1({ ...config, series: { ...config.series, data: __data } })
     // console.log(data)

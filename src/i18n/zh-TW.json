@@ -68,6 +68,7 @@
     "host": "主機",
     "identity": "身份",
     "input": "輸入",
+    "input-plate-number": "輸入車牌號碼",
     "is-active": "運行中",
     "is-enabled": "啟用中",
     "keep-me": "記住我",
@@ -95,6 +96,7 @@
     "point": "點",
     "port": "端口",
     "priority": "優先順序",
+    "re-search": "重新查詢",
     "reject": "否決",
     "retry-count": "重試次數",
     "require": "請求",
@@ -103,6 +105,7 @@
     "room": "會議室",
     "save": "儲存",
     "scope": "範圍",
+    "search": "搜尋",
     "serial-number": "序號",
     "sidebar": {
         "authorization": "授權",
@@ -127,7 +130,8 @@
         "record": "歷史資料查詢",
         "abnormal-record-record": "異常紀錄查詢",
         "abnormal-record-management": "進出車場異常管理",
-        "parking-record": "車輛停放紀錄"
+        "parking-record": "車輛停放紀錄",
+        "vehicle-search": "車牌尋車"
     },
     "snapshot-image": "快照",
     "stream-type": "串流種類",
@@ -174,6 +178,7 @@
         "motorcycle": "機車"
     },
     "vehicle-data": "車籍資料",
+    "vehicle-search": "車牌尋車",
     "vehicle-type": "車輛種類",
     "vehicle-record": "車輛停放紀錄",
     "lane": {
