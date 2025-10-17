@@ -3,6 +3,9 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CustomProvider } from 'rsuite';
 import { AuthContext } from './AuthContext';
 import Alert from '@mui/material/Alert';
+
+import AlertTitle from '@mui/material/AlertTitle';
+
 import {
   Snackbar,
   Dialog,
@@ -204,10 +207,12 @@ function GlobalProvider({ children, ...rest }) {
               <Alert
                 elevation={6}
                 variant="filled"
+                icon={snackBar.icon}
                 onClose={() => setSnackBar({
                   ...snackBar,
                   open: false,
                 })} severity={snackBar.severity}>
+                {snackBar.title && <AlertTitle>{snackBar.title}</AlertTitle>}
                 {snackBar.message}
               </Alert>
             </Snackbar>

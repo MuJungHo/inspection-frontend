@@ -10,7 +10,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
 import Logo from '../../images/delta.svg?react';
 import { DarkMode, LightMode } from "../../images/icons";
-import { Button, IconButton } from "../common";
+import { Button, IconButton, Image } from "../common";
+import { host } from "../../utils/api/axios";
+
+import * as signalR from "@microsoft/signalr";
 
 const AppBarStyled = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -54,11 +57,53 @@ const AppBarStyled = styled(MuiAppBar, {
 }));
 
 const Appbar = ({ open }) => {
-  const { logout, account } = useContext(AuthContext);
-  const { locale, changeLocale, t, changeTheme, themeMode } = useContext(GlobalContext);
+  const { logout, account, token } = useContext(AuthContext);
+  const { locale, changeLocale, t, changeTheme, themeMode, authedApi, openSnackbar } = useContext(GlobalContext);
   const [anchor, setAnchor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const muiTheme = useTheme();
+  
+  const hubUrl = `${host}/hub/pms?access_token=${token}`;
+
+  React.useEffect(() => {
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl(hubUrl)
+      .build();
+
+    let timer = null;
+
+    const startConnection = async () => {
+      try {
+        await connection.start();
+      } catch (err) {
+        timer = setTimeout(startConnection, 5000);
+      }
+    };
+
+    startConnection();
+
+    connection.on("NotifyAlarm", (source, payload) => {
+      let data;
+      try {
+        data = typeof payload === "string" ? JSON.parse(payload) : payload;
+      } catch (e) {
+        return;
+      }
+      // console.log("data:", data);
+      const imageSrc = `${host}/api/v1/Image/${data.ImageFileId}`;
+      openSnackbar({
+        severity: "error",
+        message: data.Message,
+        title: data.Type,
+        icon: data.ImageFileId ? <Image name={t('event-image')} src={imageSrc} /> : null
+      });
+    });
+
+    return () => {
+      connection.off("NotifyAlarm");
+      connection.stop();
+      clearTimeout(timer);
+    };
+  }, []);
 
   const languageMenuOpen = !!anchor;
 
@@ -87,7 +132,6 @@ const Appbar = ({ open }) => {
           <LanguageSharpIcon />
           {locale}
         </Button>
-
         <Button
           size="small"
           color="inherit"
