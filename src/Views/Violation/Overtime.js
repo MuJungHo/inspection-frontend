@@ -21,7 +21,7 @@ import Select from '@mui/material/Select';
 // import { initFilters } from "../../utils/constant";
 import { useFilter } from "../../hooks/useFilter";
 
-const NAME = "abnormal-record-instant";
+const NAME = "violation-overtime";
 
 const AbnormalRecordInstant = () => {
   const { t, authedApi, openDialog,
@@ -73,9 +73,8 @@ const AbnormalRecordInstant = () => {
         title={t(NAME)}
         rows={AbnormalRecordInstantList}
         columns={[
-          { key: '_type', label: t('type'), sortable: false },
-          { key: 'status', label: t('status'), sortable: false },
           { key: 'plateNumber', label: t('plate-number'), sortable: false },
+          { key: 'status', label: t('status'), sortable: false },
           { key: '_eventImage', label: t('event-image'), sortable: false },
           { key: '_snapshotImage', label: t('snapshot-image'), sortable: false },
         ]}
@@ -86,26 +85,6 @@ const AbnormalRecordInstant = () => {
         rowsPerPage={filter.amount}
         page={filter.page}
         total={total}
-        toolbarFilters={<div style={{ width: '100%', display: 'flex' }}>
-          <div style={{ flex: 1 }} />
-          <FormControl >
-            <InputLabel>{t("type")}</InputLabel>
-            <Select
-              size="small"
-              value={filter.type}
-              label={t("type")}
-              onChange={e => setFilter({
-                ...filter,
-                type: e.target.value
-              })}
-            >
-              {/* <MenuItem value="">All</MenuItem> */}
-              <MenuItem value="in">{t("TYPE.IN")}</MenuItem>
-              <MenuItem value="out">{t("TYPE.OUT")}</MenuItem>
-              <MenuItem value="overtime">{t("TYPE.OVERTIME")}</MenuItem>
-              <MenuItem value="unauthorized">{t("TYPE.UNAUTHORIZED")}</MenuItem>
-            </Select>
-          </FormControl></div>}
         // onSearchClick={getAbnormalRecordInstants}
         // onClearClick={() => setFilter(initFilters[NAME])}
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}

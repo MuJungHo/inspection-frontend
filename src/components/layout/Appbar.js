@@ -61,7 +61,7 @@ const Appbar = ({ open }) => {
   const { locale, changeLocale, t, changeTheme, themeMode, authedApi, openSnackbar } = useContext(GlobalContext);
   const [anchor, setAnchor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  
+
   const hubUrl = `${host}/hub/pms?access_token=${token}`;
 
   React.useEffect(() => {
@@ -119,6 +119,17 @@ const Appbar = ({ open }) => {
     logout();
   };
 
+  // const postTestNotify = async () => {
+  //   await authedApi.statistics.postTestNotify({
+  //     data: {
+  //       type: "BlacklistHit",
+  //       message: "車牌黑名單：ABC-123",
+  //       time: "2025-10-21T04:30:12.3456789Z",
+  //       imageFileId: "7ff7b448-2890-49e4-8791-ad6dfa8465fc"
+  //     }
+  //   })
+  // }
+
   return (
     <AppBarStyled position="fixed" open={open}>
       <Toolbar sx={{ display: 'flex' }}>
@@ -142,6 +153,9 @@ const Appbar = ({ open }) => {
         <IconButton size="small" onClick={(e) => setAnchorEl(e.currentTarget)} sx={{ p: 0 }}>
           <Avatar style={{ width: 32, height: 32 }}>{account?.slice(0, 3)}</Avatar>
         </IconButton>
+        {/* <IconButton size="small" onClick={postTestNotify}>
+          <Avatar style={{ width: 32, height: 32 }}>{account?.slice(0, 3)}</Avatar>
+        </IconButton> */}
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}

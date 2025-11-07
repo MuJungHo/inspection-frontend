@@ -11,11 +11,12 @@ export { parkingFacilityGatesApi } from './parkingFacilityGates';
 export { parkingFacilityGateLanesApi } from './parkingFacilityGateLanes';
 export { parkingFloorApi } from './parkingFloors';
 export { parkingOccupancyApi } from './parkingOccupancy';
-export {} from "./parkingOccupancy";
+export { } from "./parkingOccupancy";
 export { recordApi } from './record';
 export { vehicleApi } from './vehicle';
 export { systemsettingApi } from './systemsetting';
 export { statisticsApi } from './statistics';
+export { notificationApi } from './notification';
 
 // 設備相關 API
 export * from './devices';

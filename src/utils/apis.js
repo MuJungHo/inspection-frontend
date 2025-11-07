@@ -51,6 +51,7 @@ export const api = (logout = () => { }) => {
     plcPoint: wrapApiModule(apiModules.plcPointApi, logout),
     systemSetting: wrapApiModule(apiModules.systemsettingApi, logout),
     statistics: wrapApiModule(apiModules.statisticsApi, logout),
+    notification: wrapApiModule(apiModules.notificationApi, logout),
   };
 };
 
@@ -138,7 +139,7 @@ export const compatibleApi = (logout = () => { }) => {
     patchUpdateEdgeServer: modules.edgeServer.patchUpdateEdgeServer,
     deleteEdgeServer: modules.edgeServer.deleteEdgeServer,
     putEdgeServerAppSecretRenew: modules.edgeServer.putEdgeServerAppSecretRenew,
-    
+
 
     getCameras: modules.camera.getCameras,
     getCameraById: modules.camera.getCameraById,

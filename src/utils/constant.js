@@ -5,41 +5,6 @@ const endTime = new Date();
 endTime.setHours(23, 59, 59, 999);
 
 export const initFilters = {
-  "abnormal-record-instant": {
-    amount: 5,
-    skip: 0,
-    page: 0,
-    type: "unauthorized"
-  },
-  "abnormal-record-management": {
-    amount: 5,
-    skip: 0,
-    page: 0,
-    startTime,
-    endTime,
-    type: "unauthorized"
-  },
-  "abnormal-record-record": {
-    amount: 5,
-    skip: 0,
-    page: 0,
-    startTime,
-    endTime,
-    type: "unauthorized"
-  },
-  "usage-record-history": {
-    startTime,
-    endTime,
-  },
-  "usage-record-by-plate": {
-    startTime,
-    endTime,
-  },
-  "usage-record-instant": {
-    amount: 5,
-    skip: 0,
-    page: 0
-  },
   "parking-record": {
     amount: 5,
     skip: 0,
@@ -75,5 +40,57 @@ export const initFilters = {
     amount: 5,
     skip: 0,
     page: 0,
+  },
+  "violation-unauthorized": {
+    amount: 5,
+    skip: 0,
+    page: 0,
+    startTime,
+    endTime,
+    type: "unauthorized"
+  },
+  "violation-overtime": {
+    amount: 5,
+    skip: 0,
+    page: 0,
+    startTime,
+    endTime,
+    type: "overtime"
+  },
+  "abnormal-facility-record": {
+    amount: 5,
+    skip: 0,
+    page: 0,
+    startTime,
+    endTime,
+    type: "in"
+  },
+  "access-record": {
+    amount: 5,
+    skip: 0,
+    page: 0,
+    startTime,
+    endTime,
+  },
+  "access-blacklist": {
+    amount: 5,
+    skip: 0,
+    page: 0,
+    startTime,
+    endTime,
+  },
+  "access-temporary": {
+    amount: 5,
+    skip: 0,
+    page: 0,
+    startTime,
+    endTime,
+  },
+  "notification": {
+    amount: 5,
+    skip: 0,
+    page: 0,
+    startTime,
+    endTime,
   },
 }

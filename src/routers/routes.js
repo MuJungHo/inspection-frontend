@@ -11,6 +11,7 @@ import GateLane from '../Views/Facility/GateLane';
 
 import EdgeServer from "../Views/Device/EdgeServer";
 import EdgeServerHistory from "../Views/Device/EdgeServerHistory";
+import EdgeServerFile from "../Views/Device/EdgeServerFile";
 import FailoverGroup from "../Views/Device/FailoverGroup";
 import FailoverEvent from "../Views/Device/FailoverEvent";
 import Camera from "../Views/Device/Camera";
@@ -21,20 +22,24 @@ import User from "../Views/User/User";
 import Role from "../Views/User/Role";
 import Authorization from "../Views/User/Authorization";
 
-import UsageRecordInstant from "../Views/Report/UsageRecordInstant";
-// import UsageRecordByPlate from "../Views/Report/UsageRecordByPlate";
-import UsageRecordHistory from "../Views/Report/UsageRecordHistory";
-import AbnormalRecordHistory from "../Views/Report/AbnormalRecordHistory";
-import AbnormalRecordInstant from "../Views/Report/AbnormalRecordInstant";
-import AbnormalRecordRecord from "../Views/Report/AbnormalRecordRecord";
-import AbnormalRecordManagement from "../Views/Report/AbnormalRecordManagement";
-import UsageRecordRecord from "../Views/Report/UsageRecordRecord";
-
 import SystemSetting from "../Views/System/Setting";
 import SystemSettingHistory from "../Views/System/History";
 
 import DashboardComponent from "../Views/Dashboard";
-import VehicleSearch from "../Views/VehicleSearch";
+
+import AbnormalFacilityRecord from "../Views/Abnormal/FacilityRecord";
+import Overtime from "../Views/Violation/Overtime";
+import Unauthorized from "../Views/Violation/Unauthorized";
+
+import AccessRecord from "../Views/Acess/Record";
+import AccessBlackList from "../Views/Acess/BlackList";
+import AccessTemporary from "../Views/Acess/Temporary";
+
+import Notification from "../Views/Notification";
+
+import VehicleSearch from "../Views/Presentation/VehicleSearch";
+import Map from "../Views/Presentation/Map";
+
 
 import {
   ManageAccount,
@@ -46,7 +51,7 @@ import {
   // Tools
 } from "../images/icons";
 
-import { Domain, DataUsage, Storage, Warning, TaxiAlert, Dashboard } from '@mui/icons-material';
+import { Domain, DataUsage, Storage, Warning, TaxiAlert, Dashboard, Notifications, NoCrash } from '@mui/icons-material';
 
 
 const routes = [
@@ -57,48 +62,74 @@ const routes = [
     component: DashboardComponent
   },
   {
-    name: "instant",
+    name: "access-management",
     icon: DataUsage,
     children: [
       {
-        name: "usage-record-instant",
-        path: "/usage-record-instant",
-        component: UsageRecordInstant
+        name: "access-record",
+        path: "/access-record",
+        component: AccessRecord
       },
       {
-        name: "vehicle-search",
-        path: "/vehicle-search",
-        component: VehicleSearch
-      },
-    ]
-  },
-  {
-    name: "abnormal-record-instant",
-    icon: Warning,
-    path: "/abnormal-record-instant",
-    component: AbnormalRecordInstant
-  },
-  {
-    name: "abnormal-record-management",
-    icon: TaxiAlert,
-    path: "/abnormal-record-management",
-    component: AbnormalRecordManagement
-  },
-  {
-    name: "record",
-    icon: Storage,
-    children: [
-      {
-        name: "abnormal-record-record",
-        path: "/abnormal-record-record",
-        component: AbnormalRecordRecord
+        name: "access-blacklist",
+        path: "/access-blacklist",
+        component: AccessBlackList
       },
       {
-        name: "parking-record",
-        path: "/parking-record",
-        component: UsageRecordRecord
+        name: "access-temporary",
+        path: "/access-temporary",
+        component: AccessTemporary
       }
     ]
+  },
+  {
+    name: "violation-management",
+    icon: Warning,
+    children: [
+      {
+        name: "violation-overtime",
+        path: "/violation-overtime",
+        component: Overtime
+      },
+      {
+        name: "violation-unauthorized",
+        path: "/violation-unauthorized",
+        component: Unauthorized
+      },
+    ]
+  },
+  {
+    name: "abnormal-management",
+    icon: TaxiAlert,
+    children: [
+      {
+        name: "abnormal-facility-record",
+        path: "/abnormal-facility-record",
+        component: AbnormalFacilityRecord
+      },
+    ]
+  },
+  {
+    name: "presentation",
+    icon: NoCrash,
+    children: [
+      {
+        name: "presentation-vehicle-search",
+        path: "/presentation-vehicle-search",
+        component: VehicleSearch
+      },
+      {
+        name: "presentation-map",
+        path: "/presentation-map",
+        component: Map
+      }
+    ]
+  },
+  {
+    name: 'notification',
+    icon: Notifications,
+    path: "/notification",
+    component: Notification
   },
   {
     name: "facility",
@@ -146,6 +177,12 @@ const routes = [
         path: "/edge-server/history/:edgeServerId",
         name: "edge-server-history",
         component: EdgeServerHistory,
+        sidebar: false // 不顯示在 sidebar
+      },
+      {
+        path: "/edge-server/file/:edgeServerId",
+        name: "edge-server-file",
+        component: EdgeServerFile,
         sidebar: false // 不顯示在 sidebar
       },
       {
@@ -214,36 +251,6 @@ const routes = [
     name: "system-setting-history",
     path: "/system-setting-history/:settingId",
     component: SystemSettingHistory,
-    sidebar: false
-  },
-  {
-    name: "usage-record-instant-usage-record-history",
-    path: "/usage-record-instant/usage-record-history/:parkingFacilityUsageRecordId",
-    component: UsageRecordHistory,
-    sidebar: false
-  },
-  {
-    name: "parking-record-usage-record-history",
-    path: "/parking-record/usage-record-history/:parkingFacilityUsageRecordId",
-    component: UsageRecordHistory,
-    sidebar: false
-  },
-  {
-    name: "abnormal-record-management-abnormal-record-history",
-    path: "/abnormal-record-management/abnormal-record-history/:abnormalRecordId",
-    component: AbnormalRecordHistory,
-    sidebar: false
-  },
-  {
-    name: "abnormal-record-instant-abnormal-record-history",
-    path: "/abnormal-record-instant/abnormal-record-history/:abnormalRecordId",
-    component: AbnormalRecordHistory,
-    sidebar: false
-  },
-  {
-    name: "abnormal-record-record-abnormal-record-history",
-    path: "/abnormal-record-record/abnormal-record-history/:abnormalRecordId",
-    component: AbnormalRecordHistory,
     sidebar: false
   },
   {

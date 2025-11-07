@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { GlobalContext } from "../contexts/GlobalContext";
+import { GlobalContext } from "../../contexts/GlobalContext";
 // import { AuthContext } from "../contexts/AuthContext";
-import { Paper, Text, TextField, Button, Image } from "../components/common";
-import { Add } from "../images/icons";
+import { Paper, Text, TextField, Button, Image } from "../../components/common";
+import { Add } from "../../images/icons";
 import {
   // BorderColorSharp,
   // Delete,
@@ -42,7 +42,7 @@ const VehicleSearch = () => {
             <form onSubmit={handleSearch} style={{ width: '50%', height: '60%' }}>
               <Text style={{ fontSize: 64 }}>{t("vehicle-search")}</Text>
               <Text style={{ fontSize: 36, color: '#bebebe' }}>{t("input-plate-number")}</Text>
-              <TextField value={plateNumber} onChange={e => setPlateNumber(e.target.value)} style={{ marginTop: 20 }} fullWidth />
+              <TextField label={t("plate-number")} value={plateNumber} onChange={e => setPlateNumber(e.target.value)} style={{ marginTop: 16 }} fullWidth />
               <div style={{
                 width: '100%',
                 display: 'flex',

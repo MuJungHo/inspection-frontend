@@ -1,51 +1,47 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
+// import { AuthContext } from "../../contexts/AuthContext";
 import { Paper, Table, Image } from "../../components/common";
-import { useParams } from "react-router-dom";
 // import { Add } from "../../images/icons";
-import { useLocation } from "react-router";
 import {
   // BorderColorSharp,
   // Delete,
+  // Ballot,
+  History,
   TimeToLeave
 } from '@mui/icons-material';
-import { host } from "../../utils/api/axios";
 import Vehicle from "../../components/vehicle/Vehicle";
-import { DateRangePicker } from 'rsuite';
+import { host } from "../../utils/api/axios";
 import { initFilters } from "../../utils/constant";
 import { useFilter } from "../../hooks/useFilter";
+import { DateRangePicker } from 'rsuite';
 
-const NAME = "usage-record-by-plate";
+const NAME = "access-record";
 
-const UsageRecordByPlate = () => {
-  const { t, authedApi,
-    openDialog,
-    // closeDialog,
-    // openSnackbar,
-    // openWarningDialog,
+const PassInAndOut = () => {
+  const { t, authedApi, openDialog,
+    // closeDialog, openSnackbar, openWarningDialog,
   } = useContext(GlobalContext);
+  // const { canAccessAction } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
-  const { plateNumber } = useParams();
-  const location = useLocation()
-
   const [filter, setFilter] = useFilter(NAME);
-  const [UsageRecordList, setUsageRecordList] = React.useState([]);
-  const lastPage = location.pathname.split("/")[1];
+  const [list, setList] = React.useState([]);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
-    getUsageRecordByPlate()
+    getUsageRecordByTime()
   }, [filter])
 
-  const getUsageRecordByPlate = async () => {
-    const { data, total, success } = await authedApi.record.getUsageRecordByPlate({ ...filter, plateNumber });
+  const getUsageRecordByTime = async () => {
+    const { data, total, success } = await authedApi.record.getUsageRecordByTime(filter);
 
     const _rows = data.map(a => {
       const _entryImageSrc = `${host}/api/v1/Image/${a.entryExitRecord.entryImageFileId}`;
       const _entryPlateImageSrc = `${host}/api/v1/Image/${a.entryExitRecord.entryImagePlateFileId}`;
       const _exitImageSrc = `${host}/api/v1/Image/${a.entryExitRecord.exitImageFileId}`;
       const _exitPlateImageSrc = `${host}/api/v1/Image/${a.entryExitRecord.exitImagePlateFileId}`;
-
-      return ({
+      return {
         ...a,
         _id: a.parkingFacilityUsageRecordId,
         _entryTime: a.entryExitRecord?.entryTime,
@@ -55,14 +51,13 @@ const UsageRecordByPlate = () => {
         _exitImage: a.entryExitRecord.exitImageFileId && <Image name={t('exit-image')} src={_exitImageSrc} />,
         _exitPlateImage: a.entryExitRecord.exitImagePlateFileId && <Image name={t('exit-plate-image')} src={_exitPlateImageSrc} />,
         _parkingDuration: a.entryExitRecord?.parkingDuration
-      })
+      }
     });
 
     if (success) {
-      setUsageRecordList(_rows);
+      setList(_rows);
       setTotal(total);
     }
-
   }
 
   const openVehicleDialog = (plateNumber) => {
@@ -78,10 +73,7 @@ const UsageRecordByPlate = () => {
     <Paper sx={{ margin: 3 }}>
       <Table
         title={t(NAME)}
-        prevPages={[
-          { name: t(lastPage), path: `/#/${lastPage}` }
-        ]}
-        rows={UsageRecordList}
+        rows={list}
         columns={[
           { key: 'plateNumber', label: t('plate-number'), sortable: false },
           { key: '_entryTime', label: t('entry-time'), sortable: false },
@@ -110,7 +102,7 @@ const UsageRecordByPlate = () => {
               endTime
             })} />
         </div>}
-        onSearchClick={getUsageRecordByPlate}
+        onSearchClick={getUsageRecordByTime}
         onClearClick={() => setFilter(initFilters[NAME])}
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
@@ -127,4 +119,4 @@ const UsageRecordByPlate = () => {
 }
 
 
-export default UsageRecordByPlate;
+export default PassInAndOut;

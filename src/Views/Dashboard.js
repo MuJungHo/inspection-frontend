@@ -12,6 +12,8 @@ import {
 // import { green, red } from '@mui/material/colors';
 import ReactECharts from 'echarts-for-react';
 
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -216,8 +218,8 @@ const Dashboard = () => {
 
     const option = {
       title: {
-        left: 'center',
-        // top: 10,
+        text: "停車場佔用統計",
+        left: "center",
       },
       tooltip: {
         trigger: 'axis',
@@ -279,89 +281,197 @@ const Dashboard = () => {
     };
     setOption1(option)
   }
+
+  const option_ = {
+    title: {
+      text: "汽車進出狀況",
+      left: "center",
+    },
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      data: ["進場", "出場"],
+      bottom: 0,
+    },
+    xAxis: {
+      type: "category",
+      data: ["週一", "週二", "週三", "週四", "週五", "週六", "週日"],
+    },
+    yAxis: {
+      type: "value",
+      name: "車輛數",
+    },
+    series: [
+      {
+        name: "進場",
+        type: "bar",
+        data: [120, 132, 101, 134, 90, 230, 210],
+        itemStyle: { color: "#5470C6" },
+      },
+      {
+        name: "出場",
+        type: "bar",
+        data: [100, 150, 80, 120, 70, 200, 180],
+        itemStyle: { color: "#91CC75" },
+      },
+    ],
+  };
+
+  const option__ = {
+    title: {
+      text: "機車進出狀況",
+      left: "center",
+    },
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      data: ["進場", "出場"],
+      bottom: 0,
+    },
+    xAxis: {
+      type: "category",
+      data: ["週一", "週二", "週三", "週四", "週五", "週六", "週日"],
+    },
+    yAxis: {
+      type: "value",
+      name: "機車數",
+    },
+    series: [
+      {
+        name: "進場",
+        type: "bar",
+        data: [220, 182, 191, 234, 290, 330, 310],
+        itemStyle: { color: "#EE6666" },
+      },
+      {
+        name: "出場",
+        type: "bar",
+        data: [180, 160, 210, 200, 270, 310, 300],
+        itemStyle: { color: "#FAC858" },
+      },
+    ],
+  };
   return (
-    <>
-      <Paper style={{ display: 'flex' }} sx={{ margin: 3 }}>
-        <ReactECharts
-          option={option}
-          style={{ height: '500px', width: '50%' }}
-        />
-      </Paper>
-      <Paper sx={{ margin: 3 }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingLeft: 16
-          }}>
-          <Typography variant="h6" component="div">停車場佔用統計</Typography>
+    <Grid container spacing={2} style={{ width: '100%', height: '100%', padding: 16 }}>
+      <Grid size={3}>
+        <Paper sx={{ p: 1 }} >
+          <Typography variant="h6" component="div">汽車剩餘數量</Typography>
+          <Typography style={{ textAlign: 'right' }} variant="h2" component="div">20</Typography>
+        </Paper>
+      </Grid>
+      <Grid size={3}>
+        <Paper sx={{ p: 1 }} >
+          <Typography variant="h6" component="div">機車剩餘數量</Typography>
+          <Typography style={{ textAlign: 'right' }} variant="h2" component="div">60</Typography>
+        </Paper>
+      </Grid>
+      <Grid size={3}>
+        <Paper sx={{ p: 1 }} >
+          <Typography variant="h6" component="div">異常數量</Typography>
+          <Typography style={{ textAlign: 'right' }} variant="h2" component="div">60</Typography>
+        </Paper>
+      </Grid>
+      <Grid size={3}>
+        <Paper sx={{ p: 1 }} >
+          <Typography variant="h6" component="div">違規數量數量</Typography>
+          <Typography style={{ textAlign: 'right' }} variant="h2" component="div">60</Typography>
+        </Paper>
+      </Grid>
 
+      <Grid size={6}>
+        <Paper sx={{ p: 1 }} style={{ width: "100%" }}>
+          <ReactECharts option={option_} style={{ height: 250, width: "100%" }} />
 
-          <Stack
-            direction="row"
-            // divider={<Divider orientation="vertical" flexItem />}
-            spacing={3}
-            style={{ padding: 10 }}
-          >
-            <FormControl size="small">
-              <InputLabel>{t("parking-facility")}</InputLabel>
-              <Select
-                value={statisticsOccupancyFilter.parkingFacilityId}
-                label={t("parking-facility")}
-                onChange={e => setStatisticsOccupancyFilter({
-                  ...statisticsOccupancyFilter,
-                  parkingFacilityId: e.target.value
-                })}
-              >
-                {
-                  parkingFacilityList.map(parkingFacility => <MenuItem
-                    key={parkingFacility.parkingFacilityId}
-                    value={parkingFacility.parkingFacilityId}>
-                    {parkingFacility.name}
-                  </MenuItem>)
-                }
-              </Select>
-            </FormControl>
-            <FormControl size="small">
-              <InputLabel>{t("type")}</InputLabel>
-              <Select
-                value={statisticsOccupancyFilter.vehicleType}
-                label={t("type")}
-                onChange={e => setStatisticsOccupancyFilter({
-                  ...statisticsOccupancyFilter,
-                  vehicleType: e.target.value
-                })}
-              >
-                <MenuItem value="CAR">CAR</MenuItem>
-                <MenuItem value="SCOOTER">SCOOTER</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl size="small">
-              <InputLabel>{t("range")}</InputLabel>
-              <Select
-                value={statisticsOccupancyFilter.range}
-                label={t("range")}
-                onChange={e => setStatisticsOccupancyFilter({
-                  ...statisticsOccupancyFilter,
-                  range: e.target.value
-                })}
-              >
-                <MenuItem value="day">{t('day')}</MenuItem>
-                <MenuItem value="week">{t('week')}</MenuItem>
-                <MenuItem value="month">{t('month')}</MenuItem>
-              </Select>
-            </FormControl>
-          </Stack>
-        </div>
-        <div style={{ display: 'flex', width: '100%' }}>
+        </Paper>
+      </Grid>
+      <Grid size={6}>
+        <Paper sx={{ p: 1 }} style={{ width: "100%" }}>
+          <ReactECharts option={option__} style={{ height: 250, width: "100%" }} />
+
+        </Paper>
+      </Grid>
+
+      <Grid size={9}>
+
+        <Paper sx={{ p: 1 }} style={{ height: '100%' }}>
+          {/* <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingLeft: 16
+            }}>
+            <Stack
+              direction="row"
+              // divider={<Divider orientation="vertical" flexItem />}
+              spacing={3}
+              style={{ padding: 10 }}
+            >
+              <FormControl size="small">
+                <InputLabel>{t("parking-facility")}</InputLabel>
+                <Select
+                  value={statisticsOccupancyFilter.parkingFacilityId}
+                  label={t("parking-facility")}
+                  onChange={e => setStatisticsOccupancyFilter({
+                    ...statisticsOccupancyFilter,
+                    parkingFacilityId: e.target.value
+                  })}
+                >
+                  {
+                    parkingFacilityList.map(parkingFacility => <MenuItem
+                      key={parkingFacility.parkingFacilityId}
+                      value={parkingFacility.parkingFacilityId}>
+                      {parkingFacility.name}
+                    </MenuItem>)
+                  }
+                </Select>
+              </FormControl>
+              <FormControl size="small">
+                <InputLabel>{t("type")}</InputLabel>
+                <Select
+                  value={statisticsOccupancyFilter.vehicleType}
+                  label={t("type")}
+                  onChange={e => setStatisticsOccupancyFilter({
+                    ...statisticsOccupancyFilter,
+                    vehicleType: e.target.value
+                  })}
+                >
+                  <MenuItem value="CAR">CAR</MenuItem>
+                  <MenuItem value="SCOOTER">SCOOTER</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl size="small">
+                <InputLabel>{t("range")}</InputLabel>
+                <Select
+                  value={statisticsOccupancyFilter.range}
+                  label={t("range")}
+                  onChange={e => setStatisticsOccupancyFilter({
+                    ...statisticsOccupancyFilter,
+                    range: e.target.value
+                  })}
+                >
+                  <MenuItem value="day">{t('day')}</MenuItem>
+                  <MenuItem value="week">{t('week')}</MenuItem>
+                  <MenuItem value="month">{t('month')}</MenuItem>
+                </Select>
+              </FormControl>
+            </Stack>
+          </div> */}
           <ReactECharts
             option={option1}
-            style={{ height: '500px', width: '100%' }}
           />
-        </div>
-      </Paper>
-    </>
+        </Paper>
+      </Grid>
+      <Grid size={3}>
+        <Paper style={{ height: '100%' }}>
+          <ReactECharts
+            option={option}
+          />
+        </Paper>
+      </Grid>
+    </Grid>
   );
 }
 

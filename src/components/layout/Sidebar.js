@@ -71,6 +71,7 @@ const closedMixin = (theme) => ({
 
 const ListItemStyled = styled(ListItem)(({ theme }) => ({
   color: theme.palette.sidebar.color,
+  cursor: 'pointer',
   // padding: 16,
   '&:hover': {
     color: theme.palette.sidebar.color,
@@ -127,7 +128,7 @@ const CloseMutiLevel = ({ route }) => {
             .map((route, key) => (
               <NavLink key={key} to={route.path} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <MenuItem onClick={handleClose}>
-                  {t(`sidebar.${route.name}`)}
+                  {t(route.name)}
                 </MenuItem>{/* Use t() for child names */}
               </NavLink>
             ))
@@ -159,7 +160,7 @@ const OpenMultiLevel = ({ route }) => {
             ml: 1,
             "span": { fontSize: '16px' }
           }}
-          primary={t(`sidebar.${route.name}`)}
+          primary={t(route.name)}
         />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemStyled>
@@ -177,7 +178,7 @@ const OpenMultiLevel = ({ route }) => {
                     <NodeComponent button="true">
                       <FiberManualRecord sx={{ width: 10, mr: 1.25, fontSize: '0.6rem', ml: 2 }} />
                       <ListItemText
-                        primary={t(`sidebar.${route.name}`)}
+                        primary={t(route.name)}
                       />
                     </NodeComponent>
                   </NavLink>

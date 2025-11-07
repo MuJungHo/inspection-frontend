@@ -6,22 +6,22 @@ export const edgeServerApi = {
   getEdgeServers: async (params = {}) => {
     return await instance.get('/v1/EdgeServer', { params });
   },
-  
+
   // 根據 ID 取得 EdgeServer
   getEdgeServerById: async ({ id }) => {
     return await instance.get(`/v1/EdgeServer/${id}`);
   },
-  
+
   // 新增 EdgeServer
   postCreateEdgeServer: async ({ data }) => {
     return await instance.post('/v1/EdgeServer', data);
   },
-  
+
   // 修改 EdgeServer
   patchUpdateEdgeServer: async ({ id, data }) => {
     return await instance.patch(`/v1/EdgeServer/${id}`, data);
   },
-  
+
   // 刪除 EdgeServer
   deleteEdgeServer: async ({ id }) => {
     return await instance.delete(`/v1/EdgeServer/${id}`);
@@ -36,4 +36,27 @@ export const edgeServerApi = {
       edgeServerId: id,
     });
   },
+
+  getEdgeServerFiles: async ({ edgeserverid }) => {
+    return await instance.get(`/v1/EdgeServer/${edgeserverid}/file`);
+  },
+
+  postEdgeServerFile: async ({ data, edgeserverid }) => {
+    return await instance({
+      method: "POST",
+      url: `/v1/EdgeServer/${edgeserverid}/file`,
+      data,
+    })
+  },
+
+  deleteEdgeServerFile: async ({ edgeserverid, fileId }) => {
+    return await instance.delete(`/v1/EdgeServer/${edgeserverid}/file/${fileId}`);
+  },
+
+  getEdgeServerFile: async ({ edgeserverid, fileId }) => {
+    return await instance.get(`/v1/EdgeServer/${edgeserverid}/file/${fileId}`, {
+      responseType: 'blob' //重要!!
+    });
+  },
+
 };

@@ -87,14 +87,9 @@ const ParkingFacility = () => {
     }
   };
 
-  React.useEffect(() => {
-    // 預先載入全部 region 資料
-    getAllRegions();
-    // 載入 ParkingFacility 清單
-    getParkingFacilityList();
-  }, [])
 
   React.useEffect(() => {
+    getAllRegions();
     getParkingFacilityList();
   }, [filter]);
 
