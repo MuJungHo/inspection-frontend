@@ -52,7 +52,7 @@ const Dashboard = () => {
   } = useContext(GlobalContext);
   const [option, setOption] = React.useState({});
   const [option1, setOption1] = React.useState({});
-  const [parkingFacilityList, setParkingFacilityList] = React.useState([]);
+  const [statisticsInformation, setStatisticsInformation] = React.useState({});
   const [statisticsOccupancyFilter, setStatisticsOccupancyFilter] = React.useState({
     range: "day",
     vehicleType: "CAR",
@@ -65,7 +65,10 @@ const Dashboard = () => {
   }, [])
 
   React.useEffect(() => {
-    if (statisticsOccupancyFilter.parkingFacilityId) getStatisticsOccupancyByFacilityId();
+    if (statisticsOccupancyFilter.parkingFacilityId) {
+      getStatisticsOccupancyByFacilityId();
+      getStatisticsInformationByFacilityId()
+    }
   }, [statisticsOccupancyFilter])
 
   const getStatisticsBySpaceType = async () => {
@@ -193,17 +196,23 @@ const Dashboard = () => {
     }
 
 
-    setOption({ ...config, series: { ...config.series, data: _data } })
+    setOption({ ...config, series: { ...config.series, data: __data } })
     // console.log(data)
   }
 
   const getParkingFacilityList = async () => {
-
     const { data, total } = await authedApi.parkingFacilities.getParkingFacilities();
-    setParkingFacilityList(data);
     if (total > 0) {
       setStatisticsOccupancyFilter({ ...statisticsOccupancyFilter, parkingFacilityId: data[0].parkingFacilityId })
     }
+  }
+
+  const getStatisticsInformationByFacilityId = async () => {
+    const { data, success } = await authedApi.statistics.getStatisticsInformationByFacilityId({
+      facilityId: statisticsOccupancyFilter.parkingFacilityId
+    });
+    setStatisticsInformation(data)
+    // console.log(data)
   }
   const getStatisticsOccupancyByFacilityId = async () => {
     const { data, success } = await authedApi.statistics.getStatisticsOccupancyByFacilityId({
@@ -357,26 +366,46 @@ const Dashboard = () => {
     <Grid container spacing={2} style={{ width: '100%', height: '100%', padding: 16 }}>
       <Grid size={3}>
         <Paper sx={{ p: 1 }} >
-          <Typography variant="h6" component="div">汽車剩餘數量</Typography>
-          <Typography style={{ textAlign: 'right' }} variant="h2" component="div">20</Typography>
+          <Typography variant="h7" component="div">汽車剩餘數量</Typography>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Typography style={{ flex: 1 }} variant="h5" component="div">
+              {`${statisticsInformation?.availableParkingSpaces?.CAR?.availableSpaces || '--'}/${statisticsInformation?.availableParkingSpaces?.CAR?.totalSpaces || '--'}`}
+            </Typography>
+            <Typography style={{ textAlign: 'right' }} variant="h7" component="div">彈性車位: {statisticsInformation?.availableParkingSpaces?.CAR?.temporarySpaces || '--'}</Typography>
+          </div>
         </Paper>
       </Grid>
       <Grid size={3}>
         <Paper sx={{ p: 1 }} >
-          <Typography variant="h6" component="div">機車剩餘數量</Typography>
-          <Typography style={{ textAlign: 'right' }} variant="h2" component="div">60</Typography>
+          <Typography variant="h7" component="div">機車剩餘數量</Typography>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Typography style={{ flex: 1 }} variant="h5" component="div">
+              {`${statisticsInformation?.availableParkingSpaces?.SCOOTER?.availableSpaces || '--'}/${statisticsInformation?.availableParkingSpaces?.SCOOTER?.totalSpaces || '--'}`}
+            </Typography>
+            <Typography style={{ textAlign: 'right' }} variant="h7" component="div">彈性車位: {statisticsInformation?.availableParkingSpaces?.SCOOTER?.temporarySpaces || '--'}</Typography>
+          </div>
         </Paper>
       </Grid>
       <Grid size={3}>
         <Paper sx={{ p: 1 }} >
-          <Typography variant="h6" component="div">異常數量</Typography>
-          <Typography style={{ textAlign: 'right' }} variant="h2" component="div">60</Typography>
+          <Typography variant="h7" component="div">汽車出入口辨識率</Typography>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Typography style={{ flex: 1 }} variant="h5" component="div">
+              {statisticsInformation?.totalRecognitionRate?.car?.rate || '--'}
+            </Typography>
+            <Typography style={{ textAlign: 'right' }} variant="h7" component="div">辨識: {`${statisticsInformation?.totalRecognitionRate?.car?.recognizedCount || '--'}/${statisticsInformation?.totalRecognitionRate?.car?.total || '--'}`}</Typography>
+          </div>
         </Paper>
       </Grid>
       <Grid size={3}>
         <Paper sx={{ p: 1 }} >
-          <Typography variant="h6" component="div">違規數量數量</Typography>
-          <Typography style={{ textAlign: 'right' }} variant="h2" component="div">60</Typography>
+          <Typography variant="h7" component="div">機車出入口辨識率</Typography>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Typography style={{ flex: 1 }} variant="h5" component="div">
+              {statisticsInformation?.totalRecognitionRate?.scooter?.rate || '--'}
+            </Typography>
+            <Typography style={{ textAlign: 'right' }} variant="h7" component="div">辨識: {`${statisticsInformation?.totalRecognitionRate?.scooter?.recognizedCount || '--'}/${statisticsInformation?.totalRecognitionRate?.scooter?.total || '--'}`}</Typography>
+          </div>
         </Paper>
       </Grid>
 
@@ -394,71 +423,7 @@ const Dashboard = () => {
       </Grid>
 
       <Grid size={9}>
-
         <Paper sx={{ p: 1 }} style={{ height: '100%' }}>
-          {/* <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingLeft: 16
-            }}>
-            <Stack
-              direction="row"
-              // divider={<Divider orientation="vertical" flexItem />}
-              spacing={3}
-              style={{ padding: 10 }}
-            >
-              <FormControl size="small">
-                <InputLabel>{t("parking-facility")}</InputLabel>
-                <Select
-                  value={statisticsOccupancyFilter.parkingFacilityId}
-                  label={t("parking-facility")}
-                  onChange={e => setStatisticsOccupancyFilter({
-                    ...statisticsOccupancyFilter,
-                    parkingFacilityId: e.target.value
-                  })}
-                >
-                  {
-                    parkingFacilityList.map(parkingFacility => <MenuItem
-                      key={parkingFacility.parkingFacilityId}
-                      value={parkingFacility.parkingFacilityId}>
-                      {parkingFacility.name}
-                    </MenuItem>)
-                  }
-                </Select>
-              </FormControl>
-              <FormControl size="small">
-                <InputLabel>{t("type")}</InputLabel>
-                <Select
-                  value={statisticsOccupancyFilter.vehicleType}
-                  label={t("type")}
-                  onChange={e => setStatisticsOccupancyFilter({
-                    ...statisticsOccupancyFilter,
-                    vehicleType: e.target.value
-                  })}
-                >
-                  <MenuItem value="CAR">CAR</MenuItem>
-                  <MenuItem value="SCOOTER">SCOOTER</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl size="small">
-                <InputLabel>{t("range")}</InputLabel>
-                <Select
-                  value={statisticsOccupancyFilter.range}
-                  label={t("range")}
-                  onChange={e => setStatisticsOccupancyFilter({
-                    ...statisticsOccupancyFilter,
-                    range: e.target.value
-                  })}
-                >
-                  <MenuItem value="day">{t('day')}</MenuItem>
-                  <MenuItem value="week">{t('week')}</MenuItem>
-                  <MenuItem value="month">{t('month')}</MenuItem>
-                </Select>
-              </FormControl>
-            </Stack>
-          </div> */}
           <ReactECharts
             option={option1}
           />

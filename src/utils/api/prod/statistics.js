@@ -10,6 +10,10 @@ export const statisticsApi = {
     return await instance.get(`/v1/Statistics/Occupancy/${facilityId}`, { params });
   },
   
+  getStatisticsInformationByFacilityId: async ({ facilityId }) => {
+    return await instance.get(`/v1/Statistics/Information/${facilityId}`);
+  },
+
   postTestNotify: async ({ data }) => {
     return await instance.post('/v1/test/notify', data);
   },
