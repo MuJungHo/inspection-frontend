@@ -391,7 +391,7 @@ const Dashboard = () => {
           <Typography variant="h7" component="div">汽車出入口辨識率</Typography>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Typography style={{ flex: 1 }} variant="h5" component="div">
-              {statisticsInformation?.totalRecognitionRate?.car?.rate || '--'}
+              {Math.round(statisticsInformation?.totalRecognitionRate?.car?.rate * 100) || '--'} %
             </Typography>
             <Typography style={{ textAlign: 'right' }} variant="h7" component="div">辨識: {`${statisticsInformation?.totalRecognitionRate?.car?.recognizedCount || '--'}/${statisticsInformation?.totalRecognitionRate?.car?.total || '--'}`}</Typography>
           </div>
@@ -402,7 +402,7 @@ const Dashboard = () => {
           <Typography variant="h7" component="div">機車出入口辨識率</Typography>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Typography style={{ flex: 1 }} variant="h5" component="div">
-              {statisticsInformation?.totalRecognitionRate?.scooter?.rate || '--'}
+              {Math.round(statisticsInformation?.totalRecognitionRate?.scooter?.rate * 100) || '--'} %
             </Typography>
             <Typography style={{ textAlign: 'right' }} variant="h7" component="div">辨識: {`${statisticsInformation?.totalRecognitionRate?.scooter?.recognizedCount || '--'}/${statisticsInformation?.totalRecognitionRate?.scooter?.total || '--'}`}</Typography>
           </div>
