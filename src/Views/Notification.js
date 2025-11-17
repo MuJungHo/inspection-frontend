@@ -52,42 +52,6 @@ const Notification = () => {
     }
   }
 
-  const openVehicleDialog = (plateNumber) => {
-    openDialog({
-      title: t("vehicle-data"),
-      maxWidth: "sm",
-      fullWidth: true,
-      section: <Vehicle onConfirm={() => { }} plateNumber={plateNumber} />
-    })
-  }
-
-  const openAddDialog = () => {
-    openDialog({
-      title: t("add-thing", { thing: t("blacklist") }),
-      maxWidth: "sm",
-      // fullWidth: true,
-      section: <BlackListSection onConfirm={handleAdd} />
-    });
-  }
-
-  const handleAdd = async (state) => {
-    const blacklist = {
-      plateNumber: state.plateNumber,
-      reason: state.reason,
-      FlaggedType: "Notification",
-      VehicleType: "CAR"
-    };
-    const { success } = await authedApi.vehicle.postFlaggedVehicle({ data: blacklist });
-    if (success) {
-      getList();
-      closeDialog();
-      openSnackbar({
-        severity: "success",
-        message: t("success-thing", { thing: t("add") })
-      });
-    }
-  }
-
   return (
     <Paper sx={{ margin: 3 }}>
       <Table

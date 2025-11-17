@@ -8,6 +8,9 @@ export const vehicleApi = {
   getVehicleDataSearchByPlateNumber: async ({ plateNumber }) => {
     return await instance.get(`/v1/VehicleData/Search/${plateNumber}`);
   },
+  deleteFlaggedVehicle: async ({ id }) => {
+    return await instance.delete(`/v1/flaggedvehicle/${id}`);
+  },
   postFlaggedVehicle: async ({ data }) => {
     return await instance.post('/v1/flaggedvehicle', data);
   },

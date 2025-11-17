@@ -32,6 +32,9 @@ export const recordApi = {
   patchUsageRecord: async ({ id, data }) => {
     return await instance.patch(`/v1/UsageRecord/revise/entry/${id}`, data);
   },
+  patchAbnormalRecord: async ({ abnormalRecordId, data }) => {
+    return await instance.patch(`/v1/AbnormalRecord/${abnormalRecordId}`, data);
+  },
   getParkingRecord: async (params = {}) => {
     return await instance.get('/v1/ParkingRecord', { params });
   },

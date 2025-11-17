@@ -47,7 +47,8 @@ export const initFilters = {
     page: 0,
     startTime,
     endTime,
-    type: "unauthorized"
+    type: "unauthorized",
+    status: "new"
   },
   "violation-overtime": {
     amount: 5,
@@ -55,7 +56,8 @@ export const initFilters = {
     page: 0,
     startTime,
     endTime,
-    type: "overtime"
+    type: "overtime",
+    status: "new"
   },
   "abnormal-facility-record": {
     amount: 5,

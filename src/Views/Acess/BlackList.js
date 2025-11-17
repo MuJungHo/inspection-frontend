@@ -6,7 +6,7 @@ import { Paper, Table, Image } from "../../components/common";
 import { Add } from "../../images/icons";
 import {
   // BorderColorSharp,
-  // Delete,
+  Delete,
   // Ballot,
   History,
   TimeToLeave
@@ -52,18 +52,9 @@ const BlackList = () => {
     }
   }
 
-  // const openVehicleDialog = (plateNumber) => {
-  //   openDialog({
-  //     title: t("vehicle-data"),
-  //     maxWidth: "sm",
-  //     fullWidth: true,
-  //     section: <Vehicle onConfirm={() => { }} plateNumber={plateNumber} />
-  //   })
-  // }
-
   const openAddDialog = () => {
     openDialog({
-      title: t("add-thing", { thing: t("blacklist") }),
+      title: t("add-thing", { thing: t("access-blacklist") }),
       maxWidth: "sm",
       section: <BlackListSection onConfirm={handleAdd} />
     });
@@ -87,6 +78,27 @@ const BlackList = () => {
     }
   }
 
+  const handleDelete = async blacklist => {
+    const { success } = await authedApi.vehicle.deleteFlaggedVehicle({ id: blacklist.flaggedVehicleId });
+
+    if (success) {
+      getList();
+      closeDialog();
+      openSnackbar({
+        severity: "success",
+        message: t("success-thing", { thing: t("delete") })
+      });
+    }
+  }
+
+  const handleSetWarningDialog = (blacklist) => {
+    openWarningDialog({
+      title: t("delete-confirmation"),
+      message: t("delete-thing-confirm", { thing: blacklist.plateNumber }),
+      onConfirm: () => handleDelete(blacklist)
+    })
+  }
+
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
@@ -107,17 +119,17 @@ const BlackList = () => {
         rowsPerPage={filter.amount}
         page={filter.page}
         total={total}
-        toolbarFilters={<div style={{ width: '100%', display: 'flex' }}>
-          <DateRangePicker
-            cleanable={false}
-            placement="bottomEnd"
-            format="MM/dd/yyyy hh:mm aa"
-            value={[new Date(filter.startTime), new Date(filter.endTime)]} onChange={([startTime, endTime]) => setFilter({
-              ...filter,
-              startTime,
-              endTime
-            })} />
-        </div>}
+        // toolbarFilters={<div style={{ width: '100%', display: 'flex' }}>
+        //   <DateRangePicker
+        //     cleanable={false}
+        //     placement="bottomEnd"
+        //     format="MM/dd/yyyy hh:mm aa"
+        //     value={[new Date(filter.startTime), new Date(filter.endTime)]} onChange={([startTime, endTime]) => setFilter({
+        //       ...filter,
+        //       startTime,
+        //       endTime
+        //     })} />
+        // </div>}
         onSearchClick={getList}
         onClearClick={() => setFilter(initFilters[NAME])}
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
@@ -127,7 +139,9 @@ const BlackList = () => {
         toolbarActions={[
           { name: t('add'), onClick: openAddDialog, icon: <Add /> },
         ]}
-        rowActions={[]}
+        rowActions={[
+          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
+        ]}
       // dense
       />
     </Paper>
