@@ -9,13 +9,15 @@ import {
   // Delete,
   // Ballot,
   History,
-  TimeToLeave
+  TimeToLeave,
+  FileDownload
 } from '@mui/icons-material';
 import Vehicle from "../../components/vehicle/Vehicle";
 import { host } from "../../utils/api/axios";
 import { initFilters } from "../../utils/constant";
 import { useFilter } from "../../hooks/useFilter";
 import { DateRangePicker } from 'rsuite';
+import dayjs from "dayjs";
 
 const NAME = "access-record";
 
@@ -58,6 +60,18 @@ const PassInAndOut = () => {
       setList(_rows);
       setTotal(total);
     }
+  }
+
+  const getExport = async () => {
+    const blob = await authedApi.record.getUsageRecordByTimeExport(filter);
+    const url = window.URL.createObjectURL(new Blob([blob]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `export${dayjs().format("YYYYMMDDHHmmss")}.xlsx`)
+    document.body.appendChild(link)
+    link.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(link);
   }
 
   const openVehicleDialog = (plateNumber) => {
@@ -108,7 +122,9 @@ const PassInAndOut = () => {
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
-        toolbarActions={[]}
+        toolbarActions={[
+          { name: t('export'), onClick: getExport, icon: <FileDownload /> }
+        ]}
         rowActions={[
           { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> }
         ]}

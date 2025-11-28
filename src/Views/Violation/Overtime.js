@@ -10,6 +10,7 @@ import {
   // Ballot,
   // History,
   TimeToLeave,
+  FileDownload
 } from '@mui/icons-material';
 import { host } from "../../utils/api/axios";
 import Vehicle from "../../components/vehicle/Vehicle";
@@ -94,6 +95,18 @@ const AbnormalRecordInstant = () => {
     });
   }
 
+  const getExport = async () => {
+    const blob = await authedApi.record.getAbnormalRecordRecordsExport(filter);
+    const url = window.URL.createObjectURL(new Blob([blob]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `export${dayjs().format("YYYYMMDDHHmmss")}.xlsx`)
+    document.body.appendChild(link)
+    link.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(link);
+  }
+
 
   return (
     <Paper sx={{ margin: 3 }}>
@@ -152,6 +165,9 @@ const AbnormalRecordInstant = () => {
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
         onClearClick={() => clearFilter()}
+        toolbarActions={[
+          { name: t('export'), onClick: getExport, icon: <FileDownload /> }
+        ]}
         rowActions={[
           { name: t('edit'), onClick: (e, row) => openEditDialog(row), icon: <BorderColorSharp /> },
           { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> }

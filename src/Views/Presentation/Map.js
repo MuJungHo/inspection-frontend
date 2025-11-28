@@ -315,7 +315,7 @@ const PresentMap = () => {
           OccupiedParkingSpaceList.map(space => <Marker
             icon={occupied}
             key={space.parkingSpaceId}
-            position={[space.position.y * imageSize.height, space.position.x * imageSize.width]}
+            position={[(1 - space.position.y) * imageSize.height, space.position.x * imageSize.width]}
           >
             <Popup>
               <ParkingSpacePopup space={space} />
@@ -328,7 +328,7 @@ const PresentMap = () => {
           ParkingSpaceList.map(space => <Marker
             icon={avaliable}
             key={space.parkingSpaceId}
-            position={[space.position.y * imageSize.height, space.position.x * imageSize.width]}
+            position={[(1 - space.position.y) * imageSize.height, space.position.x * imageSize.width]}
           >
             <Popup>
               <ParkingSpacePopup space={space} />
