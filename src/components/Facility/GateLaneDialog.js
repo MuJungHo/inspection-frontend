@@ -169,7 +169,7 @@ const GateLaneDialog = ({
                 }}>
                 <TextField
                     select
-                    label={t("gate-lane")}
+                    label={t("gate")}
                     required
                     fullWidth
                     sx={{ marginBottom: 2.5 }}

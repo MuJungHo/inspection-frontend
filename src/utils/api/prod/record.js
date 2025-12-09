@@ -50,4 +50,12 @@ export const recordApi = {
   getParkingRecord: async (params = {}) => {
     return await instance.get('/v1/ParkingRecord', { params });
   },
+  getReport: async (params = {}) => {
+    return await instance.get('/v1/Report', { params });
+  },
+  getReportFile: async ({ fileName }) => {
+    return await instance.get(`/v1/Report/${fileName}`, {
+      responseType: 'blob'
+    });
+  },
 };

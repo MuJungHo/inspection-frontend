@@ -102,4 +102,6 @@ export const initFilters = {
     startTime,
     endTime,
   },
+  "report": {
+  },
 }

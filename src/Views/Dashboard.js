@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
-// import { AuthContext } from "../contexts/AuthContext";
-import { Paper, Table, Button } from "../components/common";
+import { AuthContext } from "../contexts/AuthContext";
+import { Paper, Table, Button, Text } from "../components/common";
 import { Add } from "../images/icons";
 import {
   // BorderColorSharp,
@@ -11,17 +11,19 @@ import {
 } from '@mui/icons-material';
 // import { green, red } from '@mui/material/colors';
 import ReactECharts from 'echarts-for-react';
+import { host } from "../utils/api/axios";
+import * as signalR from "@microsoft/signalr";
 
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import ButtonGroup from '@mui/material/ButtonGroup';
+// import Box from '@mui/material/Box';
+// import InputLabel from '@mui/material/InputLabel';
+// import MenuItem from '@mui/material/MenuItem';
+// import FormControl from '@mui/material/FormControl';
+// import Select from '@mui/material/Select';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import Stack from '@mui/material/Stack';
+// import ButtonGroup from '@mui/material/ButtonGroup';
 
 const config = {
   series: {
@@ -33,11 +35,6 @@ const config = {
     },
   },
 };
-// const initFilter = {
-//   amount: 5,
-//   skip: 0,
-//   page: 0
-// }
 
 const colors = [
   ["#2093fe", "#a4c7f1"],
@@ -50,6 +47,8 @@ const Dashboard = () => {
   const { t, authedApi,
     // openDialog, closeDialog, openSnackbar, openWarningDialog, 
   } = useContext(GlobalContext);
+  const { token } = useContext(AuthContext);
+
   const [option, setOption] = React.useState({});
   const [option1, setOption1] = React.useState({});
   const [statisticsInformation, setStatisticsInformation] = React.useState({});
@@ -58,6 +57,7 @@ const Dashboard = () => {
     vehicleType: "CAR",
     parkingFacilityId: ""
   });
+  const [data, setData] = React.useState({});
 
   React.useEffect(() => {
     getStatisticsBySpaceType();
@@ -70,6 +70,44 @@ const Dashboard = () => {
       getStatisticsInformationByFacilityId()
     }
   }, [statisticsOccupancyFilter])
+
+  const hubUrl = `${host}/hub/pms?access_token=${token}`;
+
+  React.useEffect(() => {
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl(hubUrl)
+      .build();
+
+    let timer = null;
+
+    const startConnection = async () => {
+      try {
+        await connection.start();
+      } catch (err) {
+        timer = setTimeout(startConnection, 5000);
+      }
+    };
+
+    startConnection();
+
+    connection.on("AvailableSpace", (source, payload) => {
+      let data;
+      try {
+        data = typeof payload === "string" ? JSON.parse(payload) : payload;
+      } catch (e) {
+        return;
+      }
+      console.log("data:", data);
+      setData(data)
+
+    });
+
+    return () => {
+      connection.off("AvailableSpace");
+      connection.stop();
+      clearTimeout(timer);
+    };
+  }, []);
 
   const getStatisticsBySpaceType = async () => {
     const { data, success } = await authedApi.statistics.getStatisticsBySpaceType();
@@ -362,62 +400,65 @@ const Dashboard = () => {
       },
     ],
   };
+
+  const four_card_height = (window.innerHeight - 120) / 6;
   return (
     <Grid container spacing={2} style={{ width: '100%', height: '100%', padding: 16 }}>
       <Grid size={3}>
-        <Paper sx={{ p: 1 }} >
-          <Typography variant="h7" component="div">汽車剩餘數量</Typography>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Typography style={{ flex: 1 }} variant="h5" component="div">
-              {`${statisticsInformation?.availableParkingSpaces?.CAR?.availableSpaces || '--'}/${statisticsInformation?.availableParkingSpaces?.CAR?.totalSpaces || '--'}`}
-            </Typography>
-            <Typography style={{ textAlign: 'right' }} variant="h7" component="div">彈性車位: {statisticsInformation?.availableParkingSpaces?.CAR?.temporarySpaces || '--'}</Typography>
+        <Paper sx={{ p: 1, height: '100%', display: 'flex', flexDirection: 'column' }} >
+          <Text style={{ fontSize: four_card_height * .12 }}>汽車剩餘數量</Text>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flex: 1 }}>
+            <div style={{ fontSize: four_card_height * .31 }}>
+              {`${data?.CAR?.availableSpaces || '--'}/${data?.CAR?.totalSpaces || '--'}`}
+            </div>
+            <div style={{ fontSize: four_card_height * .11 }}>彈性車位: {data?.CAR?.temporarySpaces || '--'}</div>
           </div>
         </Paper>
       </Grid>
       <Grid size={3}>
-        <Paper sx={{ p: 1 }} >
-          <Typography variant="h7" component="div">機車剩餘數量</Typography>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Typography style={{ flex: 1 }} variant="h5" component="div">
-              {`${statisticsInformation?.availableParkingSpaces?.SCOOTER?.availableSpaces || '--'}/${statisticsInformation?.availableParkingSpaces?.SCOOTER?.totalSpaces || '--'}`}
-            </Typography>
-            <Typography style={{ textAlign: 'right' }} variant="h7" component="div">彈性車位: {statisticsInformation?.availableParkingSpaces?.SCOOTER?.temporarySpaces || '--'}</Typography>
+        <Paper sx={{ p: 1, height: '100%', display: 'flex', flexDirection: 'column' }} >
+          <Text style={{ fontSize: four_card_height * .12 }}>機車剩餘數量</Text>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flex: 1 }}>
+            <div style={{ fontSize: four_card_height * .31 }}>
+              {`${data?.SCOOTER?.availableSpaces || '--'}/${data?.SCOOTER?.totalSpaces || '--'}`}
+            </div>
+            <div style={{ fontSize: four_card_height * .11 }}>彈性車位: {data?.SCOOTER?.temporarySpaces || '--'}</div>
           </div>
         </Paper>
       </Grid>
       <Grid size={3}>
-        <Paper sx={{ p: 1 }} >
-          <Typography variant="h7" component="div">汽車出入口辨識率</Typography>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Typography style={{ flex: 1 }} variant="h5" component="div">
+        <Paper sx={{ p: 1, height: '100%', display: 'flex', flexDirection: 'column' }} >
+          <Text style={{ fontSize: four_card_height * .12 }}>汽車出入口辨識率</Text>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flex: 1 }}>
+            <div style={{ fontSize: four_card_height * .31 }}>
               {Math.round(statisticsInformation?.totalRecognitionRate?.car?.rate * 100) || '--'} %
-            </Typography>
-            <Typography style={{ textAlign: 'right' }} variant="h7" component="div">辨識: {`${statisticsInformation?.totalRecognitionRate?.car?.recognizedCount || '--'}/${statisticsInformation?.totalRecognitionRate?.car?.total || '--'}`}</Typography>
+            </div>
+            <div style={{ fontSize: four_card_height * .11 }}>辨識: {`${statisticsInformation?.totalRecognitionRate?.car?.recognizedCount || '--'}/${statisticsInformation?.totalRecognitionRate?.car?.total || '--'}`}</div>
           </div>
         </Paper>
       </Grid>
       <Grid size={3}>
-        <Paper sx={{ p: 1 }} >
-          <Typography variant="h7" component="div">機車出入口辨識率</Typography>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Typography style={{ flex: 1 }} variant="h5" component="div">
+        <Paper sx={{ p: 1, height: '100%', display: 'flex', flexDirection: 'column' }} >
+          <Text style={{ fontSize: four_card_height * .12 }}>機車出入口辨識率</Text>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flex: 1 }}>
+            <div style={{ fontSize: four_card_height * .31 }}>
               {Math.round(statisticsInformation?.totalRecognitionRate?.scooter?.rate * 100) || '--'} %
-            </Typography>
-            <Typography style={{ textAlign: 'right' }} variant="h7" component="div">辨識: {`${statisticsInformation?.totalRecognitionRate?.scooter?.recognizedCount || '--'}/${statisticsInformation?.totalRecognitionRate?.scooter?.total || '--'}`}</Typography>
+            </div>
+            <div style={{ fontSize: four_card_height * .11 }}>
+              辨識: {`${statisticsInformation?.totalRecognitionRate?.scooter?.recognizedCount || '--'}/${statisticsInformation?.totalRecognitionRate?.scooter?.total || '--'}`}
+            </div>
           </div>
         </Paper>
       </Grid>
 
       <Grid size={6}>
-        <Paper sx={{ p: 1 }} style={{ width: "100%" }}>
-          <ReactECharts option={option_} style={{ height: 250, width: "100%" }} />
-
+        <Paper sx={{ p: 1, height: '100%' }} style={{ width: "100%" }}>
+          <ReactECharts option={option_} style={{ height: 220, width: "100%" }} />
         </Paper>
       </Grid>
       <Grid size={6}>
-        <Paper sx={{ p: 1 }} style={{ width: "100%" }}>
-          <ReactECharts option={option__} style={{ height: 250, width: "100%" }} />
+        <Paper sx={{ p: 1, height: '100%' }} style={{ width: "100%" }}>
+          <ReactECharts option={option__} style={{ height: 220, width: "100%" }} />
 
         </Paper>
       </Grid>

@@ -26,6 +26,7 @@ import SystemSetting from "../Views/System/Setting";
 import SystemSettingHistory from "../Views/System/History";
 
 import DashboardComponent from "../Views/Dashboard";
+import ReportComponent from "../Views/Report";
 
 import AbnormalFacilityRecord from "../Views/Abnormal/FacilityRecord";
 import Overtime from "../Views/Violation/Overtime";
@@ -52,7 +53,7 @@ import {
   // Tools
 } from "../images/icons";
 
-import { Domain, DataUsage, Storage, Warning, TaxiAlert, Dashboard, Notifications, NoCrash } from '@mui/icons-material';
+import { Domain, DataUsage, Storage, Warning, TaxiAlert, Dashboard, Notifications, NoCrash, Report } from '@mui/icons-material';
 
 
 const routes = [
@@ -61,6 +62,12 @@ const routes = [
     icon: Dashboard,
     path: "/dashboard",
     component: DashboardComponent
+  },
+  {
+    name: 'report',
+    icon: Report,
+    path: "/report",
+    component: ReportComponent
   },
   {
     name: "access-management",
