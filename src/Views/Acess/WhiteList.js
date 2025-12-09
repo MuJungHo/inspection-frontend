@@ -48,7 +48,9 @@ const AccessList = () => {
         ...a,
         _id: a.vehicleId,
         _updateTime: dayjs(a.updateTime).format("YYYY/MM/DD HH:mm"),
-        _owerName: a.owner?.name
+        _owerName: a.owner?.name,
+        _employee_id: a.owner?.employeeId
+
       }
     });
 
@@ -67,6 +69,7 @@ const AccessList = () => {
           { key: 'plateNumber', label: t('plate-number'), sortable: false },
           { key: 'vehicleType', label: t('vehicle-type'), sortable: false },
           { key: '_owerName', label: t('owner'), sortable: false },
+          { key: '_employee_id', label: t('employee-id'), sortable: false },
           { key: '_updateTime', label: t('update-time'), sortable: false },
         ]}
         checkable={false}
