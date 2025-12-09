@@ -104,7 +104,7 @@ const Temporary = () => {
         rowsPerPage={filter.amount}
         page={filter.page}
         total={total}
-        toolbarFilters={<div style={{ width: '100%', display: 'flex' }}>
+        toolbarFilters={<div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
           <DateRangePicker
             cleanable={false}
             placement="bottomEnd"
@@ -120,7 +120,6 @@ const Temporary = () => {
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
           { name: t('add'), onClick: openAddDialog, icon: <Add /> },
         ]}

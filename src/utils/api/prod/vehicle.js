@@ -2,6 +2,9 @@ import { instance } from '../axios';
 
 // 車籍相關 API
 export const vehicleApi = {
+  getVehicleData: async (params = {}) => {
+    return await instance.get(`/v1/VehicleData`, { params });
+  },
   getVehicleDataByPlateNumber: async (params = {}) => {
     return await instance.get(`/v1/VehicleData`, { params });
   },

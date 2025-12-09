@@ -88,6 +88,13 @@ export const initFilters = {
     startTime,
     endTime,
   },
+  "access-list": {
+    amount: 5,
+    skip: 0,
+    page: 0,
+    type: "CAR",
+    plateNumber: ""
+  },
   "notification": {
     amount: 5,
     skip: 0,

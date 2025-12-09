@@ -5,8 +5,11 @@ import { useParams, useNavigate } from "react-router-dom";
 // import { Add } from "../../images/icons";
 import { useLocation } from "react-router";
 import {
-  LocalParking
+  LocalParking,
+  CheckCircle,
+  Cancel
 } from '@mui/icons-material';
+import { green, red } from '@mui/material/colors';
 // import { host } from "../../utils/api/axios";
 // import Vehicle from "../../components/vehicle/Vehicle";
 // import { DateRangePicker } from 'rsuite';
@@ -45,6 +48,7 @@ const ParkingFloor = () => {
       return ({
         ...a,
         _id: a.parkingFloorId,
+        _isActive: a.isActive ? <CheckCircle sx={{ color: green[300] }} /> : <Cancel sx={{ color: red[300] }} />
       })
     });
 
@@ -64,7 +68,10 @@ const ParkingFloor = () => {
         ]}
         rows={ParkingFloorList}
         columns={[
-          { key: 'floorName', label: t('name'), sortable: false },
+          { key: 'floorName', label: t('name') },
+          { key: 'totalParkingSpaces', label: t('total-parking-space') },
+          { key: 'availableParkingSpaces', label: t('available-parking-space') },
+          { key: '_isActive', label: t('is-enabled') },
         ]}
         checkable={false}
         filterable={false}

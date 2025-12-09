@@ -213,6 +213,7 @@ const ParkingFacility = () => {
             }
           },
           { key: 'name', label: t('name') },
+          { key: 'description', label: t('description') },
         ]}
         checkable={false}
         filterable={false}

@@ -10,7 +10,10 @@ import {
 import {
   BorderColorSharp,
   Delete,
+  CheckCircle,
+  Cancel
 } from '@mui/icons-material';
+import { green, red } from '@mui/material/colors';
 import { Upload, Add } from "../../images/icons";
 import GateLaneDialog from "../../components/Facility/GateLaneDialog";
 
@@ -115,7 +118,12 @@ const GateLane = () => {
         // sort: filter.sort
       });
 
-      const _rows = data.map(a => ({ ...a, _id: a.parkingFacilityGateLaneId }));
+      const _rows = data.map(a => ({
+        ...a,
+        _id: a.parkingFacilityGateLaneId,
+        _reversibleLane: a.reversibleLane ? <CheckCircle sx={{ color: green[300] }} /> : < Cancel sx={{ color: red[300] }} />,
+        _isEnabled: a.isEnabled ? <CheckCircle sx={{ color: green[300] }} /> : < Cancel sx={{ color: red[300] }} />
+      }));
       setGateLaneList(_rows);
       setTotal(total);
     } catch (error) {
@@ -137,8 +145,6 @@ const GateLane = () => {
     getAllParkingFacilities();
     // 預先載入全部 gate 資料
     getAllParkingFacilityGates();
-    // 載入 GateLane 清單
-    getGateLaneList();
   }, []);
 
   React.useEffect(() => {
@@ -146,10 +152,10 @@ const GateLane = () => {
   }, [filter]);
 
   // 取得 region 名稱的輔助函式
-  const getRegionName = (regionId) => {
-    const region = allRegions.find(r => r.id === regionId);
-    return region ? region.name : regionId;
-  };
+  // const getRegionName = (regionId) => {
+  //   const region = allRegions.find(r => r.id === regionId);
+  //   return region ? region.name : regionId;
+  // };
 
   const openEditGateLaneDialog = (data) => {
     openDialog({
@@ -178,7 +184,7 @@ const GateLane = () => {
 
   const handleEditGateLane = async (data) => {
     try {
-      let res = await authedApi.parkingFacilityGateLanes.patchUpdateParkingFacilityGateLane({
+      await authedApi.parkingFacilityGateLanes.patchUpdateParkingFacilityGateLane({
         id: data.parkingFacilityGateLaneId,
         data: {
           "parkingFacilityGateId": data.parkingFacilityGateId,
@@ -313,25 +319,9 @@ const GateLane = () => {
             }
           },
           { key: 'name', label: t('name') },
-          {
-            key: 'isEnabled', label: t('enabled'),
-            render: (value, rowData) => {
-              if (value === true) {
-                return t('yes');
-              }
-              return t('no');
-            }
-          },
-          {
-            key: 'reversibleLane', label: t('lane.reversible'),
-            render: (value, rowData) => {
-              if (value === true) {
-                return t('yes') + (rowData.reversibleLaneManualActive ? ` (${t('lane.reversible-activated')})` : '');
-              }
-              return t('no');
-            }
-          },
           { key: 'description', label: t('description') },
+          { key: '_reversibleLane', label: t('lane.reversible') },
+          { key: '_isEnabled', label: t('is-enabled') },
         ]}
         checkable={false}
         filterable={false}

@@ -106,7 +106,7 @@ const BlackList = () => {
         rows={list}
         columns={[
           { key: 'plateNumber', label: t('plate-number'), sortable: false },
-          { key: 'reason', label: t('reason'), sortable: false },
+          { key: 'reason', label: t('description'), sortable: false },
           { key: '_createAt', label: t('create-time'), sortable: false },
           { key: 'createBy', label: t('creator'), sortable: false },
           { key: '_updateAt', label: t('update-time'), sortable: false },
@@ -135,7 +135,7 @@ const BlackList = () => {
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
+        
         toolbarActions={[
           { name: t('add'), onClick: openAddDialog, icon: <Add /> },
         ]}

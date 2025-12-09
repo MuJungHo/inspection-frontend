@@ -89,11 +89,9 @@ const Vehicle = ({
         <Text>{plateNumber}</Text>
         <Text>{t("vehicle-type")}</Text>
         <Text>{state.vehicleType || '--'}</Text>
-        <Text>{t("parking-permits")}</Text>
-        <Text>{state.parkingPermits?.join(',') || '--'}</Text>
         <Text>{t("thing-name", { thing: t("vehicle-owner") })}</Text>
         <Text>{state.owner?.name || '--'}</Text>
-        <Text>{t("phone")}</Text>
+        <Text>{t("telephone")}</Text>
         <Text>{state.owner?.phone || '--'}</Text>
       </DialogContent>
       <DialogActions>

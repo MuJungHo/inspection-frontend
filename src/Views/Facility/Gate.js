@@ -123,8 +123,6 @@ const Gate = () => {
     getAllRegions();
     // 預先載入全部 parking facility 資料
     getAllParkingFacilities();
-    // 載入 Gate 清單
-    getGateList();
   }, []);
 
   React.useEffect(() => {

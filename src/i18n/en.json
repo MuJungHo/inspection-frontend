@@ -2,6 +2,7 @@
     "abnormal-facility-record": "Abnormal Facility Record",
     "abnormal-management": "Abnormal Management",
     "access-blacklist": "Blacklist",
+    "access-list": "Access list",
     "access-management": "Entry/Exit",
     "access-record": "Entry/Exit Record",
     "access-temporary": "Access Temporary",
@@ -17,6 +18,7 @@
     "apply": "Apply",
     "approve": "Approve",
     "authorization": "Authorization",
+    "available-parking-space": "Available Parking Spaces",
     "bind": "Bind",
     "built-in": "Built In",
     "camera": "Camera",
@@ -172,6 +174,7 @@
     "thing-management": "{{thing}} Management",
     "thing-name": "{{thing}} Name",
     "timeout": "Timeout",
+    "total-parking-space": "Total Parking Spaces",
     "type": "Type",
     "TYPE": {
         "Entry": "Entry",

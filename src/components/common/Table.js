@@ -163,19 +163,20 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
               </Breadcrumbs>
             </ToolbarTitle>
+            {toolbarFilters}
             {
-              filterable && <TextField
+              typeof onKeywordSearch === "function" && <TextField
+                sx={{ ml: 2 }}
                 type="search"
-                variant="standard"
-                fullWidth
-                // size="small"
+                variant="outlined"
+                size="small"
                 value={keyword}
                 onChange={onKeywordChange} />
             }
-            {toolbarFilters}
             {filterable && <Button color="inherit" onClick={onSearchClick}><Search /></Button>}
             {clearable && <Button color="inherit" onClick={() => {
               onClearClick()
+              setKeyword("")
             }}><FilterAltOff color="inherit" /></Button>}
             {
               toolbarActions.length > 0 && <Actions actions={toolbarActions} />
@@ -255,9 +256,9 @@ export default ({
   page = 0,
   rowsPerPage = 10,
   toolbarFilters = <></>,
+  onKeywordSearch,
   onPageChange = () => { },
   onSortChange = () => { },
-  onKeywordSearch = () => { },
   onRowsPerPageChange = () => { },
   onSearchClick = () => { },
   onClearClick = () => { },

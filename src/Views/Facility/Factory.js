@@ -140,6 +140,7 @@ const Factory = () => {
           //   { key: 'regionId', label: t('regionId') },
           //   { key: 'type', label: t('type') },
           { key: 'name', label: t('name') },
+          { key: 'description', label: t('description') },
         ]}
         checkable={false}
         filterable={false}

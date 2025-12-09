@@ -2,6 +2,7 @@
     "abnormal-facility-record": "進出車場紀錄",
     "abnormal-management": "異常管理",
     "access-blacklist": "黑名單",
+    "access-list": "通行名單",
     "access-management": "進出管理",
     "access-record": "進出紀錄",
     "access-temporary": "臨時放行",
@@ -17,6 +18,7 @@
     "apply": "申請",
     "approve": "核准",
     "authorization": "授權",
+    "available-parking-space": "剩餘停車格總數",
     "bind": "綁定",
     "built-in": "內建",
     "camera": "攝影機",
@@ -172,6 +174,7 @@
     "thing-management": "{{thing}}管理",
     "thing-name": "{{thing}}名稱",
     "timeout": "延遲時間",
+    "total-parking-space": "停車格總數",
     "type": "類型",
     "TYPE": {
         "Entry": "入場記錄",

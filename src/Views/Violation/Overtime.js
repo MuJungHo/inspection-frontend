@@ -124,7 +124,7 @@ const AbnormalRecordInstant = () => {
         checkable={false}
         filterable={false}
         toolbarFilters={
-          <div style={{ width: '100%', display: 'flex' }}>
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
             <DateRangePicker
               cleanable={false}
               placement="bottomEnd"

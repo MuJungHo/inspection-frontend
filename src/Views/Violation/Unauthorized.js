@@ -124,7 +124,7 @@ const AbnormalRecordInstant = () => {
         checkable={false}
         filterable={false}
         toolbarFilters={
-          <div style={{ width: '100%', display: 'flex' }}>
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
             <DateRangePicker
               cleanable={false}
               placement="bottomEnd"
@@ -164,16 +164,18 @@ const AbnormalRecordInstant = () => {
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
         onClearClick={() => clearFilter()}
-        toolbarActions={[
-          { name: t('export'), onClick: getExport, icon: <FileDownload /> }
-        ]}
-        rowActions={[
-          { name: t('edit'), onClick: (e, row) => openEditDialog(row), icon: <BorderColorSharp /> },
-          { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> }
-        ]}
+        toolbarActions={
+          [
+            { name: t('export'), onClick: getExport, icon: <FileDownload /> }
+          ]}
+        rowActions={
+          [
+            { name: t('edit'), onClick: (e, row) => openEditDialog(row), icon: <BorderColorSharp /> },
+            { name: t('vehicle-data'), onClick: (e, row) => openVehicleDialog(row.plateNumber), icon: <TimeToLeave /> }
+          ]}
       // dense
       />
-    </Paper>
+    </Paper >
   );
 }
 

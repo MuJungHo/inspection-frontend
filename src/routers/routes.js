@@ -34,6 +34,7 @@ import Unauthorized from "../Views/Violation/Unauthorized";
 import AccessRecord from "../Views/Acess/Record";
 import AccessBlackList from "../Views/Acess/BlackList";
 import AccessTemporary from "../Views/Acess/Temporary";
+import AccessList from "../Views/Acess/WhiteList";
 
 import Notification from "../Views/Notification";
 
@@ -79,6 +80,11 @@ const routes = [
         name: "access-temporary",
         path: "/access-temporary",
         component: AccessTemporary
+      },
+      {
+        name: "access-list",
+        path: "/access-list",
+        component: AccessList
       }
     ]
   },
