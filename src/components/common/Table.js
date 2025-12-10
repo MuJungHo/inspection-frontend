@@ -243,7 +243,7 @@ export default ({
   checkable = true,
   filterable = true,
   paginable = true,
-  clearable = true,
+  clearable = false,
   rows = [],
   columns = [],
   rowActions = [],
