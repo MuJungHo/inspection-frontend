@@ -9,13 +9,17 @@ export const statisticsApi = {
   getStatisticsOccupancyByFacilityId: async ({ facilityId, params }) => {
     return await instance.get(`/v1/Statistics/Occupancy/${facilityId}`, { params });
   },
-  
+
   getStatisticsInformationByFacilityId: async ({ facilityId }) => {
     return await instance.get(`/v1/Statistics/Information/${facilityId}`);
+  },
+
+  getStatisticsInformationEntryExitCount: async ({ params }) => {
+    return await instance.get(`/v1/Statistics/Information/EntryExitCount`, { params });
   },
 
   postTestNotify: async ({ data }) => {
     return await instance.post('/v1/test/notify', data);
   },
-  
+
 };

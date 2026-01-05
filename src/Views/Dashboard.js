@@ -52,6 +52,8 @@ const Dashboard = () => {
   const [option, setOption] = React.useState({});
   const [option1, setOption1] = React.useState({});
   const [statisticsInformation, setStatisticsInformation] = React.useState({});
+  const [statisticsInformationEntryExitCountCAR, setStatisticsInformationEntryExitCountCAR] = React.useState({});
+  const [statisticsInformationEntryExitCountSCOOTER, setStatisticsInformationEntryExitCountSCOOTER] = React.useState({});
   const [statisticsOccupancyFilter, setStatisticsOccupancyFilter] = React.useState({
     range: "day",
     vehicleType: "CAR",
@@ -67,7 +69,9 @@ const Dashboard = () => {
   React.useEffect(() => {
     if (statisticsOccupancyFilter.parkingFacilityId) {
       getStatisticsOccupancyByFacilityId();
-      getStatisticsInformationByFacilityId()
+      getStatisticsInformationByFacilityId();
+      getStatisticsInformationEntryExitCountCAR();
+      getStatisticsInformationEntryExitCountSCOOTER();
     }
   }, [statisticsOccupancyFilter])
 
@@ -328,42 +332,96 @@ const Dashboard = () => {
     };
     setOption1(option)
   }
-
-  const option_ = {
-    title: {
-      text: "汽車進出狀況",
-      left: "center",
-    },
-    tooltip: {
-      trigger: "axis",
-    },
-    legend: {
-      data: ["進場", "出場"],
-      bottom: 0,
-    },
-    xAxis: {
-      type: "category",
-      data: ["週一", "週二", "週三", "週四", "週五", "週六", "週日"],
-    },
-    yAxis: {
-      type: "value",
-      name: "車輛數",
-    },
-    series: [
-      {
-        name: "進場",
-        type: "bar",
-        data: [120, 132, 101, 134, 90, 230, 210],
-        itemStyle: { color: "#5470C6" },
+  const getStatisticsInformationEntryExitCountCAR = async () => {
+    const { data, success } = await authedApi.statistics.getStatisticsInformationEntryExitCount({
+      type: "CAR"
+    });
+    // console.log(data.data)
+    let dates = data?.data?.map(d => d.date);
+    let entrys = data?.data?.map(d => d.entryCount);
+    let exits = data?.data?.map(d => d.exitCount);
+    const result = {
+      title: {
+        text: "汽車進出狀況",
+        left: "center",
       },
-      {
-        name: "出場",
-        type: "bar",
-        data: [100, 150, 80, 120, 70, 200, 180],
-        itemStyle: { color: "#91CC75" },
+      tooltip: {
+        trigger: "axis",
       },
-    ],
-  };
+      legend: {
+        data: ["進場", "出場"],
+        bottom: 0,
+      },
+      xAxis: {
+        type: "category",
+        data: dates,
+      },
+      yAxis: {
+        type: "value",
+        name: "車輛數",
+      },
+      series: [
+        {
+          name: "進場",
+          type: "bar",
+          data: entrys,
+          itemStyle: { color: "#5470C6" },
+        },
+        {
+          name: "出場",
+          type: "bar",
+          data: exits,
+          itemStyle: { color: "#91CC75" },
+        },
+      ],
+    };
+    setStatisticsInformationEntryExitCountCAR(result);
+  }
+  const getStatisticsInformationEntryExitCountSCOOTER = async () => {
+    const { data, success } = await authedApi.statistics.getStatisticsInformationEntryExitCount({
+      type: "SCOOTER"
+    });
+    // console.log(data.data)
+    let dates = data?.data?.map(d => d.date);
+    let entrys = data?.data?.map(d => d.entryCount);
+    let exits = data?.data?.map(d => d.exitCount);
+    const result = {
+      title: {
+        text: "機車進出狀況",
+        left: "center",
+      },
+      tooltip: {
+        trigger: "axis",
+      },
+      legend: {
+        data: ["進場", "出場"],
+        bottom: 0,
+      },
+      xAxis: {
+        type: "category",
+        data: dates,
+      },
+      yAxis: {
+        type: "value",
+        name: "機車數",
+      },
+      series: [
+        {
+          name: "進場",
+          type: "bar",
+          data: entrys,
+          itemStyle: { color: "#EE6666" },
+        },
+        {
+          name: "出場",
+          type: "bar",
+          data: exits,
+          itemStyle: { color: "#FAC858" },
+        },
+      ],
+    };
+    setStatisticsInformationEntryExitCountSCOOTER(result);
+  }
 
   const option__ = {
     title: {
@@ -453,12 +511,12 @@ const Dashboard = () => {
 
       <Grid size={6}>
         <Paper sx={{ p: 1, height: '100%' }} style={{ width: "100%" }}>
-          <ReactECharts option={option_} style={{ height: 220, width: "100%" }} />
+          <ReactECharts option={statisticsInformationEntryExitCountCAR} style={{ height: 220, width: "100%" }} />
         </Paper>
       </Grid>
       <Grid size={6}>
         <Paper sx={{ p: 1, height: '100%' }} style={{ width: "100%" }}>
-          <ReactECharts option={option__} style={{ height: 220, width: "100%" }} />
+          <ReactECharts option={statisticsInformationEntryExitCountSCOOTER} style={{ height: 220, width: "100%" }} />
 
         </Paper>
       </Grid>
