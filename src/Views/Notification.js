@@ -74,6 +74,7 @@ const Notification = () => {
         toolbarFilters={<div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
           <DateRangePicker
             cleanable={false}
+            style={{ flexShrink: 0 }}
             placement="bottomEnd"
             format="MM/dd/yyyy hh:mm aa"
             value={[new Date(filter.startTime), new Date(filter.endTime)]} onChange={([startTime, endTime]) => setFilter({
@@ -87,7 +88,6 @@ const Notification = () => {
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[]}
         rowActions={[]}
       // dense

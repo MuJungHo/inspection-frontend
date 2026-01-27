@@ -165,7 +165,7 @@ const Authorization = () => {
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
+        
         toolbarActions={[
           { name: t('add'), condition: actionCondition("create"), onClick: openAddAuthorizationDialog, icon: <Add /> },
         ]}

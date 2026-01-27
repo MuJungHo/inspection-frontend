@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 // import { AuthContext } from "../../contexts/AuthContext";
-import { Paper, Table, Image } from "../../components/common";
+import { Paper, Table, TextField } from "../../components/common";
 // import { Add } from "../../images/icons";
 // import {
 //   BorderColorSharp,
@@ -26,8 +26,8 @@ import dayjs from "dayjs";
 const NAME = "access-list";
 
 const AccessList = () => {
-  const { t, authedApi, 
-    
+  const { t, authedApi,
+
     // openDialog, closeDialog, openSnackbar, openWarningDialog,
   } = useContext(GlobalContext);
   // const { canAccessAction } = useContext(AuthContext);
@@ -59,7 +59,7 @@ const AccessList = () => {
       setTotal(total);
     }
   }
-  
+
   return (
     <Paper sx={{ margin: 3 }}>
       <Table
@@ -79,7 +79,7 @@ const AccessList = () => {
         rowsPerPage={filter.amount}
         page={filter.page}
         total={total}
-        toolbarFilters={<FormControl sx={{ ml: 2, flexShrink: 0 }} >
+        toolbarFilters={<><FormControl sx={{ ml: 2, flexShrink: 0 }} >
           <InputLabel>{t("type")}</InputLabel>
           <Select
             size="small"
@@ -93,13 +93,26 @@ const AccessList = () => {
             <MenuItem value="CAR">CAR</MenuItem>
             <MenuItem value="SCOOTER">SCOOTER</MenuItem>
           </Select>
-        </FormControl>}
+        </FormControl>
+          <TextField
+            sx={{ ml: 2 }}
+            fullWidth
+            type="search"
+            variant="outlined"
+            size="small"
+            placeholder={t("search-by-plate-name-id")}
+            value={filter.keyword}
+            onChange={e => setFilter({
+              ...filter,
+              keyword: e.target.value
+            })}
+          />
+        </>}
         onSearchClick={getList}
         onClearClick={() => setFilter(initFilters[NAME])}
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
-        onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
+        onRowsPerPageChange={(rowPerPage) => setFilter({ ...filter, page: 0, skip: 0, amount: rowPerPage })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        onKeywordSearch={(keyword) => setFilter({ ...filter, plateNumber: keyword })}
         toolbarActions={[
           // { name: t('add'), onClick: openAddDialog, icon: <Add /> },
         ]}

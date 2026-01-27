@@ -161,6 +161,7 @@
     "save": "Save",
     "scope": "Scope",
     "search": "Vehicle Search",
+    "search-by-plate-name-id": "Search by plate, name, or employee ID",
     "select-parking-facility": "Select Parking Facility",
     "serial-number": "Serial Number",
     "snapshot-image": "Snapshot Image",

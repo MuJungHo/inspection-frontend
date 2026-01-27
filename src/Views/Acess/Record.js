@@ -107,6 +107,7 @@ const PassInAndOut = () => {
         total={total}
         toolbarFilters={<div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
           <DateRangePicker
+            style={{ flexShrink: 0 }}
             cleanable={false}
             placement="bottomEnd"
             format="MM/dd/yyyy hh:mm aa"

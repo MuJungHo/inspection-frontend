@@ -102,6 +102,7 @@ const ParkingOccupancy = () => {
         paginable={false}
         toolbarFilters={<div style={{ width: '100%', display: 'flex' }}>
           <DateRangePicker
+            style={{ flexShrink: 0 }}
             cleanable={false}
             placement="bottomEnd"
             format="MM/dd/yyyy hh:mm aa"

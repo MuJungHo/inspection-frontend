@@ -119,17 +119,6 @@ const BlackList = () => {
         rowsPerPage={filter.amount}
         page={filter.page}
         total={total}
-        // toolbarFilters={<div style={{ width: '100%', display: 'flex' }}>
-        //   <DateRangePicker
-        //     cleanable={false}
-        //     placement="bottomEnd"
-        //     format="MM/dd/yyyy hh:mm aa"
-        //     value={[new Date(filter.startTime), new Date(filter.endTime)]} onChange={([startTime, endTime]) => setFilter({
-        //       ...filter,
-        //       startTime,
-        //       endTime
-        //     })} />
-        // </div>}
         onSearchClick={getList}
         onClearClick={() => setFilter(initFilters[NAME])}
         onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}

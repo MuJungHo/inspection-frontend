@@ -86,7 +86,7 @@ const ParkingFloor = () => {
         // onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         // onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
         // onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
+        
         // toolbarActions={[]}
         rowActions={[
           { name: t('parking-space'), onClick: (e, row) => navigate(`/parking-space/${parkingFacilityId}/${row._id}`), icon: <LocalParking /> },

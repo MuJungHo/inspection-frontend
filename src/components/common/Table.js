@@ -119,16 +119,12 @@ const EnhancedTableToolbar = (props) => {
   const {
     toolbarFilters,
     numSelected,
-    title, toolbarActions, onKeywordSearch, filterable,
+    title, toolbarActions, filterable,
     onSearchClick, onClearClick,
     prevPages,
     clearable
   } = props;
-  const [keyword, setKeyword] = React.useState("")
-  const onKeywordChange = (e) => {
-    setKeyword(e.target.value)
-    onKeywordSearch(e.target.value)
-  }
+  
   return (
     <StyledToolbar style={{ height: 70, padding: '0 16px' }}>
       {
@@ -164,20 +160,8 @@ const EnhancedTableToolbar = (props) => {
               </Breadcrumbs>
             </ToolbarTitle>
             {toolbarFilters}
-            {
-              typeof onKeywordSearch === "function" && <TextField
-                sx={{ ml: 2 }}
-                type="search"
-                variant="outlined"
-                size="small"
-                value={keyword}
-                onChange={onKeywordChange} />
-            }
             {filterable && <Button color="inherit" onClick={onSearchClick}><Search /></Button>}
-            {clearable && <Button color="inherit" onClick={() => {
-              onClearClick()
-              setKeyword("")
-            }}><FilterAltOff color="inherit" /></Button>}
+            {clearable && <Button color="inherit" onClick={onClearClick}><FilterAltOff color="inherit" /></Button>}
             {
               toolbarActions.length > 0 && <Actions actions={toolbarActions} />
             }
@@ -252,6 +236,7 @@ export default ({
   sort = "",
   order = "asc",
   title = "",
+  keyword = "",
   total = 0,
   page = 0,
   rowsPerPage = 10,
@@ -320,7 +305,6 @@ export default ({
         toolbarFilters={toolbarFilters}
         toolbarActions={toolbarActions}
         prevPages={prevPages}
-        onKeywordSearch={onKeywordSearch}
         onSearchClick={onSearchClick}
         onClearClick={onClearClick}
       />

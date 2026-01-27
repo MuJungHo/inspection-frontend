@@ -150,7 +150,7 @@ const Region = () => {
         // onPageChange={(page) => setFilter({ ...filter, page })}
         // onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 0, limit })}
         // onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
+        
         toolbarActions={[
           { name: t('add'), condition: actionCondition("create"), onClick: openAddUserDialog, icon: <Add /> },
           // { name: t('upload'), onClick: openImportUserDialog, icon: <Upload /> },

@@ -93,7 +93,7 @@ export const initFilters = {
     skip: 0,
     page: 0,
     type: "CAR",
-    plateNumber: ""
+    keyword: ""
   },
   "notification": {
     amount: 5,

@@ -77,6 +77,7 @@ const ParkingOccupancyAdjustmentlog = () => {
         paginable={false}
         toolbarFilters={<div style={{ width: '100%', display: 'flex' }}>
           <DateRangePicker
+            style={{ flexShrink: 0 }}
             cleanable={false}
             placement="bottomEnd"
             format="MM/dd/yyyy hh:mm aa"
@@ -100,7 +101,7 @@ const ParkingOccupancyAdjustmentlog = () => {
         // onPageChange={(page) => setFilter({ ...filter, page, skip: page * filter.amount })}
         // onRowsPerPageChange={(rowPerPage) => setFilter({ page: 0, skip: 0, amount: rowPerPage })}
         // onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
+        
         // toolbarActions={[]}
         rowActions={[]}
       // dense

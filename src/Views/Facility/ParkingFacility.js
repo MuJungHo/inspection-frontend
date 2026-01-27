@@ -228,7 +228,7 @@ const ParkingFacility = () => {
         onPageChange={(page) => setFilter(prevFilter => ({ ...prevFilter, skip: page * prevFilter.amount }))}
         onRowsPerPageChange={(limit) => setFilter(prevFilter => ({ ...prevFilter, skip: 0, amount: limit }))}
         // onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
-        // onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
+        
         toolbarActions={[
           { name: t('add'), condition: actionCondition("create"), onClick: openAddParkingFacilityDialog, icon: <Add /> },
           // { name: t('upload'), onClick: openImportUserDialog, icon: <Upload /> },

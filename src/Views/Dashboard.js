@@ -15,7 +15,7 @@ import { host } from "../utils/api/axios";
 import * as signalR from "@microsoft/signalr";
 
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 // import Box from '@mui/material/Box';
 // import InputLabel from '@mui/material/InputLabel';
 // import MenuItem from '@mui/material/MenuItem';
@@ -25,16 +25,7 @@ import Typography from '@mui/material/Typography';
 // import Stack from '@mui/material/Stack';
 // import ButtonGroup from '@mui/material/ButtonGroup';
 
-const config = {
-  series: {
-    type: 'sunburst',
-    radius: [0, '90%'], // Inner and outer radius
-    sort: 'descending', // Sort order of segments
-    label: {
-      rotate: 'horizontal', // This property makes the labels vertical
-    },
-  },
-};
+
 
 const colors = [
   ["#2093fe", "#a4c7f1"],
@@ -123,117 +114,28 @@ const Dashboard = () => {
       },
       children: [
         {
-          name: '停放中', value: space.spaceCount, itemStyle: {
+          name: '閒置中', value: space.spaceCount, itemStyle: {
             color: colors[i][0]
           }
         },
         {
-          name: '閒置中', value: space.occupiedCount, itemStyle: {
+          name: '停放中', value: space.occupiedCount, itemStyle: {
             color: colors[i][1]
           }
         },
       ],
     }))
-    const _data = [
-      {
-        name: '無障礙車位',
-        value: 10,
-        itemStyle: {
-          color: '#fe6d4f'
-        },
-        children: [
-          {
-            name: '無障礙車位-停放中', value: 5, itemStyle: {
-              color: '#fe6d4f'
-            }
-          },
-          {
-            name: '無障礙車位-閒置中', value: 5, itemStyle: {
-              color: '#FADBC7'
-            }
-          },
-        ],
-      },
-      {
-        name: '主管車位',
-        value: 10,
-        itemStyle: {
-          color: '#fdb302'
-        },
-        children: [
-          {
-            name: '主管車位-停放中', value: 5, itemStyle: {
-              color: '#fdb302'
-            }
-          },
-          {
-            name: '主管車位-閒置中', value: 5, itemStyle: {
-              color: '#efdf8a'
-            }
-          },
-        ],
-      },
-      {
-        name: '彈性車位',
-        value: 10,
-        itemStyle: {
-          color: '#47b857'
-        },
-        children: [
-          {
-            name: '彈性車位-停放中', value: 5, itemStyle: {
-              color: '#47b857'
-            }
-          },
-          {
-            name: '彈性車位-閒置中', value: 5, itemStyle: {
-              color: '#90ee90'
-            }
-          },
-        ],
-      },
-      {
-        name: '一般車位',
-        value: 10,
-        itemStyle: {
-          color: '#2093fe'
-        },
-        children: [
-          {
-            name: '一般車位-停放中', value: 5, itemStyle: {
-              color: '#2093fe'
-            }
-          },
-          {
-            name: '一般車位-閒置中', value: 5, itemStyle: {
-              color: '#a4c7f1'
-            }
-          },
-        ],
-      },
-      {
-        name: '孕婦車位',
-        value: 10,
-        itemStyle: {
-          color: '#9b59b6'
-        },
-        children: [
-          {
-            name: '孕婦車位-停放中', value: 5, itemStyle: {
-              color: '#9b59b6'
-            }
-          },
-          {
-            name: '孕婦車位-閒置中', value: 5, itemStyle: {
-              color: '#d7bde2'
-            }
-          },
-        ],
-      },
-    ]
 
+    const config = {
+      series: {
+        type: 'sunburst',
+        radius: ['10%', '70%'],
+        label: {
+          // rotate: 'horizontal',
+        }
+      },
+    };
     if (success) {
-      config.series["data"] = _data;
       config.series["data"] = __data;
     }
 
@@ -423,42 +325,6 @@ const Dashboard = () => {
     setStatisticsInformationEntryExitCountSCOOTER(result);
   }
 
-  const option__ = {
-    title: {
-      text: "機車進出狀況",
-      left: "center",
-    },
-    tooltip: {
-      trigger: "axis",
-    },
-    legend: {
-      data: ["進場", "出場"],
-      bottom: 0,
-    },
-    xAxis: {
-      type: "category",
-      data: ["週一", "週二", "週三", "週四", "週五", "週六", "週日"],
-    },
-    yAxis: {
-      type: "value",
-      name: "機車數",
-    },
-    series: [
-      {
-        name: "進場",
-        type: "bar",
-        data: [220, 182, 191, 234, 290, 330, 310],
-        itemStyle: { color: "#EE6666" },
-      },
-      {
-        name: "出場",
-        type: "bar",
-        data: [180, 160, 210, 200, 270, 310, 300],
-        itemStyle: { color: "#FAC858" },
-      },
-    ],
-  };
-
   const four_card_height = (window.innerHeight - 120) / 6;
   return (
     <Grid container spacing={2} style={{ width: '100%', height: '100%', padding: 16 }}>
@@ -529,7 +395,7 @@ const Dashboard = () => {
         </Paper>
       </Grid>
       <Grid size={3}>
-        <Paper style={{ height: '100%' }}>
+        <Paper sx={{ p: 1 }} style={{ height: '100%' }}>
           <ReactECharts
             option={option}
           />
