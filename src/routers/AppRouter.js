@@ -27,7 +27,7 @@ const AppRouter = () => {
           path="/"
           element={
             <PrivateRoute>
-              <Navigate to="/dashboard" replace />
+              <Navigate to="/user" replace />
             </PrivateRoute>
           }
         />

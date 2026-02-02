@@ -89,7 +89,6 @@ const CloseMutiLevel = ({ route }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { children } = route;
   const { t } = useContext(GlobalContext); // Ensure t is available
-  const { canAccessRoute } = useContext(AuthContext);
   const location = useLocation();
   // const theme = useTheme(); // theme might not be needed directly here
 
@@ -123,7 +122,6 @@ const CloseMutiLevel = ({ route }) => {
       >
         {
           children
-            .filter(route => canAccessRoute(route.authName))
             .filter(route => route.sidebar !== false)
             .map((route, key) => (
               <NavLink key={key} to={route.path} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -143,7 +141,6 @@ const OpenMultiLevel = ({ route }) => {
   const location = useLocation();
   const { children } = route;
   const { t } = useContext(GlobalContext);
-  const { canAccessRoute } = useContext(AuthContext);
   // const theme = useTheme();
   const [open, setOpen] = React.useState(route.children.findIndex(route => route.path === location.pathname) > -1);
 
@@ -168,7 +165,6 @@ const OpenMultiLevel = ({ route }) => {
         <List component="div" disablePadding>
           {
             children
-              .filter(route => canAccessRoute(route.authName))
               .filter(route => route.sidebar !== false)
               .map((route, key) => {
                 const isActive = location.pathname === route.path;
@@ -212,14 +208,12 @@ const SingleLevel = ({ route, open }) => {
 };
 const Siderbar = ({ open, setOpen }) => {
   const theme = useTheme();
-  const { canAccessRoute } = useContext(AuthContext);
 
   return (
     <StyledDrawer variant="permanent" open={open}>
       <List sx={{ height: 'calc(100vh - 175px)', overflow: 'auto', paddingTop: 0 }}> {/* Removed style, added paddingTop 0 */}
         {
           routes
-            .filter(route => canAccessRoute(route.authName))
             .filter(route => route.sidebar !== false)
             .map(route => Array.isArray(route.children)
               ?
