@@ -9,13 +9,13 @@ const User = () => {
 
   const [UserList, setUserList] = React.useState([]);
   React.useEffect(() => {
-    getAllInspectionPoints()
+    getAllPlans()
   }, [])
-  const getAllInspectionPoints = async () => {
-    const { data, success } = await authedApi.getAllInspectionPoints();
+  const getAllPlans = async () => {
+    const { data, success } = await authedApi.getAllPlans();
     const _rows = data.map(a => ({
       ...a, _id: a.id,
-      _targetItems: a.items.length,
+      _points: a.points.length,
     }));
 
     if (success) {
@@ -24,14 +24,15 @@ const User = () => {
   }
   return (<Paper sx={{ margin: 3 }}>
     <Table
-      title={t("inspection-point")}
+      title={t("inspection-plan")}
       checkable={false}
       rows={UserList}
       columns={[
         { key: 'name', label: t('name'), sortable: false },
-        { key: '_targetItems', label: t('inspection-item'), sortable: false },
-        { key: 'latitude', label: t('座標Y'), sortable: false },
-        { key: 'longitude', label: t('座標X'), sortable: false },
+        { key: '_points', label: t('inspection-point'), sortable: false },
+        { key: 'frequency', label: t('frequency'), sortable: false },
+        { key: 'startDate', label: t('start-date'), sortable: false },
+        { key: 'endDate', label: t('end-date'), sortable: false },
       ]}
     // dense
     />

@@ -88,9 +88,8 @@ const ListItemActiveStyled = styled(ListItemStyled)(({ theme }) => ({
 const CloseMutiLevel = ({ route }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { children } = route;
-  const { t } = useContext(GlobalContext); // Ensure t is available
+  const { t } = useContext(GlobalContext);
   const location = useLocation();
-  // const theme = useTheme(); // theme might not be needed directly here
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -100,7 +99,7 @@ const CloseMutiLevel = ({ route }) => {
     setAnchorEl(null);
   };
 
-  const isActive = children.some(route => location.pathname === route.path); // Active if any child is active
+  const isActive = children.some(route => location.pathname === route.path);
   const NodeComponent = isActive ? ListItemActiveStyled : ListItemStyled;
 
 

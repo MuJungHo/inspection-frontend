@@ -18,7 +18,7 @@ const Image = ({
       title: name,
       maxWidth: "sm",
       fullWidth: true,
-      section: <img src={src} alt={name} />
+      component: <img src={src} alt={name} />
     })
   }
 

@@ -122,9 +122,10 @@ const EnhancedTableToolbar = (props) => {
     title, toolbarActions, filterable,
     onSearchClick, onClearClick,
     prevPages,
-    clearable
+    clearable,
+    searchable
   } = props;
-  
+
   return (
     <StyledToolbar style={{ height: 70, padding: '0 16px' }}>
       {
@@ -160,7 +161,7 @@ const EnhancedTableToolbar = (props) => {
               </Breadcrumbs>
             </ToolbarTitle>
             {toolbarFilters}
-            {filterable && <Button color="inherit" onClick={onSearchClick}><Search /></Button>}
+            {searchable && <Button color="inherit" onClick={onSearchClick}><Search /></Button>}
             {clearable && <Button color="inherit" onClick={onClearClick}><FilterAltOff color="inherit" /></Button>}
             {
               toolbarActions.length > 0 && <Actions actions={toolbarActions} />
@@ -228,6 +229,7 @@ export default ({
   filterable = true,
   paginable = true,
   clearable = false,
+  searchable = false,
   rows = [],
   columns = [],
   rowActions = [],
@@ -302,6 +304,7 @@ export default ({
         title={title}
         filterable={filterable}
         clearable={clearable}
+        searchable={searchable}
         toolbarFilters={toolbarFilters}
         toolbarActions={toolbarActions}
         prevPages={prevPages}

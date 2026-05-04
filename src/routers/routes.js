@@ -1,10 +1,11 @@
 import User from "../Views/User";
 import DashboardComponent from "../Views/Dashboard";
-import InspectionItem from "../Views/InspectionItem";
-import InspectionPoint from "../Views/InspectionPoint";
-import InspectionPlan from "../Views/InspectionPlan";
-import InspectionResult from "../Views/InspectionResult";
-import InspectionTask from "../Views/InspectionTask";
+import Item from "../Views/Item";
+import Point from "../Views/Point";
+import Plan from "../Views/Plan";
+import ReportList from "../Views/Report/List";
+import ReportDetail from "../Views/Report/Detail";
+import Task from "../Views/Task";
 
 import {
   ManageAccount,
@@ -18,40 +19,46 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 
 const routes = [
   {
-    name: 'today-task',
+    name: 'task',
     icon: AssignmentIndIcon,
-    path: "/today-task",
-    component: InspectionTask
+    path: "/task",
+    component: Task
   },
   {
     name: 'inspection-item',
-    icon: DataUsageIcon,
-    path: "/inspection-item",
-    component: InspectionItem
+    path: "/point/:pointId/item",
+    component: Item,
+    sidebar: false
   },
   {
     name: 'inspection-point',
     icon: PlaceIcon,
-    path: "/inspection-point",
-    component: InspectionPoint
+    path: "/point",
+    component: Point,
   },
   {
     name: 'inspection-plan',
     icon: FactCheckIcon,
-    path: "/inspection-plan",
-    component: InspectionPlan
+    path: "/plan",
+    component: Plan
+  },
+  {
+    name: 'report',
+    icon: ReceiptLongIcon,
+    path: "/report",
+    component: ReportList
+  },
+  {
+    name: 'report-detail',
+    path: "/report/:taskId/detail",
+    component: ReportDetail,
+    sidebar: false
   },
   {
     name: 'user',
     icon: ManageAccount,
     path: "/user",
     component: User
-  },
-  {
-    name: 'inspection-result',
-    icon: ReceiptLongIcon,
-    path: "/inspection-result",
-    component: InspectionResult
   },
 ]
 

@@ -1,9 +1,9 @@
 import React, { useState, createContext, useContext } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { CustomProvider } from 'rsuite';
 import { AuthContext } from './AuthContext';
 import Alert from '@mui/material/Alert';
-
 import AlertTitle from '@mui/material/AlertTitle';
 
 import {
@@ -24,7 +24,7 @@ import { lighten_palette, dark_palette } from "../customTheme";
 
 import i18n from '../i18n';
 import { api } from '../utils/apis';
-import WarningSection from '../components/WarningSection';
+import WarningComponent from '../components/WarningComponent';
 import { instance as axiosInstance } from "../utils/apis"; // Renamed for clarity
 import { initFilters } from "../utils/constant";
 import "../style/normalize.css";
@@ -50,6 +50,22 @@ const dark = createTheme({
   }
 });
 
+const useStyles = makeStyles({
+  content: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > *': {
+      width: 'calc(50% - 10px)',
+      height: '100%',
+      marginBottom: 10,
+      marginTop: 10
+    },
+    '& > *:nth-child(even)': {
+      marginLeft: 20
+    }
+  },
+});
+
 const GlobalContext = createContext();
 
 function GlobalProvider({ children, ...rest }) {
@@ -58,6 +74,7 @@ function GlobalProvider({ children, ...rest }) {
   const [themeMode, setThemeMode] = useState(localStorage.getItem("theme") || "light");
   const [rsuiteLocaleData, setRsuiteLocaleData] = useState(null); // State to hold loaded rsuite locale data
   const [globalFilter, setGlobalFilter] = React.useState(initFilters);
+  const classes = useStyles();
 
   const [snackBar, setSnackBar] = useState({
     open: false,
@@ -69,7 +86,7 @@ function GlobalProvider({ children, ...rest }) {
     title: "",
     open: false,
     warning: false,
-    section: <></>
+    component: <></>
   })
   // console.log(dialog)
 
@@ -106,7 +123,7 @@ function GlobalProvider({ children, ...rest }) {
       title,
       open: true,
       warning: true,
-      section: <WarningSection message={message} onConfirm={onConfirm} />
+      component: <WarningComponent message={message} onConfirm={onConfirm} />
     })
   }
 
@@ -122,7 +139,7 @@ function GlobalProvider({ children, ...rest }) {
       title: "",
       open: false,
       warning: false,
-      section: <></>
+      component: <></>
     })
   }
 
@@ -189,7 +206,8 @@ function GlobalProvider({ children, ...rest }) {
         // theme,
         authedApi: api(logout),
         globalFilter,
-        applyGlobalFilter
+        applyGlobalFilter,
+        classes
       }}
     >
       <ThemeProvider theme={currentTheme}>
@@ -246,7 +264,7 @@ function GlobalProvider({ children, ...rest }) {
                   }} />
                 </IconButton>
               </DialogTitle>}
-              {dialog.section}
+              {dialog.component}
             </Dialog>
             {children}
           </CustomProvider>

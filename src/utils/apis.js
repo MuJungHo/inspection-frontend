@@ -47,11 +47,12 @@ instance.interceptors.response.use(
 export const api = (logout = () => { }) => {
   return {
     getAllUsers: (params = {}) => instance.get('/user/list', { params }),
-    getAllInspectionItems: (params = {}) => instance.get('/item/list', { params }),
-    getAllInspectionPoints: (params = {}) => instance.get('/point/list', { params }),
-    getAllInspectionPlans: (params = {}) => instance.get('/plan/list', { params }),
-    getAllInspectionResults: (params = {}) => instance.get('/result', { params }),
-    getAllInspectionTaskToday: (params = {}) => instance.get('/task/today', { params }),
+    getAllItems: (params = {}) => instance.get('/item/listByPoint', { params }),
+    getAllPoints: (params = {}) => instance.get('/point/list', { params }),
+    getAllPlans: (params = {}) => instance.get('/plan/list', { params }),
+    getAllTasks: (params = {}) => instance.get('/task/list', { params }),
+    getAllTaskToday: (params = {}) => instance.get('/task/today', { params }),
+    getTaskDetail: (params = {}) => instance.get('/task/detail', { params }),
   };
 };
 

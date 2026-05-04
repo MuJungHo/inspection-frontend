@@ -8,7 +8,7 @@ import {
   Button, 
   DialogContent,
   DialogActions,
-} from "../components/common";
+} from "./common";
 
 
 

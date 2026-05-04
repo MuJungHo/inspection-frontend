@@ -9,15 +9,13 @@ const User = () => {
 
   const [UserList, setUserList] = React.useState([]);
   React.useEffect(() => {
-    getAllInspectionResults()
+    getAllTaskToday()
   }, [])
-  const getAllInspectionResults = async () => {
-    const { data, success } = await authedApi.getAllInspectionResults();
+  const getAllTaskToday = async () => {
+    const { data, success } = await authedApi.getAllTaskToday();
     const _rows = data.map(a => ({
       ...a, _id: a.id,
       _plan: a.plan.name,
-      _item: a.item.name,
-      _inspector: a.inspector.username,
     }));
 
     if (success) {
@@ -26,16 +24,13 @@ const User = () => {
   }
   return (<Paper sx={{ margin: 3 }}>
     <Table
-      title={t("inspection-result")}
+      title={t("today-task")}
       checkable={false}
       rows={UserList}
       columns={[
         { key: '_plan', label: t('inspection-plan'), sortable: false },
-        { key: '_item', label: t('inspection-item'), sortable: false },
-        { key: '_inspector', label: t('inspector'), sortable: false },
+        { key: 'scheduledAt', label: t('schedule-at'), sortable: false },
         { key: 'status', label: t('status'), sortable: false },
-        { key: 'value', label: t('value'), sortable: false },
-        { key: 'comment', label: t('comment'), sortable: false },
       ]}
     // dense
     />
