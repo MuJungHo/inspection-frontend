@@ -40,7 +40,7 @@ const Detail = () => {
 
   const getDetail = async () => {
     const { data, success } = await authedApi.getTaskDetail({ id: taskId });
-    setDetail(data);
+    // setDetail(data);
   }
   React.useEffect(() => {
     getDetail()

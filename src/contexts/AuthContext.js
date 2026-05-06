@@ -5,7 +5,7 @@ import { instance } from "../utils/apis";
 const AuthContext = createContext();
 
 function AuthProvider(props) {
-  const [token, setToken] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJEZW1vIEluc3BlY3RvciIsInJvbGUiOiJpbnNwZWN0b3IiLCJpYXQiOjE3Nzc4NTk2MTMsImV4cCI6MTc3Nzk0NjAxM30.Klz2wCarXpTxFNaQUBICOMJRvU8OnsN2qL1u4W7U52A');
+  const [token, setToken] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJEZW1vIEluc3BlY3RvciIsInJvbGUiOiJpbnNwZWN0b3IiLCJpYXQiOjE3NzgwMzI1MTYsImV4cCI6MTc3ODExODkxNn0.C6ifjHSLoV5hK7ol92AgTwB_XPvX-4ShxVAHOoLJbM4');
   const [keep, setKeep] = useState(localStorage.getItem('keep') === "1");
 
   // 初始化時處理已存在的 token

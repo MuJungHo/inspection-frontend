@@ -53,6 +53,10 @@ export const api = (logout = () => { }) => {
     getAllTasks: (params = {}) => instance.get('/task/list', { params }),
     getAllTaskToday: (params = {}) => instance.get('/task/today', { params }),
     getTaskDetail: (params = {}) => instance.get('/task/detail', { params }),
+    getDashboardRankingItems: (params = {}) => instance.get('/dashboard/ranking/items', { params }),
+    getDashboardRankingPoints: (params = {}) => instance.get('/dashboard/ranking/points', { params }),
+    getDashboardRankingPlans: (params = {}) => instance.get('/dashboard/ranking/plans', { params }),
+    getDashboardRecordStatus: (params = {}) => instance.get('/dashboard/record/status', { params }),
   };
 };
 

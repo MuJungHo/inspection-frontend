@@ -1,11 +1,11 @@
 import User from "../Views/User";
-import DashboardComponent from "../Views/Dashboard";
 import Item from "../Views/Item";
 import Point from "../Views/Point";
 import Plan from "../Views/Plan";
 import ReportList from "../Views/Report/List";
 import ReportDetail from "../Views/Report/Detail";
 import Task from "../Views/Task";
+import Dashboard from "../Views/Dashboard";
 
 import {
   ManageAccount,
@@ -16,8 +16,15 @@ import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import DataUsageIcon from '@mui/icons-material/DataUsage';
 import PlaceIcon from '@mui/icons-material/Place';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const routes = [
+  {
+    name: 'dashboard',
+    icon: DashboardIcon,
+    path: "/dashboard",
+    component: Dashboard
+  },
   {
     name: 'task',
     icon: AssignmentIndIcon,
