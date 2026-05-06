@@ -151,7 +151,7 @@ const DashboardMUIOfficial = () => {
                       variant="determinate"
                       value={item.passRate}
                       color={item.passRate < 75 ? 'error' : 'warning'}
-                      sx={{ flexGrow: 1, height: 8, borderRadius: 4, bgcolor: 'grey.200' }}
+                      sx={{ flexGrow: 1, height: 8, borderRadius: 4 }}
                     />
                     <Typography variant="caption" color="text.secondary" sx={{ minWidth: 40, textAlign: 'right' }}>
                       異常: {item.failedCount}

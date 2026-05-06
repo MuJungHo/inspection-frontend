@@ -40,7 +40,7 @@ const Detail = () => {
 
   const getDetail = async () => {
     const { data, success } = await authedApi.getTaskDetail({ id: taskId });
-    // setDetail(data);
+    setDetail(data);
   }
   React.useEffect(() => {
     getDetail()
@@ -100,11 +100,11 @@ const Detail = () => {
                     </Grid>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, mt: 3 }}>
                       <AssignmentIcon fontSize="small" />
-                      <Text variant="subtitle1" fontWeight="bold" color="text.primary">巡檢項目與結果 (共 {point.records.length} 項)</Text>
+                      <Text variant="subtitle1" fontWeight="bold" color="text.primary">巡檢項目與結果 (共 {point.items.length} 項)</Text>
                     </Box>
                     <Grid container spacing={2}>
                       {
-                        point.records?.map(record => (<Grid item xs={12} md={6}>
+                        point.items?.map(record => (<Grid item xs={12} md={6}>
                           <Box sx={{
                             p: 2,
                             border: '1px solid',
@@ -114,10 +114,10 @@ const Detail = () => {
                             borderLeftColor: 'success.main', bgcolor: '#fafafa', height: '100%'
                           }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                              <Text variant="subtitle2" fontWeight="bold">{record.item.name}</Text>
+                              <Text variant="subtitle2" fontWeight="bold">{record.item?.name}</Text>
                               <Chip label="正常 ✓" color="success" size="small" variant="outlined" sx={{ bgcolor: '#edf7ed', fontWeight: 'bold' }} />
                             </Box>
-                            <Text variant="body2" color="text.secondary">參考標準 : {record.item.operator} {record.item.numerical}</Text>
+                            <Text variant="body2" color="text.secondary">參考標準 : {record.item?.operator} {record.item?.numerical}</Text>
                             <Text variant="body2" color="text.secondary">
                               巡檢值 : <span style={{ color: 'black' }}>{record.value}</span> <span style={{ color: '#2e7d32' }}>(正常 / PASS)</span>
                             </Text>
