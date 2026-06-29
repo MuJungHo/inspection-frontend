@@ -51,12 +51,18 @@ export const api = (logout = () => { }) => {
     getAllPoints: (params = {}) => instance.get('/point/list', { params }),
     getAllPlans: (params = {}) => instance.get('/plan/list', { params }),
     getAllTasks: (params = {}) => instance.get('/task/list', { params }),
-    getAllTaskToday: (params = {}) => instance.get('/task/today', { params }),
+    getAllTasksByInspector: (params = {}) => instance.get('/task/inspector', { params }),
     getTaskDetail: (params = {}) => instance.get('/task/detail', { params }),
     getDashboardRankingItems: (params = {}) => instance.get('/dashboard/ranking/items', { params }),
     getDashboardRankingPoints: (params = {}) => instance.get('/dashboard/ranking/points', { params }),
     getDashboardRankingPlans: (params = {}) => instance.get('/dashboard/ranking/plans', { params }),
     getDashboardRecordStatus: (params = {}) => instance.get('/dashboard/record/status', { params }),
+
+    postAddItem: ({ data }) => instance.post('/item/create', data),
+
+    putUpdateItem: ({ itemId, data }) => instance.put(`/item/update/${itemId}`, data),
+
+    deleteItem: ({ itemId }) => instance.delete(`/item/delete/${itemId}`),
   };
 };
 

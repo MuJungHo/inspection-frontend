@@ -4,6 +4,7 @@ import { GlobalContext } from "../contexts/GlobalContext";
 import { Paper, Table, Image } from "../components/common";
 import dayjs from "dayjs";
 import ChecklistIcon from '@mui/icons-material/Checklist';
+import QrCodeIcon from '@mui/icons-material/QrCode';
 import { useNavigate } from "react-router-dom";
 
 const User = () => {
@@ -14,11 +15,13 @@ const User = () => {
   React.useEffect(() => {
     getAllPoints()
   }, [])
+  
   const getAllPoints = async () => {
     const { data, success } = await authedApi.getAllPoints();
     const _rows = data.map(a => ({
       ...a, _id: a.id,
-      _targetItems: a.items.length,
+      _targetItems: a.items?.length,
+      _image: <Image src={a.qrCodeBase64} />
     }));
 
     if (success) {
@@ -34,6 +37,7 @@ const User = () => {
       rows={UserList}
       columns={[
         { key: 'name', label: t('name'), sortable: false },
+        { key: '_image', label: t('_image'), sortable: false },
         { key: '_targetItems', label: t('inspection-item'), sortable: false },
         { key: 'latitude', label: t('座標Y'), sortable: false },
         { key: 'longitude', label: t('座標X'), sortable: false },

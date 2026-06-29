@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { Paper, Table, Image, Text } from "../../components/common";
+import { Paper, Table, Image, Text, TextField } from "../../components/common";
 import { useParams } from "react-router-dom";
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
@@ -30,6 +30,12 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
+  Select,
+  MenuItem
 } from '@mui/material';
 
 const Detail = () => {
@@ -42,32 +48,22 @@ const Detail = () => {
   const getDetail = async () => {
     const { data, success } = await authedApi.getTaskDetail({ id: taskId });
     setDetail(data);
-    const records = data.records
-    const _points = data.plan.points
-      .map(point => {
-        let _items = point.items.map(item => {
-          const item_record = records.find(record => record.itemId === item.id)
-          return { ...item, record: item_record }
-        })
-        return {
-          ...point,
-          items: _items
-        }
-      })
-    setPoints(_points)
+    console.log(data)
+    const records = data.records;
+    const _points = data.plan.points;
+    setPoints(_points);
   }
   React.useEffect(() => {
     getDetail();
   }, [])
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 4, overflow: 'auto' }}>
+    <Box sx={{ flexGrow: 1, p: 4, overflow: 'auto', width: 700, margin: 'auto' }}>
       <Box>
         <Box>
           <Text variant="h5" fontWeight="bold" color="text.primary">
-            任務詳情: #1 陽光每日巡檢 ({detail.status})
+            {detail?.plan?.name} ({detail.status})
           </Text>
-          <CheckCircleIcon color="success" />
         </Box>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -115,41 +111,50 @@ const Detail = () => {
                       <AssignmentIcon fontSize="small" />
                       <Text variant="subtitle1" fontWeight="bold" color="text.primary">巡檢項目與結果 (共 {point.items.length} 項)</Text>
                     </Box>
-                    <Grid container spacing={2}>
-                      {
-                        point.items?.map(item => (<Grid item xs={12} md={6}>
-                          <Box sx={{
-                            p: 2,
-                            border: '1px solid',
-                            borderColor: 'grey.300',
-                            borderRadius: 1,
-                            borderLeft: '4px solid',
-                            borderLeftColor: {
-                              "PASS": 'success.main',
-                              "FAIL": 'error.main',
-                              "DEFAULT": 'warning.main'
-                            }[item.record?.status],
-                            bgcolor: '#fafafa', height: '100%'
-                          }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-                              <Chip
-                                label={item.record?.status}
-                                color={{
-                                  "PASS": 'success',
-                                  "FAIL": 'error',
-                                  "DEFAULT": 'warning'
-                                }[item.record?.status]} size="small" variant="outlined" sx={{ fontWeight: 'bold', mr: 1 }} />
-                              <Text variant="subtitle2" fontWeight="bold">{item.name}</Text>
-                            </Box>
-                            <Text variant="body2" color="text.secondary">參考標準 : {item.operator} {item.numerical}</Text>
-                            <Text variant="body2" color="text.secondary">
-                              巡檢值 : <span style={{ color: 'black' }}>{item.record?.value}</span>
-                            </Text>
-                          </Box>
-                        </Grid>))
-                      }
-
-                    </Grid>
+                    {
+                      point.items?.map(item => (<Box sx={{
+                        p: 1,
+                        bgcolor: '#fafafa',
+                        width: '100%',
+                        mb: 1
+                      }}>
+                        {
+                          item.dataType === "numeric" && <FormControl>
+                            <FormLabel>{item.name}</FormLabel>
+                            <TextField variant="outlined" type="number" />
+                          </FormControl>
+                        }
+                        {
+                          item.dataType === "text" && <FormControl>
+                            <FormLabel>{item.name}</FormLabel>
+                            <TextField variant="outlined" type="text" />
+                          </FormControl>
+                        }
+                        {
+                          item.dataType === "multiple" && <FormControl variant="outlined" size="small">
+                            <FormLabel>{item.name}</FormLabel>
+                            <Select
+                              // displayEmpty
+                            >
+                              {item.options?.map(option => <MenuItem value={option.name}>{option.name}</MenuItem>)}
+                            </Select>
+                          </FormControl>
+                        }
+                        {
+                          item.dataType === "boolean" && <FormControl>
+                            <FormLabel>{item.name}</FormLabel>
+                            <RadioGroup
+                              row
+                              aria-labelledby="demo-row-radio-buttons-group-label"
+                              name="row-radio-buttons-group"
+                            >
+                              <FormControlLabel value="female" control={<Radio />} label={t("yes")} />
+                              <FormControlLabel value="male" control={<Radio />} label={t("no")} />
+                            </RadioGroup>
+                          </FormControl>
+                        }
+                      </Box>))
+                    }
                   </Box>
                 </CardContent>
               </Card>

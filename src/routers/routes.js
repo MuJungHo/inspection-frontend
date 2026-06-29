@@ -4,7 +4,8 @@ import Point from "../Views/Point";
 import Plan from "../Views/Plan";
 import ReportList from "../Views/Report/List";
 import ReportDetail from "../Views/Report/Detail";
-import Task from "../Views/Task";
+import TaskList from "../Views/Task/List";
+import TaskEdit from "../Views/Task/Edit";
 import Dashboard from "../Views/Dashboard";
 
 import {
@@ -26,10 +27,16 @@ const routes = [
     component: Dashboard
   },
   {
-    name: 'task',
+    name: 'task-list',
     icon: AssignmentIndIcon,
     path: "/task",
-    component: Task
+    component: TaskList
+  },
+  {
+    name: 'task-edit',
+    path: "/task/:taskId/edit",
+    component: TaskEdit,
+    sidebar: false
   },
   {
     name: 'inspection-item',
